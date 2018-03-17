@@ -1,4 +1,4 @@
-package com.napier.mohs.instagramclone.Home;
+package com.napier.mohs.instagramclone.Utils;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
