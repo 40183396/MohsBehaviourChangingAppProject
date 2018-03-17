@@ -81,6 +81,9 @@ public class FirebaseMethods {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
+
+                            // send verif email
+                            sendVerEmail();
                             userID = mAuth.getCurrentUser().getUid();
                             Log.d(TAG, "createUserWithEmail:success, userID: " + userID);
                             Toast.makeText(mContext, R.string.success_auth,
@@ -94,6 +97,25 @@ public class FirebaseMethods {
 
                     }
                 });
+    }
+
+    // sends verification email to user
+    public void sendVerEmail(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user != null){
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+
+                            } else
+                                Toast.makeText(mContext, "Verification email could not be sent", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+
     }
 
 

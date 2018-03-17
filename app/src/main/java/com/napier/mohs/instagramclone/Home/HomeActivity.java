@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
         setupFirebaseAuth();
         // make sure to initiliases image loader first
         initImageLoader();
-        mAuth.signOut();
+        //mAuth.signOut();
 
         setupBottomNavigationView();
         setupViewPager();

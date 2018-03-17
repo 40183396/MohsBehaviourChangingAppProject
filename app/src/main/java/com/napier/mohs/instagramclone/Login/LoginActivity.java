@@ -92,19 +92,72 @@ public class LoginActivity extends AppCompatActivity {
                     mProgressBar.setVisibility(View.VISIBLE);
                     mSigningIn.setVisibility(View.VISIBLE);
 
-
                     mAuth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() { // Gives error if you don't use Login.this
+                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        Log.d(TAG, "signInWithEmail:success");
-                                        FirebaseUser user = mAuth.getCurrentUser();
-                                        Toast.makeText(LoginActivity.this, getString((R.string.success_auth)),
+                                    Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                                    FirebaseUser user = mAuth.getCurrentUser();
+
+                                    // If sign in fails, display a message to the user. If sign in succeeds
+                                    // the auth state listener will be notified and logic to handle the
+                                    // signed in user can be handled in the listener.
+                                    if (!task.isSuccessful()) {
+                                        Log.w(TAG, "signInWithEmail:failed", task.getException());
+
+                                        Toast.makeText(LoginActivity.this, getString(R.string.failed_auth),
                                                 Toast.LENGTH_SHORT).show();
                                         mProgressBar.setVisibility(View.GONE);
                                         mSigningIn.setVisibility(View.GONE);
+                                    }
+                                    else{
+                                        //try{
+                                           // if(user.isEmailVerified()){
+                                               // Log.d(TAG, "onComplete: success. email is verified.");
+                                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                                startActivity(intent);
+                                           // }else{
+                                              //  Toast.makeText(mContext, "Email is not verified \n check your email inbox.", Toast.LENGTH_SHORT).show();
+                                                mProgressBar.setVisibility(View.GONE);
+                                                mSigningIn.setVisibility(View.GONE);
+                                               // mAuth.signOut();
+                                          //  }
+                                        //}catch (NullPointerException e){
+                                           // Log.e(TAG, "onComplete: NullPointerException: " + e.getMessage() );
+                                       // }
+                                    }
+
+                                    // ...
+                                }
+                            });
+                }
+
+                   /* mAuth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() { // Gives error if you don't use Login.this
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    FirebaseUser user = mAuth.getCurrentUser();
+
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "signInWithEmail:success");
+                                        try{
+                                            // Checks if user has verified email before signing in
+                                            if(user.isEmailVerified()){
+                                                Log.d(TAG, "onComplete: email is verified");
+                                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                                startActivity(intent);
+                                            } else {
+                                                Log.d(TAG, "onComplete: ");
+                                                Toast.makeText(LoginActivity.this, "Email not verified \n check email inbox",
+                                                        Toast.LENGTH_SHORT).show();
+                                                mProgressBar.setVisibility(View.GONE);
+                                                mSigningIn.setVisibility(View.GONE);
+                                                mAuth.signOut();
+                                            }
+                                        } catch (NullPointerException e){
+                                            Log.e(TAG, "onComplete: NullPointerEception: " + e.getMessage() );
+                                        }
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -117,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
                                     // ...
                                 }
                             });
-                }
+                }*/
             }
         });
         TextView signUpLink = (TextView) findViewById(R.id.link_signup);
