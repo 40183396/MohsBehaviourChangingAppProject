@@ -10,12 +10,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
+import com.napier.mohs.instagramclone.Utils.GridImageAdapter;
+import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
+
+import java.util.ArrayList;
 
 /**
  * Created by Mohs on 15/03/2018.
@@ -28,6 +33,8 @@ public class ProfileActivity extends AppCompatActivity{
     private Context mContext = ProfileActivity.this;
     private ProgressBar mProgressBar;
 
+    private ImageView mProfilePhoto;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +45,50 @@ public class ProfileActivity extends AppCompatActivity{
 
         setupBottomNavigationView();
         setupToolbar();
+        setupActivityWidgets();
+        setProfileImage();
+
+        // temporary method to see if grid works
+        setupGridImagesTemp();
     }
 
+    // temporary method for gridview images
+    private void setupGridImagesTemp(){
+        ArrayList<String> imgURLs = new ArrayList<>();
+        imgURLs.add("http://cdn.newsapi.com.au/image/v1/9fdbf585d17c95f7a31ccacdb6466af9");
+        imgURLs.add("https://i.redd.it/v95w1pywpfi01.jpg");
+        imgURLs.add("https://i.redd.it/nm3kc8kzwki01.jpg");
+        imgURLs.add("https://i.redd.it/rut7sosqxi101.jpg");
+        imgURLs.add("https://i.redd.it/cybj5uxyn5m01.jpg");
+        imgURLs.add("https://www.flickr.com/photos/codispotia/40093117854/sizes/l/");
+        imgURLs.add("https://i.redd.it/616dc2aks7m01.jpg");
+        imgURLs.add("https://i.redd.it/0fq9we4wg5m01.jpg");
+
+        setupGridImages(imgURLs);
+    }
+
+    // sets up grid view, takes in array list of image urls
+    private void setupGridImages(ArrayList<String> imgURLs) {
+        GridView gridView = (GridView) findViewById(R.id.gridView);
+
+        GridImageAdapter adapter = new GridImageAdapter(mContext, R.layout.layout_grid_imageview, imgURLs, "");
+        gridView.setAdapter(adapter);
+    }
+
+    private void setProfileImage(){
+        Log.d(TAG, "setProfileImage: profile image is being set.");
+        String imgURL = "http://cdn.newsapi.com.au/image/v1/9fdbf585d17c95f7a31ccacdb6466af9";
+        UniversalImageLoader.setImage(imgURL, mProfilePhoto, null, ""); // static image so this being used
+    }
+
+    // method for seeing ap the widgets (e.g. progress bar)
+    private void setupActivityWidgets(){
+        mProgressBar = (ProgressBar) findViewById(R.id.profileProgressBar);
+        mProgressBar.setVisibility(View.GONE);
+        mProfilePhoto = (ImageView) findViewById(R.id.profile_image);
+    }
+
+    // Sets up toolbar
     private void setupToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.profileToolbar) ;
         setSupportActionBar(toolbar);

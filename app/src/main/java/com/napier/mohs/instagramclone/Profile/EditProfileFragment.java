@@ -29,17 +29,23 @@ public class EditProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_editprofile, container, false);
         mProfilePhoto = (ImageView) view.findViewById(R.id.profile_photo);
 
-        // make sure to initiliases image loader first 
-        initImageLoader();
+
         setProfileImage();
+
+        // back arrow which goes to profile activity
+        ImageView backArrow = (ImageView) view.findViewById(R.id.backArrow);
+
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: going back to profile activity. ");
+                getActivity().finish(); // Have to use getActivity().finish(); as we are in fragment
+            }
+        });
         return view;
     }
 
-    // initialises image loader
-    private void initImageLoader(){
-        UniversalImageLoader universalImageLoader = new UniversalImageLoader(getActivity());
-        ImageLoader.getInstance().init(universalImageLoader.getConfig()); // retrieves configuration
-    }
+
 
     private void setProfileImage(){
         Log.d(TAG, "setProfileImage: profile image is being set");

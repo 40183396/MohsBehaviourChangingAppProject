@@ -13,6 +13,8 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.instagramclone.Utils.SectionsPagerAdapter;
+import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -25,9 +27,17 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.d(TAG, "onCreate: starting.");
+        // make sure to initiliases image loader first
+        initImageLoader();
 
         setupBottomNavigationView();
         setupViewPager();
+    }
+
+    // initialises image loader here to be able to use in all other activities
+    private void initImageLoader(){
+        UniversalImageLoader universalImageLoader = new UniversalImageLoader(mContext);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig()); // retrieves configuration
     }
 
     /*
