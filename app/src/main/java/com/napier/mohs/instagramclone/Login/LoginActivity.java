@@ -64,10 +64,10 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "checkIfStringNull: checking if fields are null");
 
         if(input.equals("")){
-            Log.d(TAG, "checkIfStringNull: fields are filled");
+            Log.d(TAG, "checkIfStringNull: fields are null");
             return true;
         } else {
-            Log.d(TAG, "checkIfStringNull: error fields are null");
+            Log.d(TAG, "checkIfStringNull: fields filled");
             return false;
         }
     }
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
 
-                if(checkIfStringNull(email) && checkIfStringNull(password)){
+                if(checkIfStringNull(email) || checkIfStringNull(password)){
                     Toast.makeText(mContext, "You must fill out all the fields", Toast.LENGTH_SHORT).show();
                 } else {
                     // If Fields are not empty, attempt a log in and progress bar shows

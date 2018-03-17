@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:hint="Email"
-                android:id="@+id/input_email"/>
+                android:id="@+id/register_email"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:hint="Full Name"
-                android:id="@+id/input_username"/>
+                android:id="@+id/register_username"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="Password"
-                android:id="@+id/input_password"/>
+                android:id="@+id/register_password"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -97,7 +97,7 @@
         android:text="Logging In Please Wait..."
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:id="@+id/signingInText"
+        android:id="@+id/registerSigningInText"
         android:layout_alignBottom="@id/loginProgressBar"
         android:layout_alignRight="@id/loginProgressBar"
         android:layout_alignLeft="@id/loginProgressBar"/>

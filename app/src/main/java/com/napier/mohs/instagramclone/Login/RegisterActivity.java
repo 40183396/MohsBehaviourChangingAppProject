@@ -11,10 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.napier.mohs.instagramclone.R;
+import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 
 /**
  * Created by Mohs on 17/03/2018.
@@ -26,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseMethods fbMethods;
 
     private Context mContext;
     private String email;
@@ -42,19 +45,52 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        Log.d(TAG, "onCreate: started register");
-        mProgressBar = (ProgressBar) findViewById(R.id.registerProgressBar);
-        mSigningIn = (TextView) findViewById(R.id.signingInText);
-        mEmail = (EditText) findViewById((R.id.input_email));
-        mPassword = (EditText) findViewById((R.id.input_password));
-        mUsername = (EditText) findViewById((R.id.input_username));
         mContext = RegisterActivity.this;
+
+        fbMethods = new FirebaseMethods(mContext);
+        Log.d(TAG, "onCreate: started register");
+
+        mProgressBar = (ProgressBar) findViewById(R.id.registerProgressBar);
+        mSigningIn = (TextView) findViewById(R.id.registerSigningInText);
+        mEmail = (EditText) findViewById((R.id.register_email));
+        mPassword = (EditText) findViewById((R.id.register_password));
+        mUsername = (EditText) findViewById((R.id.register_username));
+        mRegisterButton = (Button) findViewById(R.id.button_register);
 
         // Invisible till user attempts to register
         mProgressBar.setVisibility(View.GONE);
         mSigningIn.setVisibility(View.GONE);
+
+        setupFirebaseAuth();
+        initialiseRegisterUser();
     }
 
+    // Button which initialises resgistering
+    private void initialiseRegisterUser(){
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Attempting to register user ");
+
+                String email = mEmail.getText().toString();
+                String password = mPassword.getText().toString();
+                String user = mUsername.getText().toString();
+
+                if(checkIfStringNull(email) || checkIfStringNull(password) || checkIfStringNull(user)){
+                    Toast.makeText(mContext, "You must fill out all the fields", Toast.LENGTH_SHORT).show();
+                } else {
+                    // If Fields are not empty, attempt registration and progress bar shows
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    mSigningIn.setVisibility(View.VISIBLE);
+
+                    fbMethods.newEmailRegister(email, password, user);
+
+                }
+
+            }
+        });
+
+    }
 
     // method to check if input fields are not null
     private boolean checkIfStringNull(String input){
