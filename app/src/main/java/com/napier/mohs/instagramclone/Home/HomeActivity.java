@@ -1,6 +1,7 @@
 package com.napier.mohs.instagramclone.Home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.instagramclone.Login.LoginActivity;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.instagramclone.Utils.SectionsPagerAdapter;
@@ -87,6 +89,16 @@ public class HomeActivity extends AppCompatActivity {
 
 
     //------------------------FIRESBASE STUFF------------
+    // Method to check if a user is signed in app
+    private void currentUserCheck(FirebaseUser user){
+        Log.d(TAG, "currentUserCheck:  check if a user has suigned in");
+
+        if(user == null){
+            Intent intent = new Intent(mContext, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
     private void setupFirebaseAuth(){
         Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
@@ -94,6 +106,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                // checks for user signed in
+                currentUserCheck(user);
+
                 if(user != null){
                     Log.d(TAG, "onAuthStateChanged: user signed in " + user);
                 } else {
@@ -107,6 +123,8 @@ public class HomeActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+        FirebaseUser user = mAuth.getCurrentUser();
+        currentUserCheck(user);
     }
 
     @Override
