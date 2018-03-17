@@ -58,7 +58,7 @@ public class GridImageAdapter extends ArrayAdapter{
             // Similar to a recylcer view but easier to set up
             convertView = mLayoutInflater.inflate(layoutResource, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.mProgressBar = (ProgressBar) convertView.findViewById(R.id.profileProgressBar);
+            viewHolder.mProgressBar = (ProgressBar) convertView.findViewById(R.id.progressGridImage);
             viewHolder.gridImages = (ImagesSquaredView) convertView.findViewById(R.id.gridImageVIew);
 
             convertView.setTag(viewHolder); // Tag is a way to store widgets (View) in memory so app does not slow down
