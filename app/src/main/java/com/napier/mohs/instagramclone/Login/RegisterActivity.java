@@ -15,6 +15,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 
@@ -29,6 +34,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseMethods fbMethods;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myDBRefFirebase;
 
     private Context mContext;
     private String email;
@@ -41,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button mRegisterButton;
     private ProgressBar mProgressBar;
 
+    private String append = "";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,18 +80,18 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Attempting to register user ");
 
-                String email = mEmail.getText().toString();
-                String password = mPassword.getText().toString();
-                String user = mUsername.getText().toString();
+                email = mEmail.getText().toString();
+                password = mPassword.getText().toString();
+                username = mUsername.getText().toString();
 
-                if(checkIfStringNull(email) || checkIfStringNull(password) || checkIfStringNull(user)){
+                if(checkIfStringNull(email) || checkIfStringNull(password) || checkIfStringNull(username)){
                     Toast.makeText(mContext, "You must fill out all the fields", Toast.LENGTH_SHORT).show();
                 } else {
                     // If Fields are not empty, attempt registration and progress bar shows
                     mProgressBar.setVisibility(View.VISIBLE);
                     mSigningIn.setVisibility(View.VISIBLE);
 
-                    fbMethods.newEmailRegister(email, password, user);
+                    fbMethods.newEmailRegister(email, password, username);
 
                 }
 
@@ -92,15 +100,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+
+
     // method to check if input fields are not null
     private boolean checkIfStringNull(String input){
         Log.d(TAG, "checkIfStringNull: checking if fields are null");
 
         if(input.equals("")){
-            Log.d(TAG, "checkIfStringNull: fields are filled");
+            Log.d(TAG, "checkIfStringNull: fields are null");
             return true;
         } else {
-            Log.d(TAG, "checkIfStringNull: error fields are null");
+            Log.d(TAG, "checkIfStringNull: fields are filled");
             return false;
         }
     }
@@ -109,13 +119,44 @@ public class RegisterActivity extends AppCompatActivity {
     private void setupFirebaseAuth(){
         Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myDBRefFirebase = mFirebaseDatabase.getReference();
+
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if(user != null){
-                    Log.d(TAG, "onAuthStateChanged: user signed in " + user);
+                    Log.d(TAG, "onAuthStateChanged: user signed in " + user.getUid());
+
+                    // looks for single snapshot of fb db in its current state
+                    myDBRefFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) { // shows when data is changed in db
+                            // first check: make sure username isn't in use already
+                            if(fbMethods.checkUsernameExists(username, dataSnapshot)){
+                                // if username exists appends a random substring to username and adds to db
+                                append = myDBRefFirebase.push().getKey().substring(3,10);
+                                Log.d(TAG, "onDataChange: username already exists, appended user is: " + append);
+                            }
+
+                            username = username + append; // if username is appended
+
+                            // add new user to db & user_account_settings to db
+                            fbMethods.addNewUser(email, username, "", "", "");
+                            Log.d(TAG, "onDataChange: email: " + email + ", username = " + username );
+
+                            Toast.makeText(mContext, "Successfully Signed Up, Email Verification Sent", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) { // shows when error
+
+                        }
+                    });
                 } else {
                     Log.d(TAG, "onAuthStateChanged: user signed out");
                 }
