@@ -29,6 +29,8 @@ import java.util.ArrayList;
 public class ProfileActivity extends AppCompatActivity{
     private static final String TAG = "ProfileActivity";
     private static final int ACTIVITY_NUM = 4;
+    private static final int NUM_COLS_GRID = 3;
+
 
     private Context mContext = ProfileActivity.this;
     private ProgressBar mProgressBar;
@@ -40,8 +42,6 @@ public class ProfileActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         Log.d(TAG, "onCreate: started");
-        mProgressBar = (ProgressBar) findViewById(R.id.profileProgressBar);
-        mProgressBar.setVisibility(View.GONE);
 
         setupBottomNavigationView();
         setupToolbar();
@@ -71,6 +71,11 @@ public class ProfileActivity extends AppCompatActivity{
     private void setupGridImages(ArrayList<String> imgURLs) {
         GridView gridView = (GridView) findViewById(R.id.gridView);
 
+        // makes sure images are distributed equally acording to phone size
+        int widthGrid = getResources().getDisplayMetrics().widthPixels;
+        int widthImage = widthGrid/NUM_COLS_GRID;
+        gridView.setColumnWidth(widthImage);
+
         GridImageAdapter adapter = new GridImageAdapter(mContext, R.layout.layout_grid_imageview, imgURLs, "");
         gridView.setAdapter(adapter);
     }
@@ -78,7 +83,7 @@ public class ProfileActivity extends AppCompatActivity{
     private void setProfileImage(){
         Log.d(TAG, "setProfileImage: profile image is being set.");
         String imgURL = "http://cdn.newsapi.com.au/image/v1/9fdbf585d17c95f7a31ccacdb6466af9";
-        UniversalImageLoader.setImage(imgURL, mProfilePhoto, null, ""); // static image so this being used
+        UniversalImageLoader.setImage(imgURL, mProfilePhoto, mProgressBar, ""); // static image so this being used
     }
 
     // method for seeing ap the widgets (e.g. progress bar)

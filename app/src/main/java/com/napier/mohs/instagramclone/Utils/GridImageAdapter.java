@@ -43,7 +43,8 @@ public class GridImageAdapter extends ArrayAdapter{
 
     // reusing view holder build pattern to view images
     private static class ViewHolder{
-        ImageView gridImages; // need to remake this otherwise gird images will be stretched and skewed
+        // makes images in grid squared
+        ImagesSquaredView gridImages; // need to remake this otherwise gird images will be stretched and skewed
         ProgressBar mProgressBar;
     }
 
@@ -58,7 +59,7 @@ public class GridImageAdapter extends ArrayAdapter{
             convertView = mLayoutInflater.inflate(layoutResource, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.mProgressBar = (ProgressBar) convertView.findViewById(R.id.profileProgressBar);
-            viewHolder.gridImages = (ImageView) convertView.findViewById(R.id.gridImageVIew);
+            viewHolder.gridImages = (ImagesSquaredView) convertView.findViewById(R.id.gridImageVIew);
 
             convertView.setTag(viewHolder); // Tag is a way to store widgets (View) in memory so app does not slow down
             // ViewHolder creates all widgets
