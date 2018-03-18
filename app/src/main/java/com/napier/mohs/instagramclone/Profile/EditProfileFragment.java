@@ -117,7 +117,7 @@ public class EditProfileFragment extends Fragment {
 
 
 
-    //------------------------FIRESBASE STUFF------------
+    //------------------------FIRESBASE STUFF-------------
     // Method to check if a user is signed in app
 
     private void setupFirebaseAuth(){
