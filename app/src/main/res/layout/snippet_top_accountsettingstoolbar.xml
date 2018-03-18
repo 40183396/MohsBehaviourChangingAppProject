@@ -20,10 +20,10 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="20dp"
                     android:layout_centerVertical="true"
-                    android:id="@+id/imageEditBackArrow"
+                    android:id="@+id/imageAccountBackArrow"
                     android:src="@drawable/ic_back_arrow"/>
                 <TextView
-                    android:layout_toRightOf="@id/imageEditBackArrow"
+                    android:layout_toRightOf="@id/imageAccountBackArrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

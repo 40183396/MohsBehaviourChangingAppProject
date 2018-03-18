@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
@@ -46,6 +48,10 @@ public class EditProfileFragment extends Fragment {
     private EditText mDisplayName, mUsername, mWebsite, mDescription, mEmail, mPhoneNumber;
     private TextView mChangeProfilePhoto;
     private CircleImageView mProfilePhoto;
+
+    private  UserSettings mUserSetings;
+    private String userID;
+
 
     @Nullable
     @Override
@@ -81,11 +87,107 @@ public class EditProfileFragment extends Fragment {
                 getActivity().finish(); // Have to use getActivity().finish(); as we are in fragment
             }
         });
+
+
+        ImageView save = (ImageView) view.findViewById(R.id.imageEditSaveChange);
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: saving changes attempt ");
+                saveEditSettings();
+                //getActivity().finish(); // Have to use getActivity().finish(); as we are in fragment
+            }
+        });
+
+
         return view;
+
+    }
+
+    // gets data from widgets and uploads to db
+    // Also checks that username is unique
+    private void saveEditSettings(){
+        final String displayname = mDisplayName.getText().toString();
+        final String username = mUsername.getText().toString();
+        final String web = mWebsite.getText().toString();
+        final String description = mDescription.getText().toString();
+        final String email = mEmail.getText().toString();
+        final long phone = Long.parseLong(mPhoneNumber.getText().toString());
+
+                // listens for singele value event
+        myDBRefFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // Original search method for searching for username in db which was too slow
+//                User user = new User();
+//                for(DataSnapshot ds : dataSnapshot.child(getString(R.string.db_name_users)).getChildren()){
+//                    if(ds.getKey().equals(userID)){
+//                        user.setUsername(ds.getValue(User.class).getUsername());
+//                    }
+//                }
+
+                // using query instead which checks username entered into text field and compare it to what was originally loaded into fragment
+                Log.d(TAG, "onDataChange: current username is: " + mUserSetings.getUser().getUsername());
+                // if username has not changed
+                if(!mUserSetings.getUser().getUsername().equals(username)){
+                    checkUsernameExist(username);
+                } else {
+                    // username changed so checks if unique
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    // checks if username is in db
+    // using query means cant return anything (e.g. boolean if usename already exists)
+    // Forced to run this and execute methods inside the override
+    private void checkUsernameExist(final String username) {
+        Log.d(TAG, "checkUsernameExist: Checking if this username exists already: " + username);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        // looks for node that contains object that is being lookexd for then gets field in that object
+        Query qry = ref
+                .child(getString(R.string.db_name_users))
+                .orderByChild(getString(R.string.username_field))
+                .equalTo(username);
+        qry.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // only returns datasnapshot if match is foound
+                if(!dataSnapshot.exists()){
+                    // username added
+                    mFirebaseMethods.usernameUpdate(username);
+                    Toast.makeText(getActivity(), "Username changed.", Toast.LENGTH_SHORT).show();
+                }
+                //loops through results
+                // single snapshot as only one item from db is being returned
+                for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
+                    if(singleDataSnapshot.exists()){
+                        Log.d(TAG, "onDataChange: username already exists in db: " + singleDataSnapshot.getValue(User.class).getUsername());
+                        Toast.makeText(getActivity(), "Username already exists.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
-
+    // Test method to display profil image without db
 //    private void setProfileImage(){
 //        Log.d(TAG, "setProfileImage: profile image is being set");
 //        String imgURL = "http://cdn.newsapi.com.au/image/v1/9fdbf585d17c95f7a31ccacdb6466af9";
@@ -100,7 +202,9 @@ public class EditProfileFragment extends Fragment {
     private void seupWidgets(UserSettings userSettings){
         Log.d(TAG, "seupWidgets: settings up edit profile widgets with data from firebase db " );
 
-        // User settings not needed here but added here anyway
+        // when activity starts this user settings object is set
+        mUserSetings = userSettings;
+
         User user = userSettings.getUser();
         UserAccountSettings userAccountSettings = userSettings.getUserAccountsettings();
 
@@ -123,6 +227,7 @@ public class EditProfileFragment extends Fragment {
     private void setupFirebaseAuth(){
         Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -138,6 +243,7 @@ public class EditProfileFragment extends Fragment {
         };
 
         // allows to get datasnapshot and allows to read or write to db
+        // This is always listening
         myDBRefFirebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -19,7 +19,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 
@@ -116,6 +118,55 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //------------------------FIRESBASE STUFF------------
+
+    // checks if username is in db
+    // using query means cant return anything (e.g. boolean if usename already exists)
+    // Forced to run this and execute methods inside the override
+    private void checkUsernameExist(final String username) {
+        Log.d(TAG, "checkUsernameExist: Checking if this username exists already: " + username);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        // looks for node that contains object that is being lookexd for then gets field in that object
+        Query qry = ref
+                .child(getString(R.string.db_name_users))
+                .orderByChild(getString(R.string.username_field))
+                .equalTo(username);
+        qry.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                //loops through results
+                // single snapshot as only one item from db is being returned
+                for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
+                    if(singleDataSnapshot.exists()){
+                        Log.d(TAG, "onDataChange: username already exists in db: " + singleDataSnapshot.getValue(User.class).getUsername());
+                        // if username exists appends a random substring to username and adds to db
+                        append = myDBRefFirebase.push().getKey().substring(3,10);
+                        Log.d(TAG, "onDataChange: username already exists, appended user is: " + append);
+                    }
+                }
+
+                String mUsername = "";
+
+                mUsername = username + append; // if username is appended
+
+                // add new user to db & user_account_settings to db
+                fbMethods.addNewUser(email, mUsername, "", "", "");
+                Log.d(TAG, "onDataChange: email: " + email + ", username = " + mUsername );
+
+                Toast.makeText(mContext, "Successfully Signed Up, Email Verification Sent", Toast.LENGTH_SHORT).show();
+
+                mAuth.signOut();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
     private void setupFirebaseAuth(){
         Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
@@ -135,23 +186,8 @@ public class RegisterActivity extends AppCompatActivity {
                     myDBRefFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) { // shows when data is changed in db
-                            // first check: make sure username isn't in use already
-                            if(fbMethods.checkUsernameExists(username, dataSnapshot)){
-                                // if username exists appends a random substring to username and adds to db
-                                append = myDBRefFirebase.push().getKey().substring(3,10);
-                                Log.d(TAG, "onDataChange: username already exists, appended user is: " + append);
-                            }
 
-                            username = username + append; // if username is appended
-
-                            // add new user to db & user_account_settings to db
-                            fbMethods.addNewUser(email, username, "", "", "");
-                            Log.d(TAG, "onDataChange: email: " + email + ", username = " + username );
-
-                            Toast.makeText(mContext, "Successfully Signed Up, Email Verification Sent", Toast.LENGTH_SHORT).show();
-
-                            mAuth.signOut();
-
+                            checkUsernameExist(username);
                         }
 
                         @Override

@@ -47,32 +47,34 @@ public class FirebaseMethods {
         }
     }
 
+    // OLD METHOD FOR CHECKING IF USERNAME EXISTS IN DB
+
     // method to check is username is already in use in db
-    public boolean checkUsernameExists(String username, DataSnapshot dataSnapshot) {
-        Log.d(TAG, "checkUsernameExists: checking if the user " + username + " is already in db");
-
-        User user = new User();
-
-        // Now loops through DataSnapshot to see if user exists
-        // DataSnapshot goes through all nodes
-        // 0th iteration only gets first node in this case user_acount settings
-        // 1st would be users etc.
-        for (DataSnapshot ds : dataSnapshot.child(userID).getChildren()) {
-            Log.d(TAG, "checkUsernameExists: DataSnapshot " + ds);
-
-            //sets user to username
-            user.setUsername(ds.getValue(User.class).getUsername());
-            Log.d(TAG, "checkUsernameExists: username: " + user.getUsername());
-
-            // checks if username already exists by removing period and replacing with space and then comparing to String username
-            if (ManipulateStrings.usernameRemovePeriod(user.getUsername()).equals(username)) {
-                Log.d(TAG, "checkUsernameExists: username already exists: " + user.getUsername());
-                return true;
-            }
-        }
-
-        return false;
-    }
+//    public boolean checkUsernameExists(String username, DataSnapshot dataSnapshot) {
+//        Log.d(TAG, "checkUsernameExists: checking if the user " + username + " is already in db");
+//
+//        User user = new User();
+//
+//        // Now loops through DataSnapshot to see if user exists
+//        // DataSnapshot goes through all nodes
+//        // 0th iteration only gets first node in this case user_acount settings
+//        // 1st would be users etc.
+//        for (DataSnapshot ds : dataSnapshot.child(userID).getChildren()) {
+//            Log.d(TAG, "checkUsernameExists: DataSnapshot " + ds);
+//
+//            //sets user to username
+//            user.setUsername(ds.getValue(User.class).getUsername());
+//            Log.d(TAG, "checkUsernameExists: username: " + user.getUsername());
+//
+//            // checks if username already exists by removing period and replacing with space and then comparing to String username
+//            if (ManipulateStrings.usernameRemovePeriod(user.getUsername()).equals(username)) {
+//                Log.d(TAG, "checkUsernameExists: username already exists: " + user.getUsername());
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     // registers the given email and pasword to firebase db
     public void newEmailRegister(final String email, String password, final String username) {
@@ -153,6 +155,21 @@ public class FirebaseMethods {
                 .child(userID)
                 .setValue(userAccSettings);
 
+    }
+
+    // Updates the users username in firebase db
+    public void usernameUpdate(String username){
+        Log.d(TAG, "usernameUpdate: updating the users username to: " + username);
+
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_users))
+                .child(userID)
+                .child(mContext.getString(R.string.username_field))
+                .setValue(username);
+
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
+                .child(userID)
+                .child(mContext.getString(R.string.username_field))
+                .setValue(username);
     }
 
     // gets user account settings from firebase db for user logged in

@@ -54,7 +54,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         getIntentIncoming();
 
         //setup the backarrow for navigating back to "ProfileActivity"
-        ImageView backArrow = (ImageView) findViewById(R.id.imageEditBackArrow);
+        ImageView backArrow = (ImageView) findViewById(R.id.imageAccountBackArrow);
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
