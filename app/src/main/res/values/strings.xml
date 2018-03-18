@@ -32,4 +32,7 @@
 
     <!--Dialog Strings-->
     <string name="dialog_password_confirm">PasswordConfirmDialog</string>
+
+    <string name="photo">PHOTO</string>
+    <string name="gallery">GALLERY</string>
 </resources>
