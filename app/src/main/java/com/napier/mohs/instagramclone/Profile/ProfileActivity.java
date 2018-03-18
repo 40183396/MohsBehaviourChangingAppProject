@@ -45,7 +45,7 @@ public class ProfileActivity extends AppCompatActivity{
         setContentView(R.layout.activity_profile);
         Log.d(TAG, "onCreate: started");
 
-        // inflates fragments for profile 
+        // inflates fragments for profile
         initialiseProfileFragment();
 
 //        setupBottomNavigationView();
