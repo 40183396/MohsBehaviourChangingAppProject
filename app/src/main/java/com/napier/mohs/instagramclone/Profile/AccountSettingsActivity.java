@@ -1,9 +1,9 @@
 package com.napier.mohs.instagramclone.Profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -51,6 +51,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         setupSettingsList();
         setupBottomNavigationView();
         setupFragments();
+        getIntentIncoming();
 
         //setup the backarrow for navigating back to "ProfileActivity"
         ImageView backArrow = (ImageView) findViewById(R.id.backArrow);
@@ -63,10 +64,20 @@ public class AccountSettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void getIntentIncoming(){
+        Intent intent = getIntent();
+
+        // Checks if there is an incoming intent that has an extra
+        if(intent.hasExtra(getString(R.string.calling_activity))){
+            Log.d(TAG, "getIntentIncoming: recieved intent from " + getString(R.string.profile_activity));
+            setViewPager(pagerAdapter.getFragmentNumber(getString(R.string.fragment_edit_profile))); // setsViewPager to incoming intent
+        }
+    }
+
     private void setupFragments(){
         pagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addFragment(new EditProfileFragment(), getString(R.string.edit_profile)); //fragment 0
-        pagerAdapter.addFragment(new SignOutFragment(), getString(R.string.sign_out)); //fragment 1
+        pagerAdapter.addFragment(new EditProfileFragment(), getString(R.string.fragment_edit_profile)); //fragment 0
+        pagerAdapter.addFragment(new SignOutFragment(), getString(R.string.fragment_sign_out)); //fragment 1
     }
 
     // method responsible for actually navigating to fragment
@@ -82,8 +93,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listviewAccountSettings);
 
         ArrayList<String> options = new ArrayList<>();
-        options.add(getString(R.string.edit_profile)); //fragment 0
-        options.add(getString(R.string.sign_out)); //fragement 1
+        options.add(getString(R.string.fragment_edit_profile)); //fragment 0
+        options.add(getString(R.string.fragment_sign_out)); //fragement 1
 
         ArrayAdapter adapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, options);
         listView.setAdapter(adapter);

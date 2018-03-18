@@ -1,28 +1,15 @@
 package com.napier.mohs.instagramclone.Profile;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.instagramclone.R;
-import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
-import com.napier.mohs.instagramclone.Utils.GridImageAdapter;
-import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
-
-
-import java.util.ArrayList;
 
 /**
  * Created by Mohs on 15/03/2018.
@@ -58,13 +45,13 @@ public class ProfileActivity extends AppCompatActivity{
     }
 
     private void initialiseProfileFragment(){
-        Log.d(TAG, "initialiseProfileFragment: inflating " + R.string.profile_fragment);
+        Log.d(TAG, "initialiseProfileFragment: inflating " + R.string.fragment_profile);
 
         ProfileFragment profileFragment = new ProfileFragment();
         FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.profileContainer, profileFragment); // replacing activity container with fragment
         // fragments have different stacks to activities, have to manually track stacks with fragments
-        transaction.addToBackStack(getString(R.string.profile_fragment));
+        transaction.addToBackStack(getString(R.string.fragment_profile));
         transaction.commit();
     }
 //    // temporary method for gridview images

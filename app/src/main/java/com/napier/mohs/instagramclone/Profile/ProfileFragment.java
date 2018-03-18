@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment{
     private static final int ACTIVITY_NUM = 4;
 
 
-    private TextView mPosts, mFollowers, mFollowing, mDisplayName, mUsername, mWebsite, mDescription;
+    private TextView mPosts, mFollowers, mFollowing, mDisplayName, mUsername, mWebsite, mDescription, mEditProfile;
     private ProgressBar mProgressBar;
     private CircleImageView mProfilePhoto;
     private GridView gridView;
@@ -86,6 +86,7 @@ public class ProfileFragment extends Fragment{
         mPosts = (TextView) view.findViewById(R.id.tvPosts);
         mFollowers = (TextView) view.findViewById(R.id.tvFollowers);
         mFollowing = (TextView) view.findViewById(R.id.tvFollowing);
+        mEditProfile = (TextView) view.findViewById(R.id.textEditProfile);
         mProgressBar = (ProgressBar) view.findViewById(R.id.profileProgressBar);
         gridView = (GridView) view.findViewById(R.id.gridView);
         toolbar = (Toolbar) view.findViewById(R.id.profileToolbar);
@@ -97,6 +98,19 @@ public class ProfileFragment extends Fragment{
         setupFirebaseAuth();
         setupBottomNavigationView();
         setupToolbar();
+
+        // Goes to edit page fragment
+        mEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: going to edit profile fragment");
+                    Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+                    // flag to know that this is just a calling activity
+                    intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
+                    startActivity(intent);
+                    // not finishing as we want to be able to nav back to this activity
+            }
+        });
 
         return view;
     }

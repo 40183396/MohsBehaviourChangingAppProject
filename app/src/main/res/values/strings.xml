@@ -2,9 +2,9 @@
     <string name="app_name">InstagramClone</string>
 
     <!-- Fragment Strings-->
-    <string name="edit_profile">Edit Profile</string>
-    <string name="sign_out">Sign Out</string>
-    <string name="profile_fragment">Profile Fragment</string>
+    <string name="fragment_edit_profile">Edit Profile</string>
+    <string name="fragment_sign_out">Sign Out</string>
+    <string name="fragment_profile">Profile Fragment</string>
 
     <!--Firebase -->
     <string name="failed_auth">Authentication Failed</string>
@@ -13,4 +13,11 @@
     <!--Firebase db -->
     <string name="db_name_users">users</string>
     <string name="db_name_user_account_settings">user_account_settings</string>
+
+    <!-- Intent Extras-->
+    <string name="calling_activity">calling_activity</string>
+
+
+    <!-- Activity Strings -->
+    <string name="profile_activity">Profile Activity</string>
 </resources>
