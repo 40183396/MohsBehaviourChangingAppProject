@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:id="@+id/linLayout"
+                android:id="@+id/linearLayout"
                 android:weightSum="100">
 
                 <RelativeLayout
@@ -32,7 +32,7 @@
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:id="@+id/profile_image"
+                        android:id="@+id/imageProfile"
                         app:civ_border_color="@color/black"
                         app:civ_border_width="2dp"
                         android:layout_centerVertical="true"/>
@@ -53,14 +53,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_below="@id/linLayout"
+                android:layout_below="@id/linearLayout"
                 android:padding="20dp"
                 android:id="@+id/linLayout2">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/display_name"
+                    android:id="@+id/textviewProfileDisplayName"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:text="Mohs"
@@ -68,7 +68,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/description"
+                    android:id="@+id/textviewProfileDescription"
                     android:textColor="@color/black"
                     android:text="I live in Livingston"
                     android:textSize="16dp"
@@ -76,7 +76,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/website"
+                    android:id="@+id/textviewProfileWebsite"
                     android:textColor="@color/link_blue"
                     android:text="http://mohs.com"
                     android:textSize="16dp"
@@ -95,7 +95,7 @@
                 <GridView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/gridView"
+                    android:id="@+id/gridviewProfile"
                     android:numColumns="3"
                     android:verticalSpacing="1dp"
                     android:horizontalSpacing="1dp"

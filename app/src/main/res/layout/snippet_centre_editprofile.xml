@@ -13,7 +13,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:id="@+id/profile_photo"
+                android:id="@+id/imageEditProfilePhoto"
                 android:layout_marginTop="20dp"
                 app:civ_border_color="@color/black"
                 app:civ_border_width="2dp"
@@ -23,8 +23,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Change Photo"
-                android:id="@+id/changeProfilePhoto"
-                android:layout_below="@+id/profile_photo"
+                android:id="@+id/textviewEditChangeProfilePhoto"
+                android:layout_below="@+id/imageEditProfilePhoto"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/link_blue"
                 android:textSize="16sp"/>
@@ -33,7 +33,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/changeProfilePhoto"
+                android:layout_below="@+id/textviewEditChangeProfilePhoto"
                 android:layout_marginTop="80dp"
                 android:background="@drawable/grey_border_bottom"
                 android:id="@+id/relLayout1">
@@ -50,7 +50,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/username"
+                    android:id="@+id/edittextEditUsername"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="40dp"
                     android:background="@null"
@@ -75,7 +75,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/displayname"
+                    android:id="@+id/edittextEditDisplayName"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="40dp"
                     android:background="@null"
@@ -100,7 +100,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/website"
+                    android:id="@+id/edittextEditWebsite"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="40dp"
                     android:background="@null"
@@ -125,7 +125,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/description"
+                    android:id="@+id/edittextEditDescription"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="40dp"
                     android:background="@null"
@@ -143,13 +143,13 @@
                 android:layout_marginTop="40dp"
                 android:textColor="@color/black"
                 android:background="@drawable/grey_border_bottom"
-                android:id="@+id/textPrivateInfo"/>
+                android:id="@+id/textviewEditPrivateInfo"/>
 
             <!--email section, using relative layouts-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/textPrivateInfo"
+                android:layout_below="@+id/textviewEditPrivateInfo"
                 android:background="@drawable/grey_border_bottom"
                 android:id="@+id/relLayout5"
                 android:layout_marginTop="15dp">
@@ -162,7 +162,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/email"
+                    android:id="@+id/edittextEditEmail"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="40dp"
                     android:background="@null"
@@ -189,7 +189,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/phonenumber"
+                    android:id="@+id/edittextEditPhoneNumber"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="40dp"
                     android:background="@null"

@@ -10,7 +10,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textSettings"
+            android:id="@+id/textviewAccountSettings"
             android:text="Account Settings"
             android:textSize="35dp"
             android:textColor="@color/black"
@@ -19,7 +19,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/textSettings"
+            android:layout_below="@+id/textviewAccountSettings"
             android:id="@+id/listviewAccountSettings"></ListView>
 
     </RelativeLayout>

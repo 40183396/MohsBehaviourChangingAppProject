@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.napier.mohs.instagramclone.R;
@@ -58,8 +57,8 @@ public class GridImageAdapter extends ArrayAdapter{
             // Similar to a recylcer view but easier to set up
             convertView = mLayoutInflater.inflate(layoutResource, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.mProgressBar = (ProgressBar) convertView.findViewById(R.id.progressGridImage);
-            viewHolder.gridImages = (ImagesSquaredView) convertView.findViewById(R.id.gridImageVIew);
+            viewHolder.mProgressBar = (ProgressBar) convertView.findViewById(R.id.progressbarGridImage);
+            viewHolder.gridImages = (ImagesSquaredView) convertView.findViewById(R.id.imageGridView);
 
             convertView.setTag(viewHolder); // Tag is a way to store widgets (View) in memory so app does not slow down
             // ViewHolder creates all widgets

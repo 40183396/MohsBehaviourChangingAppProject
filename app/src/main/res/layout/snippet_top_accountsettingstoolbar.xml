@@ -10,7 +10,7 @@
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/profileToolbar">
+            android:id="@+id/toolbarEdit">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -20,10 +20,10 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="20dp"
                     android:layout_centerVertical="true"
-                    android:id="@+id/backArrow"
+                    android:id="@+id/imageEditBackArrow"
                     android:src="@drawable/ic_back_arrow"/>
                 <TextView
-                    android:layout_toRightOf="@id/backArrow"
+                    android:layout_toRightOf="@id/imageEditBackArrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -31,7 +31,7 @@
                     android:textSize="20sp"
                     android:textColor="@color/black"
                     android:layout_marginStart="5dp"
-                    android:id="@+id/textOptions"/>
+                    android:id="@+id/textviewAccountOptions"/>
 
 
             </RelativeLayout>

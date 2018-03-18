@@ -58,12 +58,12 @@ public class RegisterActivity extends AppCompatActivity {
         fbMethods = new FirebaseMethods(mContext);
         Log.d(TAG, "onCreate: started register");
 
-        mProgressBar = (ProgressBar) findViewById(R.id.registerProgressBar);
-        mSigningIn = (TextView) findViewById(R.id.registerSigningInText);
-        mEmail = (EditText) findViewById((R.id.register_email));
-        mPassword = (EditText) findViewById((R.id.register_password));
-        mUsername = (EditText) findViewById((R.id.register_username));
-        mRegisterButton = (Button) findViewById(R.id.button_register);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressbarRegister);
+        mSigningIn = (TextView) findViewById(R.id.textviewRegisterLoggingIn);
+        mEmail = (EditText) findViewById((R.id.edittextRegisterEmail));
+        mPassword = (EditText) findViewById((R.id.edittextRegisterPassword));
+        mUsername = (EditText) findViewById((R.id.edittextRegisterUsername));
+        mRegisterButton = (Button) findViewById(R.id.buttonRegister);
 
         // Invisible till user attempts to register
         mProgressBar.setVisibility(View.GONE);

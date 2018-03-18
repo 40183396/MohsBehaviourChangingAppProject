@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:hint="Email"
-                android:id="@+id/register_email"/>
+                android:id="@+id/edittextRegisterEmail"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:hint="Full Name"
-                android:id="@+id/register_username"/>
+                android:id="@+id/edittextRegisterUsername"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="Password"
-                android:id="@+id/register_password"/>
+                android:id="@+id/edittextRegisterPassword"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -70,7 +70,7 @@
             android:layout_marginBottom="25dp"
             android:layout_marginTop="25dp"
             android:text="Register"
-            android:id="@+id/button_register"
+            android:id="@+id/buttonRegister"
             android:padding="12dp"
             android:background="@drawable/white_rounded_button"/>
 
@@ -81,14 +81,14 @@
             android:text="Already Have An Account? Sign In"
             android:gravity="center"
             android:textSize="16dp"
-            android:id="@+id/link_signup"
+            android:id="@+id/textviewRegisterAlreadyHaveAccount"
             android:textColor="@color/link_blue"/>
     </LinearLayout>
 
     <ProgressBar
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:id="@+id/registerProgressBar"
+        android:id="@+id/progressbarRegister"
         android:layout_centerInParent="true"/>
 
     <TextView
@@ -97,9 +97,9 @@
         android:text="Logging In Please Wait..."
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:id="@+id/registerSigningInText"
-        android:layout_alignBottom="@id/loginProgressBar"
-        android:layout_alignRight="@id/loginProgressBar"
-        android:layout_alignLeft="@id/loginProgressBar"/>
+        android:id="@+id/textviewRegisterLoggingIn"
+        android:layout_alignBottom="@id/progressbarLogin"
+        android:layout_alignRight="@id/progressbarLogin"
+        android:layout_alignLeft="@id/progressbarLogin"/>
 
 </RelativeLayout>

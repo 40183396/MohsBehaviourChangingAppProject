@@ -7,7 +7,7 @@
         android:layout_marginTop="30dp">
 
         <TextView
-            android:id="@+id/tvPosts"
+            android:id="@+id/textviewProfilePostsNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -18,16 +18,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textPosts"
+            android:id="@+id/textviewProfilePosts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Posts"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPosts" />
+            app:layout_constraintTop_toBottomOf="@+id/textviewProfilePostsNumber" />
 
         <TextView
-            android:id="@+id/tvFollowers"
+            android:id="@+id/textviewProfileFollowersNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -35,26 +35,26 @@
             android:text="324"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvFollowing"
+            app:layout_constraintEnd_toStartOf="@+id/textviewProfileFollowingNumber"
             app:layout_constraintHorizontal_bias="0.507"
-            app:layout_constraintStart_toEndOf="@+id/tvPosts"
+            app:layout_constraintStart_toEndOf="@+id/textviewProfilePostsNumber"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textFollowers"
+            android:id="@+id/textviewProfileFollowers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:text="Followers"
             android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/textFollowing"
+            app:layout_constraintEnd_toStartOf="@+id/textviewProfileFollowing"
             app:layout_constraintHorizontal_bias="0.552"
-            app:layout_constraintStart_toEndOf="@+id/textPosts"
-            app:layout_constraintTop_toBottomOf="@+id/tvFollowers" />
+            app:layout_constraintStart_toEndOf="@+id/textviewProfilePosts"
+            app:layout_constraintTop_toBottomOf="@+id/textviewProfileFollowersNumber" />
 
         <TextView
-            android:id="@+id/tvFollowing"
+            android:id="@+id/textviewProfileFollowingNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -65,17 +65,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textFollowing"
+            android:id="@+id/textviewProfileFollowing"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginEnd="4dp"
             android:text="Following"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvFollowing" />
+            app:layout_constraintTop_toBottomOf="@+id/textviewProfileFollowingNumber" />
 
         <TextView
-            android:id="@+id/textEditProfile"
+            android:id="@+id/textviewProfileEditYourProfile"
             android:layout_width="143dp"
             android:layout_height="19dp"
             android:layout_marginBottom="8dp"
@@ -91,7 +91,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textFollowers"
+            app:layout_constraintTop_toBottomOf="@+id/textviewProfileFollowers"
             app:layout_constraintVertical_bias="0.015" />
     </android.support.constraint.ConstraintLayout>
 

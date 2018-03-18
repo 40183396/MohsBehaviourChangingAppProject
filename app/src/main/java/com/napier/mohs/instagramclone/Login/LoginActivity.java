@@ -44,10 +44,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Log.d(TAG, "onCreate: started login");
-        mProgressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
-        mSigningIn = (TextView) findViewById(R.id.signingInText);
-        mEmail = (EditText) findViewById((R.id.input_email));
-        mPassword = (EditText) findViewById((R.id.input_password));
+        mProgressBar = (ProgressBar) findViewById(R.id.progressbarLogin);
+        mSigningIn = (TextView) findViewById(R.id.textviewLoginSigningIn);
+        mEmail = (EditText) findViewById((R.id.edittextLoginEmail));
+        mPassword = (EditText) findViewById((R.id.edittextLoginPassword));
         mContext = LoginActivity.this;
 
         // This is invisible till user signs in
@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     //------------------------FIRESBASE STUFF------------
     // Button which initialises lgging in
     private void initialiseLoggingIn(){
-        Button loginButton = (Button) findViewById(R.id.button_login);
+        Button loginButton = (Button) findViewById(R.id.buttonLogin);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
                 }*/
             }
         });
-        TextView signUpLink = (TextView) findViewById(R.id.link_signup);
+        TextView signUpLink = (TextView) findViewById(R.id.textviewRegisterAlreadyHaveAccount);
         signUpLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

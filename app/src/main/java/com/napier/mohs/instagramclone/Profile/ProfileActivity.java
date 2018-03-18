@@ -49,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity{
 
         ProfileFragment profileFragment = new ProfileFragment();
         FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.profileContainer, profileFragment); // replacing activity container with fragment
+        transaction.replace(R.id.containerProfile, profileFragment); // replacing activity container with fragment
         // fragments have different stacks to activities, have to manually track stacks with fragments
         transaction.addToBackStack(getString(R.string.fragment_profile));
         transaction.commit();
@@ -97,12 +97,12 @@ public class ProfileActivity extends AppCompatActivity{
 //
 //    // Sets up toolbar
 //    private void setupToolbar(){
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.profileToolbar) ;
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarProfile) ;
 //        setSupportActionBar(toolbar);
 //
-//        ImageView profileMenu = (ImageView) findViewById(R.id.profileMenu);
+//        ImageView imageProfileMenu = (ImageView) findViewById(R.id.imageProfileMenu);
 //
-//        profileMenu.setOnClickListener(new View.OnClickListener() {
+//        imageProfileMenu.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //                Log.d(TAG, "onClick: navigating to acc settings");
