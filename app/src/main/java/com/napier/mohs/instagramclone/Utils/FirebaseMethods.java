@@ -161,15 +161,62 @@ public class FirebaseMethods {
     public void usernameUpdate(String username){
         Log.d(TAG, "usernameUpdate: updating the users username to: " + username);
 
+        // updates users node
         myDBRefFirebase.child(mContext.getString(R.string.db_name_users))
                 .child(userID)
                 .child(mContext.getString(R.string.username_field))
                 .setValue(username);
 
+        // updates user_account_settings node
         myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
                 .child(userID)
                 .child(mContext.getString(R.string.username_field))
                 .setValue(username);
+    }
+
+    // Updates the users email in users node firebase db
+    public void emailUpdate(String email){
+        Log.d(TAG, "usernameUpdate: updating the users email to: " + email);
+
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_users))
+                .child(userID)
+                .child(mContext.getString(R.string.email_field))
+                .setValue(email);
+    }
+
+    // updates other settings apaart from email and username
+    // These do not haave to be unique
+    public void usersettingsUpdate(String displayname, String web, String description, long phone){
+        Log.d(TAG, "usernameUpdate: updating the users settings, displayname: " + displayname + " web: " + web + " phone: " + phone + " decription: " + description);
+
+        if(displayname != null){
+            myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
+                    .child(userID)
+                    .child(mContext.getString(R.string.display_name_field))
+                    .setValue(displayname);
+        }
+
+        if(web != null) {
+            myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
+                    .child(userID)
+                    .child(mContext.getString(R.string.website_field))
+                    .setValue(web);
+        }
+
+        if(description != null) {
+            myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
+                    .child(userID)
+                    .child(mContext.getString(R.string.description_field))
+                    .setValue(description);
+        }
+
+        if(phone != 0){
+            myDBRefFirebase.child(mContext.getString(R.string.db_name_users))
+                    .child(userID)
+                    .child(mContext.getString(R.string.phone_number_field))
+                    .setValue(phone);
+        }
+
     }
 
     // gets user account settings from firebase db for user logged in

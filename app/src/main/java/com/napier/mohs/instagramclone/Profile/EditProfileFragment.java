@@ -13,8 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,6 +63,61 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
     @Override
     public void onPasswordConfirm(String password) {
         Log.d(TAG, "onPasswordConfirm: password entered: " + password);
+
+        // Get auth credentials from the user for re-authentication. The example below shows
+        // email and password credentials but there are multiple possible providers,
+        // such as GoogleAuthProvider or FacebookAuthProvider.
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(mAuth.getCurrentUser().getEmail(),password);
+
+        // user prompted to reenter sign in credentials
+        mAuth.getCurrentUser().reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                         if(task.isSuccessful()){
+                            Log.d(TAG, "User re-authenticated.");
+                            
+                            // check email already exists
+                             mAuth.fetchProvidersForEmail(mEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
+                                 @Override
+                                 public void onComplete(@NonNull Task<ProviderQueryResult> task) {
+                                     if(task.isSuccessful()){
+                                         try{
+                                         // if size eqauls 1 we have retrieved something
+                                         if(task.getResult().getProviders().size() == 1){
+                                             Log.d(TAG, "onComplete: Email already used");
+                                             Toast.makeText(getActivity(), "That email is Already being used", Toast.LENGTH_SHORT).show();
+                                         }
+                                         // if null, email is free to use
+                                         else{
+                                             Log.d(TAG, "onComplete: email available ");
+                                             // email is updated
+                                             mAuth.getCurrentUser().updateEmail(mEmail.getText().toString())
+                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                         @Override
+                                                         public void onComplete(@NonNull Task<Void> task) {
+                                                             if (task.isSuccessful()) {
+                                                                 Log.d(TAG, "User email address updated.");
+                                                                 Toast.makeText(getActivity(), "Email has been updated", Toast.LENGTH_SHORT).show();
+                                                                 mFirebaseMethods.emailUpdate(mEmail.getText().toString());
+                                                             }
+                                                         }});
+                                         }
+                                         }
+                                         catch (NullPointerException e){
+                                             Log.e(TAG, "onComplete: NullPointerException: " + e.getMessage() );
+                                         }
+                                     }
+                                 }
+                             });
+                             
+                        } else {
+                             Log.d(TAG, "onComplete: Failed to reauthenticate");
+                        }
+                    }
+                });
+
     }
 
     @Nullable
@@ -139,17 +199,32 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
             checkUsernameExist(username);
         }
 
-        //is email is changed
+        //if email is changed
         if (!mUserSetings.getUser().getEmail().equals(email)) {
 
             // first reauthenticate email (only needed is emails have to be verified
+            // check email is registered already
+            // then email is changed
             PasswordConfirmDialog dialog = new PasswordConfirmDialog();
             dialog.show(getFragmentManager(), getString(R.string.dialog_password_confirm));
             dialog.setTargetFragment(EditProfileFragment.this, 1); // sets this as target fragment after dialog is opened
-            // check email is registered already
 
-            // email is changed
         }
+
+        // if displayname is changed
+        if(!mUserSetings.getUserAccountsettings().getDisplay_name().equals(displayname)){
+            mFirebaseMethods.usersettingsUpdate(displayname, null, null, 0);
+        }
+
+        if(!mUserSetings.getUserAccountsettings().getWebsite().equals(web)){
+            mFirebaseMethods.usersettingsUpdate(null, web, null, 0);
+        }
+
+        if(!mUserSetings.getUserAccountsettings().getDescription().equals(description)){
+            mFirebaseMethods.usersettingsUpdate(null, null, description, 0);
+        }
+
+
 
 
     }
