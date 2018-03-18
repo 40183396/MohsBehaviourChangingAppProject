@@ -48,6 +48,13 @@ public class ShareActivity extends AppCompatActivity{
         //setupBottomNavigationView();
     }
 
+    // returns the number of the current tab
+    // 0 is gallery fragment
+    // 1 is photo fragment
+    public int getTabCurrentNumber(){
+        return mViewPager.getCurrentItem();
+    }
+
     private void viewPagerSetup(){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new GalleryFragment());
