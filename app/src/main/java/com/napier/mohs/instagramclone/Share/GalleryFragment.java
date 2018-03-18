@@ -1,5 +1,6 @@
 package com.napier.mohs.instagramclone.Share;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -43,6 +44,7 @@ public class GalleryFragment extends Fragment{
 
     private ArrayList<String> directories;
     private String mAppend = "file:/";
+    private String mImageSelected;
 
     @Nullable
     @Override
@@ -76,6 +78,11 @@ public class GalleryFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: going to share screen");
+
+                // Intent to go to Shared Activity
+                Intent intent = new Intent(getActivity(), NextActivity.class);
+                intent.putExtra(getString(R.string.image_selected), mImageSelected);
+                startActivity(intent);
             }
         });
         return view;
@@ -88,10 +95,21 @@ public class GalleryFragment extends Fragment{
             directories = FileSearch.retrieveDirectoryPaths(filesPaths.PICTURES); // list of directories in pictures directory
         }
 
+        // ArrayList of formatted directory names
+        ArrayList<String> namesDirectory = new ArrayList<>();
+        for(int i = 0; i < directories.size(); i++){
+            // looks for last index of forward slash
+            int index = directories.get(i).lastIndexOf("/")+ 1; // + 1 gets rid of slash
+            // substring to get very last bit of string
+            String substringDirectories = directories.get(i).substring(index);
+            // substring added to ArrayList
+            namesDirectory.add(substringDirectories);
+        }
+
         directories.add(filesPaths.CAMERA); // List of directories for camera added
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, directories);
+                android.R.layout.simple_spinner_item, namesDirectory); // displays formatted directory names
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mDirectorySpinner.setAdapter(adapter);// sets up spinner with directories
 
@@ -130,12 +148,18 @@ public class GalleryFragment extends Fragment{
        // sets that is first displayed when fragment is inflated
         imageSet(imgURLs.get(0), mGalleryImage, mAppend);
 
+        // sets first image as selected (default) when fragment is loaded
+        mImageSelected = imgURLs.get(0);
+
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: image selected: " + imgURLs.get(position));
 
                 imageSet(imgURLs.get(position), mGalleryImage, mAppend);
+
+                // every time image is clicked it becomes selected image
+                mImageSelected = imgURLs.get(position);
             }
         });
     }

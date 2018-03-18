@@ -25,6 +25,7 @@
 
     <!-- Intent Extras-->
     <string name="calling_activity">calling_activity</string>
+    <string name="image_selected">image_selected</string>
 
 
     <!-- Activity Strings -->
