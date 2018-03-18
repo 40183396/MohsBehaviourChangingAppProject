@@ -21,4 +21,7 @@
 
     <!-- Activity Strings -->
     <string name="profile_activity">Profile Activity</string>
+
+    <!--Dialog Strings-->
+    <string name="dialog_password_confirm">PasswordConfirmDialog</string>
 </resources>
