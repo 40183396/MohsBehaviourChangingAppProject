@@ -28,8 +28,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.instagramclone.Login.LoginActivity;
+import com.napier.mohs.instagramclone.Models.User;
+import com.napier.mohs.instagramclone.Models.UserAccountSettings;
+import com.napier.mohs.instagramclone.Models.UserSettings;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
+import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
+import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -60,6 +65,7 @@ public class ProfileFragment extends Fragment{
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
+    private FirebaseMethods mFirebaseMethods;
 
 
     @Nullable
@@ -70,6 +76,7 @@ public class ProfileFragment extends Fragment{
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
+        mFirebaseMethods = new FirebaseMethods(getActivity());
 
         mDisplayName = (TextView) view.findViewById(R.id.display_name);
         mUsername = (TextView) view.findViewById(R.id.profileName);
@@ -92,6 +99,28 @@ public class ProfileFragment extends Fragment{
         setupToolbar();
 
         return view;
+    }
+
+    // sets up the profile page with data from db
+    private void seupWidgets(UserSettings userSettings){
+        Log.d(TAG, "seupWidgets: settings up widget with data from firebase db " );
+
+        // User settings not needed here but added here anyway
+        User user = userSettings.getUser();
+        UserAccountSettings userAccountSettings = userSettings.getUserAccountsettings();
+
+        UniversalImageLoader.setImage(userAccountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
+
+        // sets up widgets with db data
+        mDisplayName.setText(userAccountSettings.getDisplay_name());
+        mUsername.setText(userAccountSettings.getUsername());
+        mWebsite.setText(userAccountSettings.getWebsite());
+        mDescription.setText(userAccountSettings.getDescription());
+        mPosts.setText(String.valueOf(userAccountSettings.getPosts()));
+        mFollowers.setText(String.valueOf(userAccountSettings.getFollowers()));
+        mFollowing.setText(String.valueOf(userAccountSettings.getFollowing()));
+
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private void setupToolbar(){
@@ -145,7 +174,7 @@ public class ProfileFragment extends Fragment{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // retrievs the user info from db
-
+                seupWidgets(mFirebaseMethods.getUserSettings(dataSnapshot)); // retrieves datasnapshot of user settings and sets up widgets
                 // retrievs images for the user
             }
 
