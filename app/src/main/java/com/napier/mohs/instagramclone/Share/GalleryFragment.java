@@ -171,10 +171,16 @@ public class GalleryFragment extends Fragment{
        mGridView.setAdapter(adapter);
 
        // sets that is first displayed when fragment is inflated
-        imageSet(imgURLs.get(0), mGalleryImage, mAppend);
+        // try catch was added to stop app crashin if no images occur in the directory
+        try{
+            imageSet(imgURLs.get(0), mGalleryImage, mAppend);
 
-        // sets first image as selected (default) when fragment is loaded
-        mImageSelected = imgURLs.get(0);
+            // sets first image as selected (default) when fragment is loaded
+            mImageSelected = imgURLs.get(0);
+        } catch (ArrayIndexOutOfBoundsException e){
+            Log.e(TAG, "gridViewSetup: ArrayIndexOutOfBoundsException " + e.getMessage());
+        }
+
 
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

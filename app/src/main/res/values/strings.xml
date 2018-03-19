@@ -25,6 +25,7 @@
     <string name="followers_field">followers</string>
     <string name="following_field">following</string>
     <string name="posts_field">posts</string>
+    <string name="user_id_field">user_id</string>
 
     <!-- Intent Extras-->
     <string name="calling_activity">calling_activity</string>

@@ -131,7 +131,6 @@ public class ProfileFragment extends Fragment{
     @Override
     public void onAttach(Context context) {
         try{
-            Log.d(TAG, "onAttach: ");
             mOnImageGridSelectedListener = (OnImageGridSelectedListener) getActivity();
         } catch(ClassCastException e){
             Log.e(TAG, "onAttach: ClassCastException: " + e.getMessage());

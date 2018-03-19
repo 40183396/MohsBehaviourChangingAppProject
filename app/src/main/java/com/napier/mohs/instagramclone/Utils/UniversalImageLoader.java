@@ -35,7 +35,8 @@ public class UniversalImageLoader {
     public ImageLoaderConfiguration getConfig(){
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(defaultImage) // default image
-                .showImageForEmptyUri(defaultImage) //
+                .showImageForEmptyUri(defaultImage)
+                .considerExifParams(true) // if image is rotated, roatates to original oreienatation
                 .showImageOnFail(defaultImage) // if image is unable to load, can handle null inputs
                 .cacheOnDisk(true).cacheInMemory(true)
                 .cacheOnDisk(true).resetViewBeforeLoading(true)

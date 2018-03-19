@@ -32,7 +32,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        Log.d(TAG, "onCreate: started profile activity");
+        Log.d(TAG, "onCreate: started profile ");
 
         // inflates fragments for profile
         initialiseProfileFragment();

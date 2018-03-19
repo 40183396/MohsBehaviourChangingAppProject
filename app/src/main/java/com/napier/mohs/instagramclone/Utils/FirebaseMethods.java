@@ -50,6 +50,9 @@ public class FirebaseMethods {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
     private StorageReference mStorageRefFirebase;
+
+
+
     private String userID;
 
     private int IMG_QUALITY = 100;// quality of bitmap image converted to bytes
@@ -364,7 +367,8 @@ public class FirebaseMethods {
                 0,
                 profile_photo,
                 ManipulateStrings.usernameRemoveSpace(username),
-                website
+                website,
+                userID
         );
         Log.d(TAG, "addNewUser: userAccSettings: " + userAccSettings);
         myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
