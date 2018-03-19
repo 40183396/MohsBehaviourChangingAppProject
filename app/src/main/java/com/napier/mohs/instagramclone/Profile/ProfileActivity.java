@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.R;
-import com.napier.mohs.instagramclone.ViewPostFragment;
+import com.napier.mohs.instagramclone.Utils.ViewPostFragment;
 
 /**
  * Created by Mohs on 15/03/2018.

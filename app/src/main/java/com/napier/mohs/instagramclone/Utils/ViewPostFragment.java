@@ -1,13 +1,15 @@
-package com.napier.mohs.instagramclone;
+package com.napier.mohs.instagramclone.Utils;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
+import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 import com.napier.mohs.instagramclone.Utils.GridImageAdapter;
@@ -64,6 +67,10 @@ public class ViewPostFragment extends Fragment {
     private DatabaseReference myDBRefFirebase;
     private FirebaseMethods mFirebaseMethods;
 
+    private GestureDetector mGestureDetector;
+
+    private Star mStar;
+
     // Bundle constructor so we don't have an empty bundle (can cause Null Pointer if we dont do this)
     public ViewPostFragment(){
         super();
@@ -83,6 +90,11 @@ public class ViewPostFragment extends Fragment {
         mStarHollow = (ImageView) view.findViewById(R.id.imagePostStar);
         mStarYellow = (ImageView) view.findViewById(R.id.imagePostStarYellow);
         mImageProfile = (ImageView) view.findViewById(R.id.imagePostProfile);
+
+        mStarYellow.setVisibility(View.GONE);
+        mStarHollow.setVisibility(View.VISIBLE);
+        mStar = new Star(mStarHollow, mStarYellow); // constructor to star
+        mGestureDetector = new GestureDetector(getActivity(), new GestureListener());
 
 
         // bundle could potentially be null so need a try catch
@@ -118,8 +130,42 @@ public class ViewPostFragment extends Fragment {
         setupFirebaseAuth();
         setupBottomNavigationView();
         getPostDetails();
-       //
+
+        testStar();
+
         return view;
+    }
+
+    private void testStar(){
+        mStarYellow.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Log.d(TAG, "onTouch: yellow star touch detected");
+                return mGestureDetector.onTouchEvent(motionEvent);
+            }
+        });
+        mStarHollow.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Log.d(TAG, "onTouch: hollow star touched");
+                return mGestureDetector.onTouchEvent(motionEvent);
+            }
+        });
+    }
+
+    public class GestureListener extends GestureDetector.SimpleOnGestureListener{
+        @Override
+        public boolean onDown(MotionEvent e) {
+            Log.d(TAG, "onDown: ");
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            Log.d(TAG, "onDoubleTap: ");
+            mStar.likeToggle();
+            return true;
+        }
     }
 
     private void getPostDetails() {
@@ -127,9 +173,9 @@ public class ViewPostFragment extends Fragment {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         // points to user id and retrieves their photos instead of going through db of all  photos
         Query query = databaseReference
-                .child(getString(R.string.db_name_user_account_settings))
-                .orderByChild("user_id")
-                .equalTo(mPhoto.getUser_id());
+                .child(getString(R.string.db_name_user_account_settings)) // looks in user_account_settings node
+                .orderByChild(getString(R.string.user_id_field)) // looks for user_id field
+                .equalTo(mPhoto.getUser_id()); // checks if photo user_id matches a user_id
 
         Log.d(TAG, "getPostDetails: query: " + mPhoto.getUser_id());
         query.addListenerForSingleValueEvent(new ValueEventListener(){
@@ -139,7 +185,7 @@ public class ViewPostFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
                     mUserAccountSettings = singleDataSnapshot.getValue(UserAccountSettings.class); // gets user acccount settings for that photo
-                    Log.d(TAG, "onDataChange: " + mUserAccountSettings. );
+                    Log.d(TAG, "onDataChange: User: " + mUserAccountSettings.getUsername() );
 
                 }
                 setupWidgets();
