@@ -8,8 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,8 +39,11 @@ public class NextActivity extends AppCompatActivity{
     private DatabaseReference myDBRefFirebase;
     private FirebaseMethods mFirebaseMethods;
 
+    private EditText mCaption;
+
     private String mAppend = "file:/";
     private int imgCount = 0;
+    private String imgURL;
 
     private Context mContext = NextActivity.this;
 
@@ -47,6 +52,8 @@ public class NextActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
         mFirebaseMethods = new FirebaseMethods(mContext);
+
+        mCaption = (EditText) findViewById(R.id.edittextNextCaption) ;
 
         setupFirebaseAuth();
         imageSet();
@@ -70,6 +77,10 @@ public class NextActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Log.d(TAG, "onClick: sharing image to firebase to db");
                 // uploads image to fb db
+                Toast.makeText(mContext, "Attempting to upload photo", Toast.LENGTH_SHORT).show();
+                // takes caption from caption edit text field
+                String caption = mCaption.getText().toString();
+                mFirebaseMethods.newPhotoUpload(getString(R.string.new_photo), caption, imgCount, imgURL);
             }
         });
     }

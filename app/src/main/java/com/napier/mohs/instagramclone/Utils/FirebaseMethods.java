@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.Models.UserSettings;
@@ -30,6 +32,7 @@ public class FirebaseMethods {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
+    private StorageReference mStorageRefFirebase;
     private String userID;
 
 
@@ -38,6 +41,7 @@ public class FirebaseMethods {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
+        mStorageRefFirebase = FirebaseStorage.getInstance().getReference();
         mContext = context;
 
 
@@ -58,6 +62,26 @@ public class FirebaseMethods {
             imgCount++;
         }
         return imgCount;
+    }
+
+    // void because firebase auto does async task in background when it uploads images to storage
+    public void newPhotoUpload(String typeOfPhoto, String caption, int count, String imgURL){
+        Log.d(TAG, "newPhotoUpload: uploading new photo attempt");
+        FilePaths filePaths = new FilePaths();
+        // either new photo or profile photo
+        if(typeOfPhoto.equals(mContext.getString(R.string.new_photo))){
+            Log.d(TAG, "newPhotoUpload: new photo being uploaded");
+
+            String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid(); // instead of global using this local
+
+            // gets image count and adds '1' to 'photo' and sets as image name
+            StorageReference storageReference = mStorageRefFirebase
+                    .child(filePaths.IMAGE_FIREBASE_STORAGE + "/" + user_id + "/photo" + (count + 1));
+        }
+        else if (typeOfPhoto.equals(mContext.getString(R.string.profile_photo))){
+            Log.d(TAG, "newPhotoUpload: new profile photo being uploaded");
+        }
+
     }
 
     // OLD METHOD FOR CHECKING IF USERNAME EXISTS IN DB

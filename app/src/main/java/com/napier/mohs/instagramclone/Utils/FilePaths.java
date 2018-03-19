@@ -12,4 +12,6 @@ public class FilePaths {
 
     public String PICTURES = DIRECTORY_ROOT + "/Pictures"; // Directory for pictures
     public String CAMERA = DIRECTORY_ROOT + "/DCIM/camera"; // Directory for camera
+
+    public String IMAGE_FIREBASE_STORAGE = "photos/users/"; // Directory for where images are stored in firebase storage
 }

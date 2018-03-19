@@ -41,7 +41,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/edittextNextDesription"
+                    android:id="@+id/edittextNextCaption"
                     android:layout_toRightOf="@id/imageNextShare"
                     android:hint="Write description here"
                     android:layout_marginLeft="20dp"
