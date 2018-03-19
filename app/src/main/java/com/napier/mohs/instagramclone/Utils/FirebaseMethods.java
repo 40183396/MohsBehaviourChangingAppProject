@@ -1,11 +1,15 @@
 package com.napier.mohs.instagramclone.Utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,7 +18,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.Models.UserSettings;
@@ -27,6 +33,7 @@ import com.napier.mohs.instagramclone.R;
 public class FirebaseMethods {
     private static final String TAG = "FirebaseMethods";
     private Context mContext;
+    private double mUploadPhotoProgress = 0;
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -35,6 +42,7 @@ public class FirebaseMethods {
     private StorageReference mStorageRefFirebase;
     private String userID;
 
+    private int IMG_QUALITY = 100;// quality of bitmap image converted to bytes
 
     public FirebaseMethods(Context context) {
         Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
@@ -77,6 +85,53 @@ public class FirebaseMethods {
             // gets image count and adds '1' to 'photo' and sets as image name
             StorageReference storageReference = mStorageRefFirebase
                     .child(filePaths.IMAGE_FIREBASE_STORAGE + "/" + user_id + "/photo" + (count + 1));
+
+            // Converts img url to bitmap
+            Bitmap bitmap = ManageImages.getBtm(imgURL);
+            byte[] bytes = ManageImages.getBytesOfBitmap(bitmap, IMG_QUALITY);
+
+            UploadTask uploadTask = null;
+            uploadTask = storageReference.putBytes(bytes);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                //when image upload is successful
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    // get download photo url in storage location in firebase
+                    Uri firebaseURL = taskSnapshot.getDownloadUrl();
+
+                    Toast.makeText(mContext, "Upload was successful", Toast.LENGTH_SHORT).show();
+
+                    // add to pointers in firebase database
+                    // add new photo to 'photos' and 'user_photos' nodes
+
+
+                    // nav to main feed of app where user can see their photo
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                // when image upload is failure
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "onFailure: Upload failed");
+                    Toast.makeText(mContext, "Upload failed", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                // constantly updates as we go
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount(); // 100 for 100%, works out percent of upload left
+
+                    //if loop to prevent too much data being displayed
+                    // toast won't print unless new progress is 15 higher than old
+                    if(progress - 15 > mUploadPhotoProgress){
+                        // formatted toast string so only whole number displayed instead of decimals
+                        Toast.makeText(mContext, "upload progress: " + String.format("%.0f", progress) + "%", Toast.LENGTH_SHORT).show();
+                        mUploadPhotoProgress = progress;
+                    }
+                    Log.d(TAG, "onProgress: progress of upload: " + progress + "%");
+                }
+            });
         }
         else if (typeOfPhoto.equals(mContext.getString(R.string.profile_photo))){
             Log.d(TAG, "newPhotoUpload: new profile photo being uploaded");

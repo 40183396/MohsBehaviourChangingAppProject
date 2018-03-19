@@ -90,8 +90,9 @@ public class NextActivity extends AppCompatActivity{
     private void imageSet(){
         Intent intent = getIntent();
         ImageView img = (ImageView) findViewById(R.id.imageNextShare);
+        imgURL = intent.getStringExtra(getString(R.string.image_selected)); // imgURL set to incoming intent
         // static call to universal image loader
-        UniversalImageLoader.setImage(intent.getStringExtra(getString(R.string.image_selected)), img, null, mAppend);
+        UniversalImageLoader.setImage(imgURL, img, null, mAppend);
         // do not need to check for null values as universal image loader can handle this
     }
 
