@@ -1,5 +1,6 @@
 package com.napier.mohs.instagramclone.Profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,6 +32,7 @@ import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.Models.UserSettings;
 import com.napier.mohs.instagramclone.R;
+import com.napier.mohs.instagramclone.Share.ShareActivity;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
 
@@ -60,6 +62,7 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
 
 
     // override method for password confirm dialog
+    // this appears only if user changes their email
     @Override
     public void onPasswordConfirm(String password) {
         Log.d(TAG, "onPasswordConfirm: password entered: " + password);
@@ -224,9 +227,6 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
             mFirebaseMethods.usersettingsUpdate(null, null, description, 0);
         }
 
-
-
-
     }
 
 
@@ -300,6 +300,20 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
         mDescription.setText(userAccountSettings.getDescription());
         mEmail.setText(String.valueOf(user.getEmail()));
         mPhoneNumber.setText(String.valueOf(user.getPhone_number()));
+
+        // when changing profile photo we are navigating to share page to access photos from gallery
+        mChangeProfilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: profile photo is being changed from edit page ");
+                Intent intent = new Intent(getActivity(), ShareActivity.class);
+                // setting a flag to differentiate between sharing photos and changing profile picture
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getActivity().startActivity(intent);
+                // finish edit profile fragment when opening gallery fragment
+                getActivity().finish();
+            }
+        });
     }
 
 

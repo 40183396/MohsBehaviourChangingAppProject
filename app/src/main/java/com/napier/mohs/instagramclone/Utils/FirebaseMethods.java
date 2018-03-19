@@ -1,6 +1,7 @@
 package com.napier.mohs.instagramclone.Utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -21,10 +22,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.napier.mohs.instagramclone.Home.HomeActivity;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.Models.UserSettings;
+import com.napier.mohs.instagramclone.Profile.AccountSettingsActivity;
 import com.napier.mohs.instagramclone.R;
 
 import java.net.URL;
@@ -82,7 +85,9 @@ public class FirebaseMethods {
     public void newPhotoUpload(String typeOfPhoto, final String caption, final int count, final String imgURL) {
         Log.d(TAG, "newPhotoUpload: uploading new photo attempt");
         FilePaths filePaths = new FilePaths();
+
         // either new photo or profile photo
+        // if loop for new photo
         if (typeOfPhoto.equals(mContext.getString(R.string.new_photo))) {
             Log.d(TAG, "newPhotoUpload: new photo being uploaded");
 
@@ -114,6 +119,9 @@ public class FirebaseMethods {
                     photoAddToDatabase(caption, firebaseURL.toString());
 
                     // nav to main feed of app where user can see their photo
+                    Intent intent = new Intent(mContext, HomeActivity.class);
+                    mContext.startActivity(intent);
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 // when image upload is failure
@@ -138,10 +146,85 @@ public class FirebaseMethods {
                     Log.d(TAG, "onProgress: progress of upload: " + progress + "%");
                 }
             });
-        } else if (typeOfPhoto.equals(mContext.getString(R.string.profile_photo))) {
+        }
+        // else profile pic is being uploaded
+        else if (typeOfPhoto.equals(mContext.getString(R.string.profile_photo))) {
             Log.d(TAG, "newPhotoUpload: new profile photo being uploaded");
+
+            // opens up edit profile fragment and skips showing account settings activity
+            ((AccountSettingsActivity)mContext).setViewPager(
+                    ((AccountSettingsActivity)mContext).pagerAdapter
+                            .getFragmentNumber(mContext.getString(R.string.fragment_edit_profile))
+            );
+
+
+            String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid(); // instead of global using this local
+
+            StorageReference storageReference = mStorageRefFirebase
+                    .child(filePaths.IMAGE_FIREBASE_STORAGE + "/" + user_id + "/profile_photo"); // removed count as there is only single photo being uploaded
+
+            // Converts img url to bitmap
+            Bitmap bitmap = ManageImages.getBtm(imgURL);
+            byte[] bytes = ManageImages.getBytesOfBitmap(bitmap, IMG_QUALITY);
+
+            UploadTask uploadTask = null;
+            uploadTask = storageReference.putBytes(bytes);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                //when image upload is successful
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    // get download photo url in storage location in firebase
+                    Uri firebaseURL = taskSnapshot.getDownloadUrl();
+
+                    Toast.makeText(mContext, "Upload was successful", Toast.LENGTH_SHORT).show();
+
+                    // add to pointers in firebase database
+                    // add new photo to 'user_account_settings' nodes
+                    profilePhotoSet(firebaseURL.toString());
+
+                    // sets viewpager so returns us back to edit profile fragment
+
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                // when image upload is failure
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "onFailure: Upload failed");
+                    Toast.makeText(mContext, "Upload failed", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                // constantly updates as we go
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount(); // 100 for 100%, works out percent of upload left
+
+                    //if loop to prevent too much data being displayed
+                    // toast won't print unless new progress is 15 higher than old
+                    if (progress - 15 > mUploadPhotoProgress) {
+                        // formatted toast string so only whole number displayed instead of decimals
+                        Toast.makeText(mContext, "upload progress: " + String.format("%.0f", progress) + "%", Toast.LENGTH_SHORT).show();
+                        mUploadPhotoProgress = progress;
+                    }
+                    Log.d(TAG, "onProgress: progress of upload: " + progress + "%");
+                }
+            });
+
+
         }
 
+    }
+
+    // setting single parameter  to change profile photo and uploads to db
+    private void profilePhotoSet(String url){
+        Log.d(TAG, "profilePhotoSet: new profile photo being set " + url);
+
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(mContext.getString(R.string.profile_photo))
+                .setValue(url);
     }
 
     // gets a time stamp of when photo is uploaded

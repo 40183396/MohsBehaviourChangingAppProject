@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
+import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 import com.napier.mohs.instagramclone.Utils.SectionsStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     private Context mContext;
 
-    private SectionsStatePagerAdapter pagerAdapter;
+    public SectionsStatePagerAdapter pagerAdapter;
     private ViewPager mViewPager;
     private RelativeLayout mRelativeLayout;
 
@@ -67,6 +68,19 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private void getIntentIncoming(){
         Intent intent = getIntent();
 
+        // if there is an image url attached as extra it means it was chose from the gallery or photo fragment
+        if(intent.hasExtra(getString(R.string.image_selected))){
+            Log.d(TAG, "getIntentIncoming: new image url recieved ");
+            if(intent.getStringExtra(getString(R.string.return_to_fragment)).equals(getString((R.string.fragment_edit_profile)))){
+                // new profile picture is set
+                FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingsActivity.this);
+                // as profile photo caption is null
+                // uploads profile photo to firebase storage
+                firebaseMethods.newPhotoUpload(getString(R.string.profile_photo), null,
+                        0, intent.getStringExtra(getString(R.string.image_selected)));
+            }
+        }
+
         // Checks if there is an incoming intent that has an extra
         if(intent.hasExtra(getString(R.string.calling_activity))){
             Log.d(TAG, "getIntentIncoming: recieved intent from " + getString(R.string.profile_activity));
@@ -81,7 +95,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     }
 
     // method responsible for actually navigating to fragment
-    private void setViewPager(int fragmentNumber){
+    public void setViewPager(int fragmentNumber){
         mRelativeLayout.setVisibility(View.GONE); // sets visibility of relative layout to gone (Account settings goes away and only fragment is visible)
         Log.d(TAG, "setViewPager: nav to fragment number: ");
         mViewPager.setAdapter(pagerAdapter); // sets up adapter

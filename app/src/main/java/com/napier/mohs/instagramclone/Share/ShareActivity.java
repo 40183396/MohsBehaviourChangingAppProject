@@ -72,6 +72,11 @@ public class ShareActivity extends AppCompatActivity{
         tabLayout.getTabAt(1).setText(getString(R.string.photo));
     }
 
+    public int taskGet(){
+        Log.d(TAG, "taskGet: task is " + getIntent().getFlags());
+        return getIntent().getFlags(); // returns int of flag
+    }
+
     // checks an array of permissions verified
     public boolean permissionsCheckArray(String[] permissions){
         Log.d(TAG, "permissionsCheckArray: permissions array is being checked ");

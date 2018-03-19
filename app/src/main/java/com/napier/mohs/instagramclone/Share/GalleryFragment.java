@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.napier.mohs.instagramclone.Profile.AccountSettingsActivity;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FilePaths;
 import com.napier.mohs.instagramclone.Utils.FileSearch;
@@ -79,13 +80,37 @@ public class GalleryFragment extends Fragment{
             public void onClick(View view) {
                 Log.d(TAG, "onClick: going to share screen");
 
-                // Intent to go to Shared Activity
-                Intent intent = new Intent(getActivity(), NextActivity.class);
-                intent.putExtra(getString(R.string.image_selected), mImageSelected);
-                startActivity(intent);
+                // checks if task was root
+                if(isTaskRoot()){
+                    // Intent to go to Shared Activity
+                    Intent intent = new Intent(getActivity(), NextActivity.class);
+                    intent.putExtra(getString(R.string.image_selected), mImageSelected);
+                    startActivity(intent);
+                } else {
+                    // goes to account settings activity
+                    Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+                    intent.putExtra(getString(R.string.image_selected), mImageSelected);
+                    intent.putExtra(getString(R.string.return_to_fragment), getString(R.string.fragment_edit_profile));
+                    startActivity(intent);
+                    // finishes activity so user cannot press back and return here from edit profile fragment
+                    getActivity().finish();
+                }
+
+
             }
         });
         return view;
+    }
+
+    // checks if there is a  root task
+    private boolean isTaskRoot(){
+        // if flag is 0 this means this is root task
+    if(((ShareActivity)getActivity()).taskGet() == 0){
+        return true;
+    } else {
+        return false; // meaning this is not root task
+    }
+
     }
 
     private void initialiseFolders(){
