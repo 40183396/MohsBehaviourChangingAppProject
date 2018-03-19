@@ -24,15 +24,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.Models.UserSettings;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
+import com.napier.mohs.instagramclone.Utils.GridImageAdapter;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -46,6 +51,7 @@ public class ProfileFragment extends Fragment{
     private static final String TAG = "ProfileFragment";
 
     private static final int ACTIVITY_NUM = 4;
+    private static final int NUM_COLS_GRID = 3;
 
 
     private TextView mPosts, mFollowers, mFollowing, mDisplayName, mUsername, mWebsite, mDescription, mEditProfile;
@@ -96,6 +102,7 @@ public class ProfileFragment extends Fragment{
         setupFirebaseAuth();
         setupBottomNavigationView();
         setupToolbar();
+        setupGridView();
 
         // Goes to edit page fragment
         mEditProfile.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +164,47 @@ public class ProfileFragment extends Fragment{
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
+    }
+
+    // method that sets up grid view with images from db
+    private void setupGridView(){
+        Log.d(TAG, "setupGridView: image grid is being set up");
+
+        // ArrayList that is populated with photos from db
+        final ArrayList<Photo> photos = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        // points to user id and retrieves their photos instead of going through db of all  photos
+        Query query = databaseReference
+                .child(getString(R.string.db_name_user_photos))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
+                    photos.add(singleDataSnapshot.getValue(Photo.class)); // gets all photos user has
+                }
+
+                // image grid is setup
+                int widthGrid = getResources().getDisplayMetrics().widthPixels;
+                int widthImage = widthGrid/NUM_COLS_GRID;
+                gridView.setColumnWidth(widthImage); // sets up images so they are all same size in grid
+
+                // Array list of img urls
+                ArrayList<String> imgURLs = new ArrayList<String>();
+                for(int i = 0; i < photos.size(); i++){
+                    imgURLs.add(photos.get(i).getImage_path());
+                }
+
+                // creates an adappter and sets up grid view with adapter
+                GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, imgURLs, "");
+                gridView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: query has been cancelled");
+            }
+        });
     }
 
 
