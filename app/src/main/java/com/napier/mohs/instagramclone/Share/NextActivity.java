@@ -80,7 +80,7 @@ public class NextActivity extends AppCompatActivity{
                 Toast.makeText(mContext, "Attempting to upload photo", Toast.LENGTH_SHORT).show();
                 // takes caption from caption edit text field
                 String caption = mCaption.getText().toString();
-                mFirebaseMethods.newPhotoUpload(getString(R.string.new_photo), caption, imgCount, imgURL);
+                mFirebaseMethods.newPhotoUpload(getString(R.string.new_photo), caption, imgCount, imgURL, null);
             }
         });
     }

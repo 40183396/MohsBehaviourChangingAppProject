@@ -82,7 +82,8 @@ public class FirebaseMethods {
     }
 
     // void because firebase auto does async task in background when it uploads images to storage
-    public void newPhotoUpload(String typeOfPhoto, final String caption, final int count, final String imgURL) {
+    public void newPhotoUpload(String typeOfPhoto, final String caption,
+                               final int count, final String imgURL, Bitmap bitmap) {
         Log.d(TAG, "newPhotoUpload: uploading new photo attempt");
         FilePaths filePaths = new FilePaths();
 
@@ -98,7 +99,10 @@ public class FirebaseMethods {
                     .child(filePaths.IMAGE_FIREBASE_STORAGE + "/" + user_id + "/photo" + (count + 1));
 
             // Converts img url to bitmap
-            Bitmap bitmap = ManageImages.getBtm(imgURL);
+            if(bitmap == null){
+                bitmap = ManageImages.getBtm(imgURL);
+            }
+
             byte[] bytes = ManageImages.getBytesOfBitmap(bitmap, IMG_QUALITY);
 
             UploadTask uploadTask = null;
@@ -151,11 +155,7 @@ public class FirebaseMethods {
         else if (typeOfPhoto.equals(mContext.getString(R.string.profile_photo))) {
             Log.d(TAG, "newPhotoUpload: new profile photo being uploaded");
 
-            // opens up edit profile fragment and skips showing account settings activity
-            ((AccountSettingsActivity)mContext).setViewPager(
-                    ((AccountSettingsActivity)mContext).pagerAdapter
-                            .getFragmentNumber(mContext.getString(R.string.fragment_edit_profile))
-            );
+
 
 
             String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid(); // instead of global using this local
@@ -164,7 +164,9 @@ public class FirebaseMethods {
                     .child(filePaths.IMAGE_FIREBASE_STORAGE + "/" + user_id + "/profile_photo"); // removed count as there is only single photo being uploaded
 
             // Converts img url to bitmap
-            Bitmap bitmap = ManageImages.getBtm(imgURL);
+            if(bitmap == null){
+                bitmap = ManageImages.getBtm(imgURL);
+            }
             byte[] bytes = ManageImages.getBytesOfBitmap(bitmap, IMG_QUALITY);
 
             UploadTask uploadTask = null;
@@ -185,7 +187,11 @@ public class FirebaseMethods {
                     profilePhotoSet(firebaseURL.toString());
 
                     // sets viewpager so returns us back to edit profile fragment
-
+                    // opens up edit profile fragment and skips showing account settings activity
+                    ((AccountSettingsActivity)mContext).setViewPager(
+                            ((AccountSettingsActivity)mContext).pagerAdapter
+                                    .getFragmentNumber(mContext.getString(R.string.fragment_edit_profile))
+                    );
 
                 }
             }).addOnFailureListener(new OnFailureListener() {

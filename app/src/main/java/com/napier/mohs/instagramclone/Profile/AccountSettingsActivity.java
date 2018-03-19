@@ -2,6 +2,7 @@ package com.napier.mohs.instagramclone.Profile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -65,44 +66,58 @@ public class AccountSettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void getIntentIncoming(){
+    private void getIntentIncoming() {
         Intent intent = getIntent();
+        // checks if we have extra and only then proceeds
+        if(intent.hasExtra(getString(R.string.image_selected))
+                || intent.hasExtra(getString(R.string.bitmap_selected))){
 
-        // if there is an image url attached as extra it means it was chose from the gallery or photo fragment
-        if(intent.hasExtra(getString(R.string.image_selected))){
+            // if there is an image url attached as extra it means it was chose from the gallery or photo fragment
             Log.d(TAG, "getIntentIncoming: new image url recieved ");
-            if(intent.getStringExtra(getString(R.string.return_to_fragment)).equals(getString((R.string.fragment_edit_profile)))){
-                // new profile picture is set
-                FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingsActivity.this);
-                // as profile photo caption is null
-                // uploads profile photo to firebase storage
-                firebaseMethods.newPhotoUpload(getString(R.string.profile_photo), null,
-                        0, intent.getStringExtra(getString(R.string.image_selected)));
+            if (intent.getStringExtra(getString(R.string.return_to_fragment)).equals(getString((R.string.fragment_edit_profile)))) {
+
+                if(intent.hasExtra(getString(R.string.image_selected))){
+                    // new profile picture is set
+                    FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingsActivity.this);
+                    // as profile photo caption is null
+                    // uploads profile photo to firebase storage
+                    firebaseMethods.newPhotoUpload(getString(R.string.profile_photo), null,
+                            0, intent.getStringExtra(getString(R.string.image_selected)), null);
+                }
+                else if(intent.hasExtra(getString(R.string.bitmap_selected))) {
+                    // new profile picture is set
+                    FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingsActivity.this);
+                    // as profile photo caption is null
+                    // uploads profile photo to firebase storage
+                    firebaseMethods.newPhotoUpload(getString(R.string.profile_photo), null,
+                            0, null, (Bitmap) intent.getParcelableExtra(getString(R.string.bitmap_selected)));
+                }
+
             }
         }
 
         // Checks if there is an incoming intent that has an extra
-        if(intent.hasExtra(getString(R.string.calling_activity))){
+        if (intent.hasExtra(getString(R.string.calling_activity))) {
             Log.d(TAG, "getIntentIncoming: recieved intent from " + getString(R.string.profile_activity));
             setViewPager(pagerAdapter.getFragmentNumber(getString(R.string.fragment_edit_profile))); // setsViewPager to incoming intent
         }
     }
 
-    private void setupFragments(){
+    private void setupFragments() {
         pagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(new EditProfileFragment(), getString(R.string.fragment_edit_profile)); //fragment 0
         pagerAdapter.addFragment(new SignOutFragment(), getString(R.string.fragment_sign_out)); //fragment 1
     }
 
     // method responsible for actually navigating to fragment
-    public void setViewPager(int fragmentNumber){
+    public void setViewPager(int fragmentNumber) {
         mRelativeLayout.setVisibility(View.GONE); // sets visibility of relative layout to gone (Account settings goes away and only fragment is visible)
         Log.d(TAG, "setViewPager: nav to fragment number: ");
         mViewPager.setAdapter(pagerAdapter); // sets up adapter
         mViewPager.setCurrentItem(fragmentNumber); // navigates to fragment that I chose
     }
 
-    private void setupSettingsList(){
+    private void setupSettingsList() {
         Log.d(TAG, "setupSettingsList: initializing 'Account Settings' list.");
         ListView listView = (ListView) findViewById(R.id.listviewAccountSettings);
 
@@ -127,19 +142,15 @@ public class AccountSettingsActivity extends AppCompatActivity {
     /**
      * BottomNavigationView setup
      */
-    private void setupBottomNavigationView(){
+    private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
-
-
-
-
 
 
 }
