@@ -79,6 +79,18 @@ public class NextActivity extends AppCompatActivity{
     }
 
 
+    private void someMethod(){
+        /*
+        1) first data model of photos
+        2) properties added to Photo Objects: (caption, date, imageURL, photo_id, tags, user_id)
+        3) Count number photos user has already
+        4) photo is uploaded firbase storage and insert two more nodes in firebase db
+            'photo' node
+            'user_photos' node
+         */
+    }
+
+
 
     //------------------------FIRESBASE STUFF------------
     // Method to check if a user is signed in app
