@@ -1,5 +1,6 @@
 package com.napier.mohs.instagramclone.Share;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.napier.mohs.instagramclone.Profile.ProfileActivity;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
@@ -36,11 +38,15 @@ public class NextActivity extends AppCompatActivity{
     private FirebaseMethods mFirebaseMethods;
 
     private String mAppend = "file:/";
+    private int imgCount = 0;
+
+    private Context mContext = NextActivity.this;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
+        mFirebaseMethods = new FirebaseMethods(mContext);
 
         setupFirebaseAuth();
         imageSet();
@@ -100,6 +106,7 @@ public class NextActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
+        Log.d(TAG, "onDataChange: number of images: " + imgCount);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -119,7 +126,9 @@ public class NextActivity extends AppCompatActivity{
         myDBRefFirebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                // returns number of images for user
+                imgCount = mFirebaseMethods.getImgCount(dataSnapshot);
+                Log.d(TAG, "onDataChange: number of images: " + imgCount);
             }
 
             @Override

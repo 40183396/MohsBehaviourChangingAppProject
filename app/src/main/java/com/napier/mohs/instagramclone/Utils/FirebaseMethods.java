@@ -47,6 +47,19 @@ public class FirebaseMethods {
         }
     }
 
+    // returns number of images for a user
+    public int getImgCount(DataSnapshot dataSnapshot){
+        int imgCount = 0;
+
+        // targetting specific node so loop is faster
+        for(DataSnapshot ds : dataSnapshot.child(mContext
+                .getString(R.string.db_name_user_photos))
+        .child(userID).getChildren()){
+            imgCount++;
+        }
+        return imgCount;
+    }
+
     // OLD METHOD FOR CHECKING IF USERNAME EXISTS IN DB
 
     // method to check is username is already in use in db

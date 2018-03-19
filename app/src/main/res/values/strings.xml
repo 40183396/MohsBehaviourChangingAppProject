@@ -13,6 +13,8 @@
     <!--Firebase db -->
     <string name="db_name_users">users</string>
     <string name="db_name_user_account_settings">user_account_settings</string>
+    <string name="db_name_photos">photos</string>
+    <string name="db_name_user_photos">user_photos</string>
     <string name="username_field">username</string>
     <string name="email_field">email</string>
     <string name="display_name_field">display_name</string>
