@@ -112,8 +112,8 @@ public class ProfileFragment extends Fragment{
                     Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
                     // flag to know that this is just a calling activity
                     intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
-                    startActivity(intent);
-                    // not finishing as we want to be able to nav back to this activity
+                    startActivity(intent);// not finishing as we want to be able to nav back to this activity
+                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out); // page transition to edit profile fragment
             }
         });
 
@@ -160,7 +160,7 @@ public class ProfileFragment extends Fragment{
     private void setupBottomNavigationView(){
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationView);
-        BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationView);
+        BottomNavigationViewHelper.enableNavigation(mContext, getActivity(), bottomNavigationView); //getActivity as we are in fragment
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
