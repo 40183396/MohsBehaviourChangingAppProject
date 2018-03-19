@@ -9,13 +9,15 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.R;
+import com.napier.mohs.instagramclone.ViewPostFragment;
 
 /**
  * Created by Mohs on 15/03/2018.
  */
 
-public class ProfileActivity extends AppCompatActivity{
+public class ProfileActivity extends AppCompatActivity implements ProfileFragment.OnImageGridSelectedListener{
     private static final String TAG = "ProfileActivity";
     private static final int ACTIVITY_NUM = 4;
     private static final int NUM_COLS_GRID = 3;
@@ -30,18 +32,11 @@ public class ProfileActivity extends AppCompatActivity{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        Log.d(TAG, "onCreate: started");
+        Log.d(TAG, "onCreate: started profile activity");
 
         // inflates fragments for profile
         initialiseProfileFragment();
 
-//        setupBottomNavigationView();
-//        setupToolbar();
-//        setupActivityWidgets();
-//        setProfileImage();
-//
-//        // temporary method to see if grid works
-//        setupGridImagesTemp();
     }
 
     private void initialiseProfileFragment(){
@@ -54,75 +49,22 @@ public class ProfileActivity extends AppCompatActivity{
         transaction.addToBackStack(getString(R.string.fragment_profile));
         transaction.commit();
     }
-//    // temporary method for gridview images
-//    private void setupGridImagesTemp(){
-//        ArrayList<String> imgURLs = new ArrayList<>();
-//        imgURLs.add("http://cdn.newsapi.com.au/image/v1/9fdbf585d17c95f7a31ccacdb6466af9");
-//        imgURLs.add("https://i.redd.it/v95w1pywpfi01.jpg");
-//        imgURLs.add("https://i.redd.it/nm3kc8kzwki01.jpg");
-//        imgURLs.add("https://i.redd.it/rut7sosqxi101.jpg");
-//        imgURLs.add("https://i.redd.it/cybj5uxyn5m01.jpg");
-//        imgURLs.add("https://www.flickr.com/photos/codispotia/40093117854/sizes/l/");
-//        imgURLs.add("https://i.redd.it/616dc2aks7m01.jpg");
-//        imgURLs.add("https://i.redd.it/0fq9we4wg5m01.jpg");
-//
-//        setupGridImages(imgURLs);
-//    }
-//
-//    // sets up grid view, takes in array list of image urls
-//    private void setupGridImages(ArrayList<String> imgURLs) {
-//        GridView gridView = (GridView) findViewById(R.id.gridView);
-//
-//        // makes sure images are distributed equally acording to phone size
-//        int widthGrid = getResources().getDisplayMetrics().widthPixels;
-//        int widthImage = widthGrid/NUM_COLS_GRID;
-//        gridView.setColumnWidth(widthImage);
-//
-//        GridImageAdapter adapter = new GridImageAdapter(mContext, R.layout.layout_grid_imageview, imgURLs, "");
-//        gridView.setAdapter(adapter);
-//    }
-//
-//    private void setProfileImage(){
-//        Log.d(TAG, "setProfileImage: profile image is being set.");
-//        String imgURL = "http://cdn.newsapi.com.au/image/v1/9fdbf585d17c95f7a31ccacdb6466af9";
-//        UniversalImageLoader.setImage(imgURL, mProfilePhoto, mProgressBar, ""); // static image so this being used
-//    }
-//
-//    // method for seeing ap the widgets (e.g. progress bar)
-//    private void setupActivityWidgets(){
-//        mProgressBar = (ProgressBar) findViewById(R.id.profileProgressBar);
-//        mProgressBar.setVisibility(View.GONE);
-//        mProfilePhoto = (ImageView) findViewById(R.id.profile_image);
-//    }
-//
-//    // Sets up toolbar
-//    private void setupToolbar(){
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarProfile) ;
-//        setSupportActionBar(toolbar);
-//
-//        ImageView imageProfileMenu = (ImageView) findViewById(R.id.imageProfileMenu);
-//
-//        imageProfileMenu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d(TAG, "onClick: navigating to acc settings");
-//                Intent intent = new Intent(mContext, AccountSettingsActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//    }
-//
-//    /**
-//     * BottomNavigationView setup
-//     */
-//    private void setupBottomNavigationView(){
-//        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-//        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-//        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-//        BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationViewEx);
-//        Menu menu = bottomNavigationViewEx.getMenu();
-//        MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
-//        menuItem.setChecked(true);
-//    }
+
+    // makes it so when we click on any photo from anywhere it loads up the post of the photo
+    @Override
+    public void onImageGridSelected(Photo photo, int activityNumber) {
+        Log.d(TAG, "onImageGridSelected: image in gridview selected: " + photo.toString());
+
+        ViewPostFragment viewPostFragment = new ViewPostFragment();
+        Bundle bundleArguments = new Bundle();
+        bundleArguments.putParcelable(getString(R.string.photo), photo);
+        bundleArguments.putInt(getString(R.string.activity_number), activityNumber);
+        viewPostFragment.setArguments(bundleArguments);
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.containerProfile, viewPostFragment);
+        fragmentTransaction.addToBackStack(getString(R.string.fragment_post));
+        fragmentTransaction.commit();
+    }
 
 }

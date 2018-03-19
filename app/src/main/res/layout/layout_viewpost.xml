@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--ScrollView As we do not know how many posts we will have-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/relLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imagePostProfile"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="20dp"
+                    app:civ_border_color="@color/black"
+                    app:civ_border_width="0.5dp" />
+
+                <TextView
+                    android:id="@+id/textviewPostUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/imagePostProfile"
+                    android:text="mohs.akhtar"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/imagePostMenu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_profilemenu" />
+
+            </RelativeLayout>
+
+            <com.napier.mohs.instagramclone.Utils.ImagesSquaredView
+                android:id="@+id/imagePostPicture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relLayout1"
+                android:scaleType="centerCrop" />
+
+            <!--layout for star-->
+            <RelativeLayout
+                android:id="@id/relLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/imagePostPicture"
+                android:background="@color/white">
+
+                <RelativeLayout
+                    android:id="@+id/starLayout"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white">
+
+                    <!--yellow star-->
+                    <ImageView
+                        android:id="@+id/imagePostStarYellow"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="20dp"
+                        android:src="@drawable/ic_star_yellow"
+                        android:visibility="invisible" />
+
+                    <!--star is not clicked yet-->
+                    <ImageView
+                        android:id="@+id/imagePostStar"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="20dp"
+                        android:src="@drawable/ic_star_outline"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imagePostSpeechBubble"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/starLayout"
+                    android:src="@drawable/ic_speech_bubble"
+                    android:visibility="visible"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@id/relLayout2"
+                android:layout_below="@id/relLayout1"
+                android:padding="20dp"
+                android:layout_marginBottom="50dp">
+
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Liked by Mohs, Steven, Amaan and 150 other"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:id="@+id/textviewPostLikes"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="mohs.akhtar #live #life #loud"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:id="@+id/textviewPostCaption"
+                    android:layout_below="@+id/textviewPostLikes"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View all 15 comments"
+                    android:textColor="@color/grey"
+                    android:textSize="18sp"
+                    android:layout_below="@+id/textviewPostCaption"
+                    android:id="@+id/textviewPostComments"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10 DAYS AGO"
+                    android:textColor="@color/grey"
+                    android:textSize="18sp"
+                    android:layout_below="@+id/textviewPostComments"
+                    android:id="@+id/textviewPostDate"
+                    android:layout_marginTop="15dp"/>
+
+            </RelativeLayout>
+
+
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+    <include layout="@layout/layout_bottom_navigation_view"/>
+
+</RelativeLayout>

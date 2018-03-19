@@ -1,10 +1,13 @@
 package com.napier.mohs.instagramclone.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Mohs on 19/03/2018.
  */
 
-public class Photo {
+public class Photo implements Parcelable{
     private String caption;
     private String date_created;
     private String image_path;
@@ -23,6 +26,27 @@ public class Photo {
 
     public Photo() {
     }
+
+    protected Photo(Parcel in) {
+        caption = in.readString();
+        date_created = in.readString();
+        image_path = in.readString();
+        photo_id = in.readString();
+        user_id = in.readString();
+        tags = in.readString();
+    }
+
+    public static final Creator<Photo> CREATOR = new Creator<Photo>() {
+        @Override
+        public Photo createFromParcel(Parcel in) {
+            return new Photo(in);
+        }
+
+        @Override
+        public Photo[] newArray(int size) {
+            return new Photo[size];
+        }
+    };
 
     public String getCaption() {
         return caption;
@@ -82,5 +106,20 @@ public class Photo {
                 ", user_id='" + user_id + '\'' +
                 ", tags='" + tags + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(caption);
+        parcel.writeString(date_created);
+        parcel.writeString(image_path);
+        parcel.writeString(photo_id);
+        parcel.writeString(user_id);
+        parcel.writeString(tags);
     }
 }

@@ -5,6 +5,7 @@
     <string name="fragment_edit_profile">Edit Profile</string>
     <string name="fragment_sign_out">Sign Out</string>
     <string name="fragment_profile">Profile Fragment</string>
+    <string name="fragment_post">View Post Fragment</string>
 
     <!--Firebase -->
     <string name="failed_auth">Authentication Failed</string>
@@ -30,6 +31,9 @@
     <string name="image_selected">image_selected</string>
     <string name="bitmap_selected">bitmap_selected</string>
     <string name="return_to_fragment">return_to_fragment</string>
+
+    <!-- Bundle argument names Strings-->
+    <string name="activity_number">activity_number</string>
 
 
     <!-- Activity Strings -->
