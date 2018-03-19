@@ -2,6 +2,7 @@ package com.napier.mohs.instagramclone.Share;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,6 +45,8 @@ public class NextActivity extends AppCompatActivity{
     private String mAppend = "file:/";
     private int imgCount = 0;
     private String imgURL;
+    private Intent mIntent;
+    private Bitmap mBitmap;
 
     private Context mContext = NextActivity.this;
 
@@ -80,7 +83,19 @@ public class NextActivity extends AppCompatActivity{
                 Toast.makeText(mContext, "Attempting to upload photo", Toast.LENGTH_SHORT).show();
                 // takes caption from caption edit text field
                 String caption = mCaption.getText().toString();
-                mFirebaseMethods.newPhotoUpload(getString(R.string.new_photo), caption, imgCount, imgURL, null);
+
+                // if intent has extra
+                if(mIntent.hasExtra(getString(R.string.image_selected))){ // image means came from gallery
+                    imgURL = mIntent.getStringExtra(getString(R.string.image_selected)); // imgURL set to incoming intent
+                    mFirebaseMethods.newPhotoUpload(getString(R.string.new_photo), caption, imgCount, imgURL, null);
+
+                }
+                else if(mIntent.hasExtra(getString(R.string.bitmap_selected))){ // bitmap means came from camera
+                    mBitmap = (Bitmap) mIntent.getParcelableExtra(getString(R.string.bitmap_selected));
+                    mFirebaseMethods.newPhotoUpload(getString(R.string.new_photo), caption, imgCount, null, mBitmap);
+                }
+
+
             }
         });
     }
@@ -88,12 +103,23 @@ public class NextActivity extends AppCompatActivity{
 
     // when activity starts automatically sets image incomming image url of intent
     private void imageSet(){
-        Intent intent = getIntent();
+        mIntent = getIntent();
         ImageView img = (ImageView) findViewById(R.id.imageNextShare);
-        imgURL = intent.getStringExtra(getString(R.string.image_selected)); // imgURL set to incoming intent
-        // static call to universal image loader
-        UniversalImageLoader.setImage(imgURL, img, null, mAppend);
-        // do not need to check for null values as universal image loader can handle this
+
+        // if intent has extra
+        if(mIntent.hasExtra(getString(R.string.image_selected))){ // image means came from gallery
+            imgURL = mIntent.getStringExtra(getString(R.string.image_selected)); // imgURL set to incoming intent
+            Log.d(TAG, "imageSet: recieved new image " + imgURL);
+            // static call to universal image loader
+            UniversalImageLoader.setImage(imgURL, img, null, mAppend);
+            // do not need to check for null values as universal image loader can handle this
+        }
+        else if(mIntent.hasExtra(getString(R.string.bitmap_selected))){ // bitmap means came from camera
+            mBitmap = (Bitmap) mIntent.getParcelableExtra(getString(R.string.bitmap_selected));
+            Log.d(TAG, "imageSet: recieved new bitmap");
+            img.setImageBitmap(mBitmap);
+        }
+
     }
 
 
