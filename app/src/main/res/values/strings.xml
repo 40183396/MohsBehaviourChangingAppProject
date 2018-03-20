@@ -5,6 +5,7 @@
     <string name="fragment_edit_profile">Edit Profile</string>
     <string name="fragment_sign_out">Sign Out</string>
     <string name="fragment_profile">Profile Fragment</string>
+    <string name="fragment_view_profile">View Profile Fragment</string>
     <string name="fragment_post">View Post Fragment</string>
     <string name="fragment_viewcomments">View Comments Fragment</string>
 
@@ -40,6 +41,7 @@
     <string name="image_selected">image_selected</string>
     <string name="bitmap_selected">bitmap_selected</string>
     <string name="return_to_fragment">return_to_fragment</string>
+    <string name="user_extra">user_extra</string>
 
     <!-- Bundle argument names Strings-->
     <string name="activity_number">activity_number</string>
@@ -47,6 +49,7 @@
 
     <!-- Activity Strings -->
     <string name="profile_activity">Profile Activity</string>
+    <string name="search_activity">Search Activity</string>
 
     <!--Dialog Strings-->
     <string name="dialog_password_confirm">PasswordConfirmDialog</string>

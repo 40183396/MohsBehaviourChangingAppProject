@@ -1,0 +1,143 @@
+<merge xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:id="@+id/textviewViewProfilePostsNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="254"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textviewViewProfilePosts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Posts"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textviewViewProfilePostsNumber" />
+
+        <TextView
+            android:id="@+id/textviewViewProfileFollowersNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="324"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/textviewViewProfileFollowingNumber"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintStart_toEndOf="@+id/textviewViewProfilePostsNumber"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textviewViewProfileFollowers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Followers"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/textviewViewProfileFollowing"
+            app:layout_constraintHorizontal_bias="0.552"
+            app:layout_constraintStart_toEndOf="@+id/textviewViewProfilePosts"
+            app:layout_constraintTop_toBottomOf="@+id/textviewViewProfileFollowersNumber" />
+
+        <TextView
+            android:id="@+id/textviewViewProfileFollowingNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="235"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textviewViewProfileFollowing"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="4dp"
+            android:text="Following"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textviewViewProfileFollowingNumber" />
+
+        <!--Edit profile-->
+        <TextView
+            android:id="@+id/textviewViewProfileEditYourProfile"
+            android:layout_width="143dp"
+            android:layout_height="19dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/grey_border"
+            android:text="Edit Your Profile"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textviewViewProfileFollowers"
+            app:layout_constraintVertical_bias="0.015"
+            android:visibility="gone"/>
+
+        <!--Follow a user-->
+        <TextView
+            android:id="@+id/textviewViewProfileFollowUser"
+            android:layout_width="143dp"
+            android:layout_height="19dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_follow"
+            android:text="Follow User"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textviewViewProfileFollowers"
+            app:layout_constraintVertical_bias="0.015" />
+
+        <!--Unfollow a user-->
+        <TextView
+            android:id="@+id/textviewViewProfileUnfollowUser"
+            android:layout_width="143dp"
+            android:layout_height="19dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_unfollow"
+            android:text="Unfollow User"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textviewViewProfileFollowers"
+            app:layout_constraintVertical_bias="0.015"
+            android:visibility="gone"/>
+    </android.support.constraint.ConstraintLayout>
+
+</merge>
