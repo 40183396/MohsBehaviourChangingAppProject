@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.instagramclone.Models.Like;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
@@ -39,6 +40,9 @@ import com.napier.mohs.instagramclone.Utils.GridImageAdapter;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -199,7 +203,30 @@ public class ProfileFragment extends Fragment{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
-                    photos.add(singleDataSnapshot.getValue(Photo.class)); // gets all photos user has
+                    //photos.add(singleDataSnapshot.getValue(Photo.class)); // gets all photos user has
+                    // type casting snapshot to hashmap and then adding fields manually to field object
+                    // there is issue where datasnapshot is trying to read hashmap instead of list
+                    // work around is typecasting to hashmap and adding fields manually to objects
+                    Photo photo = new Photo();
+                    Map<String, Object> objectMap = (HashMap<String, Object>) singleDataSnapshot.getValue();
+
+                    photo.setCaption(objectMap.get(getString(R.string.caption_field)).toString());
+                    photo.setUser_id(objectMap.get(getString(R.string.user_id_field)).toString());
+                    photo.setPhoto_id(objectMap.get(getString(R.string.photo_id_field)).toString());
+                    photo.setTags(objectMap.get(getString(R.string.tags_field)).toString());
+                    photo.setDate_created(objectMap.get(getString(R.string.date_created_field)).toString());
+                    photo.setImage_path(objectMap.get(getString(R.string.image_path_field)).toString());
+
+                    // list for all the photo likes
+                    List<Like> likeList = new ArrayList<Like>();
+                    for(DataSnapshot dataSnapshot1 : singleDataSnapshot
+                            .child(getString(R.string.likes_field)).getChildren()){ // loop[ through all likes
+                        Like like = new Like();
+                        like.setUser_id(dataSnapshot1.getValue(Like.class).getUser_id());
+                        likeList.add(like);
+                    }
+                    photo.setLikes(likeList);
+                    photos.add(photo);
                 }
 
                 // image grid is setup

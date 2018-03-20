@@ -3,6 +3,8 @@ package com.napier.mohs.instagramclone.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 /**
  * Created by Mohs on 19/03/2018.
  */
@@ -14,18 +16,8 @@ public class Photo implements Parcelable{
     private String photo_id;
     private String user_id;
     private String tags;
+    private List<Like> likes;
 
-    public Photo(String caption, String date_created, String image_path, String photo_id, String user_id, String tags) {
-        this.caption = caption;
-        this.date_created = date_created;
-        this.image_path = image_path;
-        this.photo_id = photo_id;
-        this.user_id = user_id;
-        this.tags = tags;
-    }
-
-    public Photo() {
-    }
 
     protected Photo(Parcel in) {
         caption = in.readString();
@@ -47,6 +39,34 @@ public class Photo implements Parcelable{
             return new Photo[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(caption);
+        parcel.writeString(date_created);
+        parcel.writeString(image_path);
+        parcel.writeString(photo_id);
+        parcel.writeString(user_id);
+        parcel.writeString(tags);
+    }
+
+    public Photo(String caption, String date_created, String image_path, String photo_id, String user_id, String tags, List<Like> likes) {
+        this.caption = caption;
+        this.date_created = date_created;
+        this.image_path = image_path;
+        this.photo_id = photo_id;
+        this.user_id = user_id;
+        this.tags = tags;
+        this.likes = likes;
+    }
+
+    public Photo() {
+    }
 
     public String getCaption() {
         return caption;
@@ -96,6 +116,18 @@ public class Photo implements Parcelable{
         this.tags = tags;
     }
 
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public static Creator<Photo> getCREATOR() {
+        return CREATOR;
+    }
+
     @Override
     public String toString() {
         return "Photo{" +
@@ -105,21 +137,7 @@ public class Photo implements Parcelable{
                 ", photo_id='" + photo_id + '\'' +
                 ", user_id='" + user_id + '\'' +
                 ", tags='" + tags + '\'' +
+                ", likes=" + likes +
                 '}';
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(caption);
-        parcel.writeString(date_created);
-        parcel.writeString(image_path);
-        parcel.writeString(photo_id);
-        parcel.writeString(user_id);
-        parcel.writeString(tags);
     }
 }

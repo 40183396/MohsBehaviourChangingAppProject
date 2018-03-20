@@ -25,7 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.instagramclone.Models.Like;
 import com.napier.mohs.instagramclone.Models.Photo;
+import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
@@ -53,12 +55,15 @@ public class ViewPostFragment extends Fragment {
 
     private ImagesSquaredView mImagePost;
     private BottomNavigationViewEx mBottomNavigationView;
-    private TextView mCaption, mUsername, mDateTimestamp;
+    private TextView mCaption, mUsername, mDateTimestamp, mLikes;
     private ImageView mStarYellow, mStarHollow, mImageProfile;
 
     private String mPostUsername = "";
     private String mUrl = "";
     private UserAccountSettings mUserAccountSettings;
+    private StringBuilder mUsersStringBuilder;
+
+    private String mStringLikes;
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -70,6 +75,7 @@ public class ViewPostFragment extends Fragment {
     private GestureDetector mGestureDetector;
 
     private Star mStar;
+    private boolean mLikeCurrentUser; // boolean if user like s current photo
 
     // Bundle constructor so we don't have an empty bundle (can cause Null Pointer if we dont do this)
     public ViewPostFragment(){
@@ -90,11 +96,14 @@ public class ViewPostFragment extends Fragment {
         mStarHollow = (ImageView) view.findViewById(R.id.imagePostStar);
         mStarYellow = (ImageView) view.findViewById(R.id.imagePostStarYellow);
         mImageProfile = (ImageView) view.findViewById(R.id.imagePostProfile);
+        mLikes = (TextView) view.findViewById(R.id.textviewPostLikes);
 
-        mStarYellow.setVisibility(View.GONE);
-        mStarHollow.setVisibility(View.VISIBLE);
         mStar = new Star(mStarHollow, mStarYellow); // constructor to star
         mGestureDetector = new GestureDetector(getActivity(), new GestureListener());
+
+
+        setupFirebaseAuth();
+        setupBottomNavigationView();
 
 
         // bundle could potentially be null so need a try catch
@@ -102,6 +111,9 @@ public class ViewPostFragment extends Fragment {
             mPhoto = getFromBundlePhoto(); // photo retrieved form bundle
             UniversalImageLoader.setImage(mPhoto.getImage_path(), mImagePost, null, "");
             mActivityNumber = getActivityNumberFromBundle(); // activity number retrieved from bundle
+            getPostDetails(); //retrieves user account settings for post
+            getStringLikes(); // needs to come after user account settings have been retrieved
+
         } catch (NullPointerException e){
             Log.e(TAG, "onCreateView: NullPointerException: " + e.getMessage() );
         }
@@ -127,28 +139,105 @@ public class ViewPostFragment extends Fragment {
             }
         });
 
-        setupFirebaseAuth();
-        setupBottomNavigationView();
-        getPostDetails();
-
-        testStar();
-
         return view;
     }
 
-    private void testStar(){
-        mStarYellow.setOnTouchListener(new View.OnTouchListener() {
+
+    // responsible for getting likes
+    // gets string of all peopple who liked photo
+    private void getStringLikes(){
+        Log.d(TAG, "getStringLikes: getting likes");
+
+        // Test to see if star was working
+        // mStar.likeToggle();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        // query that checks if the photo has any likes
+        Query query = databaseReference
+                .child(getString(R.string.db_name_photos)) // looks in photos node
+                .child(mPhoto.getPhoto_id()) // looks for photo_id of photo
+                .child(getString(R.string.likes_field)); // checks likes field
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.d(TAG, "onTouch: yellow star touch detected");
-                return mGestureDetector.onTouchEvent(motionEvent);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mUsersStringBuilder = new StringBuilder();
+                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
+                    // user liked photo already
+
+                    // user has not liked photo
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                    // query that checks if the photo has any likes
+                    Query query = databaseReference
+                            .child(getString(R.string.db_name_users)) // looks in users node
+                            .orderByChild(getString((R.string.user_id_field))) // looks for particular user_id
+                            .equalTo(singleDataSnapshot.getValue(Like.class).getUser_id()); // checks likes field
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) { // this is only called if a like is found
+                            // if we we find anyything we want to append those found strings
+                            for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
+                                // user liked photo already we loop and add user to string builder
+                                Log.d(TAG, "onDataChange: like has been found " + singleDataSnapshot.getValue(User.class).getUsername());
+                                // user is appended to string builder
+                                mUsersStringBuilder.append(singleDataSnapshot.getValue(User.class).getUsername());
+                                // append comma to make it easier to handle data
+                                mUsersStringBuilder.append(",");
+
+                            }
+                            // when loop done we have to split users where we have comma
+                            String[] usersSplit = mUsersStringBuilder.toString().split(",");
+
+                            //deteermine if current user has liked photo or not
+                            if(mUsersStringBuilder.toString().contains(mUserAccountSettings.getUsername())){
+                                // means user has liked photo
+                                mLikeCurrentUser = true;
+                            } else {
+                                mLikeCurrentUser = false;
+                            }
+
+                            int length = usersSplit.length;
+                            // different cases for number of users who liked photo determines how like comment is displayed
+                            if(length == 1){ // only one user likes photo etc.
+                                mStringLikes = "Liked by " + usersSplit[0];
+                            } else if (length == 2){
+                                mStringLikes = "Liked by " + usersSplit[0] +
+                                            " and " + usersSplit[1];
+                            }else if (length == 3){
+                                mStringLikes = "Liked by " + usersSplit[0] +
+                                        ", " + usersSplit[1] +
+                                        " and " + usersSplit[2];
+                            }else if (length == 4){
+                                mStringLikes = "Liked by " + usersSplit[0] +
+                                        ", " + usersSplit[1] +
+                                        ", " + usersSplit[2] +
+                                        " and " + usersSplit[3];
+                            }else if (length > 4){
+                                mStringLikes = "Liked by " + usersSplit[0] +
+                                        ", " + usersSplit[1] +
+                                        ", " + usersSplit[2] +
+                                        " and " +  (usersSplit.length - 3) + " others"; // -3 as we have already 3 users displayed
+                            }
+                            setupWidgets(); // setting up widets after callling get likes string
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                // if no users have liked photo
+                if(!dataSnapshot.exists()){
+                    mStringLikes = "";
+                    mLikeCurrentUser = false;
+                    setupWidgets();
+                }
             }
-        });
-        mStarHollow.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.d(TAG, "onTouch: hollow star touched");
-                return mGestureDetector.onTouchEvent(motionEvent);
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
@@ -163,9 +252,95 @@ public class ViewPostFragment extends Fragment {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             Log.d(TAG, "onDoubleTap: ");
-            mStar.likeToggle();
+
+            // Test to see if star was working
+           // mStar.likeToggle();
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+            Query query = databaseReference
+                    .child(getString(R.string.db_name_photos)) // looks in photos node
+                    .child(mPhoto.getPhoto_id()) // looks for photo_id of photo
+                    .child(getString(R.string.likes_field)); // checks likes field
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
+
+                        String keyID = singleDataSnapshot.getKey();
+                        //  user liked photo already
+                        if(mLikeCurrentUser &&
+                                singleDataSnapshot.getValue(Like.class).getUser_id()
+                                .equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){ // this makes sure we are removing a like for the current user only
+
+                            // removes like from photos node
+                            myDBRefFirebase.child(getString(R.string.db_name_photos))
+                                    .child(mPhoto.getPhoto_id())
+                                    .child(getString(R.string.likes_field))
+                                    .child(keyID) // gets key of id
+                                    .removeValue();
+
+                            // removes like from user photos node
+                            myDBRefFirebase.child(getString(R.string.db_name_user_photos))
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()) //current users user_id
+                                    .child(mPhoto.getPhoto_id())
+                                    .child(getString(R.string.likes_field))
+                                    .child(keyID) // gets key of id
+                                    .removeValue();
+
+                            mStar.likeToggle();
+                            getStringLikes();
+                        }
+                        // user has not liked photo
+                        else if(!mLikeCurrentUser){
+                            // add a like to db
+                            addLikeNew();
+                            Log.d(TAG, "onDataChange: new like added");
+                            break;
+                        }
+
+                    }
+
+                    // checks if datasnapshot does not exist
+                    if(!dataSnapshot.exists()){
+                        // new like is added to db
+                        Log.d(TAG, "onDataChange: datasnapshot did not exist, new like added");
+                        addLikeNew();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
             return true;
         }
+    }
+
+    private void addLikeNew(){
+        Log.d(TAG, "addLikeNew: addin a new like");
+
+        String newLikeID = myDBRefFirebase.push().getKey(); // creates a new key
+        Like like = new Like();
+        like.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        // adds like to photos node
+        myDBRefFirebase.child(getString(R.string.db_name_photos))
+                .child(mPhoto.getPhoto_id())
+                .child(getString(R.string.likes_field))
+                .child(newLikeID) // gets key of id
+                .setValue(like);
+
+        // adds like to user photos node
+        myDBRefFirebase.child(getString(R.string.db_name_user_photos))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()) //current users user_id
+                .child(mPhoto.getPhoto_id())
+                .child(getString(R.string.likes_field))
+                .child(newLikeID) // gets key of id
+                .setValue(like);
+
+        mStar.likeToggle();
+        getStringLikes();
     }
 
     private void getPostDetails() {
@@ -188,7 +363,7 @@ public class ViewPostFragment extends Fragment {
                     Log.d(TAG, "onDataChange: User: " + mUserAccountSettings.getUsername() );
 
                 }
-                setupWidgets();
+                //setupWidgets();
             }
 
             @Override
@@ -210,6 +385,31 @@ public class ViewPostFragment extends Fragment {
 
         UniversalImageLoader.setImage(mUserAccountSettings.getProfile_photo(), mImageProfile, null, "");
         mUsername.setText((mUserAccountSettings.getUsername()));
+        mLikes.setText(mStringLikes);
+
+        // if liked by current user star is yellow
+        if(mLikeCurrentUser){
+            mStarYellow.setVisibility(View.VISIBLE);
+            mStarHollow.setVisibility(View.GONE);
+            mStarYellow.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    Log.d(TAG, "onTouch: yellow star touch detected");
+                    return mGestureDetector.onTouchEvent(motionEvent);
+                }
+            });
+
+        } else { // not liked by user star is white
+            mStarYellow.setVisibility(View.GONE);
+            mStarHollow.setVisibility(View.VISIBLE);
+            mStarHollow.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    Log.d(TAG, "onTouch: hollow star touched");
+                    return mGestureDetector.onTouchEvent(motionEvent);
+                }
+            });
+        }
     }
 
     // returns date string that shows how many days ago the post was made
