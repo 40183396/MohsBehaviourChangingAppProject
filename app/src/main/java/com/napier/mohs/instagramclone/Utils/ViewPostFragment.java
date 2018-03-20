@@ -30,6 +30,7 @@ import com.napier.mohs.instagramclone.Models.Like;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
+import com.napier.mohs.instagramclone.Models.UserSettings;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
@@ -85,6 +86,8 @@ public class ViewPostFragment extends Fragment {
 
     private Star mStar;
     private boolean mLikeCurrentUser; // boolean if user like s current photo
+    private User mCurrentUser;
+
 
     // Bundle constructor so we don't have an empty bundle (can cause Null Pointer if we dont do this)
     public ViewPostFragment(){
@@ -116,17 +119,6 @@ public class ViewPostFragment extends Fragment {
         setupBottomNavigationView();
 
 
-        // bundle could potentially be null so need a try catch
-        try{
-            mPhoto = getFromBundlePhoto(); // photo retrieved from bundle
-            UniversalImageLoader.setImage(mPhoto.getImage_path(), mImagePost, null, "");
-            mActivityNumber = getActivityNumberFromBundle(); // activity number retrieved from bundle
-            getPostDetails(); //retrieves user account settings for post
-            getStringLikes(); // needs to come after user account settings have been retrieved
-
-        } catch (NullPointerException e){
-            Log.e(TAG, "onCreateView: NullPointerException: " + e.getMessage() );
-        }
 
 
         // button for going to see comments in post
@@ -161,6 +153,30 @@ public class ViewPostFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void initialiseFragment(){
+        // bundle could potentially be null so need a try catch
+        try{
+            mPhoto = getFromBundlePhoto(); // photo retrieved from bundle
+            UniversalImageLoader.setImage(mPhoto.getImage_path(), mImagePost, null, "");
+            mActivityNumber = getActivityNumberFromBundle(); // activity number retrieved from bundle
+            retrieveCurrentUser();
+            getPostDetails(); //retrieves user account settings for post
+            //getStringLikes(); // needs to come after user account settings have been retrieved
+
+        } catch (NullPointerException e){
+            Log.e(TAG, "onCreateView: NullPointerException: " + e.getMessage() );
+        }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(isAdded()){
+            initialiseFragment();
+        }
     }
 
     // for interface
@@ -221,7 +237,7 @@ public class ViewPostFragment extends Fragment {
                             String[] usersSplit = mUsersStringBuilder.toString().split(",");
 
                             //deteermine if current user has liked photo or not
-                            if(mUsersStringBuilder.toString().contains(mUserAccountSettings.getUsername() + ",")){ // needs comma otherwise there is a problem when multiple users like it
+                            if(mUsersStringBuilder.toString().contains(mCurrentUser.getUsername() + ",")){ // needs comma otherwise there is a problem when multiple users like it
                                 // means user has liked photo
                                 mLikeCurrentUser = true;
                             } else {
@@ -272,6 +288,32 @@ public class ViewPostFragment extends Fragment {
 
             }
         });
+    }
+
+    private void retrieveCurrentUser(){
+        DatabaseReference currentUserReference = FirebaseDatabase.getInstance().getReference();
+        Query currentUserQuery = currentUserReference
+                .child(getString(R.string.db_name_users)) // look in user_account_settings node
+                .orderByChild(getString(R.string.user_id_field))
+                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid()); // look in user_id node see if we have a match
+
+        currentUserQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()){
+                    mCurrentUser = singleDataSnapShot.getValue(User.class);
+                    getStringLikes();
+                    Log.d(TAG, "onDataChange: search has found user " + mCurrentUser);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public class GestureListener extends GestureDetector.SimpleOnGestureListener{

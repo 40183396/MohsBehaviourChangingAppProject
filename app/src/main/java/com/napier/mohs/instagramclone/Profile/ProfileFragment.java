@@ -52,12 +52,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 // Changed Profile Activty to This Fragment, Just Straight Copy And Paste
-public class ProfileFragment extends Fragment{
+public class ProfileFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
 
     // buildin g interface
-    public interface OnImageGridSelectedListener{
+    public interface OnImageGridSelectedListener {
         void onImageGridSelected(Photo photo, int activityNumber); // need activity number as we are accessing this view post fragment from lots of different places
     }
 
@@ -122,11 +122,11 @@ public class ProfileFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: going to edit profile fragment");
-                    Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
-                    // flag to know that this is just a calling activity
-                    intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
-                    startActivity(intent);// not finishing as we want to be able to nav back to this activity
-                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out); // page transition to edit profile fragment
+                Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+                // flag to know that this is just a calling activity
+                intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
+                startActivity(intent);// not finishing as we want to be able to nav back to this activity
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out); // page transition to edit profile fragment
             }
         });
 
@@ -135,17 +135,17 @@ public class ProfileFragment extends Fragment{
 
     @Override
     public void onAttach(Context context) {
-        try{
+        try {
             mOnImageGridSelectedListener = (OnImageGridSelectedListener) getActivity();
-        } catch(ClassCastException e){
+        } catch (ClassCastException e) {
             Log.e(TAG, "onAttach: ClassCastException: " + e.getMessage());
         }
         super.onAttach(context);
     }
 
     // sets up the profile page with data from db
-    private void seupWidgets(UserSettings userSettings){
-        Log.d(TAG, "seupWidgets: settings up widget with data from firebase db " );
+    private void seupWidgets(UserSettings userSettings) {
+        Log.d(TAG, "seupWidgets: settings up widget with data from firebase db ");
 
         // User settings not needed here but added here anyway
         User user = userSettings.getUser();
@@ -165,9 +165,9 @@ public class ProfileFragment extends Fragment{
         mProgressBar.setVisibility(View.GONE);
     }
 
-    private void setupToolbar(){
+    private void setupToolbar() {
 
-        ((ProfileActivity)getActivity()).setSupportActionBar(toolbar);
+        ((ProfileActivity) getActivity()).setSupportActionBar(toolbar);
 
         profileMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +180,7 @@ public class ProfileFragment extends Fragment{
     }
 
     // setup of the bottom navigation
-    private void setupBottomNavigationView(){
+    private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationView);
         BottomNavigationViewHelper.enableNavigation(mContext, getActivity(), bottomNavigationView); //getActivity as we are in fragment
@@ -190,7 +190,7 @@ public class ProfileFragment extends Fragment{
     }
 
     // method that sets up grid view with images from db
-    private void setupGridView(){
+    private void setupGridView() {
         Log.d(TAG, "setupGridView: image grid is being set up");
 
         // ArrayList that is populated with photos from db
@@ -203,7 +203,7 @@ public class ProfileFragment extends Fragment{
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
                     //photos.add(singleDataSnapshot.getValue(Photo.class)); // gets all photos user has
                     // type casting snapshot to hashmap and then adding fields manually to field object
                     // there is issue where datasnapshot is trying to read hashmap instead of list
@@ -211,45 +211,51 @@ public class ProfileFragment extends Fragment{
                     Photo photo = new Photo();
                     Map<String, Object> objectMap = (HashMap<String, Object>) singleDataSnapshot.getValue();
 
-                    photo.setCaption(objectMap.get(getString(R.string.caption_field)).toString());
-                    photo.setUser_id(objectMap.get(getString(R.string.user_id_field)).toString());
-                    photo.setPhoto_id(objectMap.get(getString(R.string.photo_id_field)).toString());
-                    photo.setTags(objectMap.get(getString(R.string.tags_field)).toString());
-                    photo.setDate_created(objectMap.get(getString(R.string.date_created_field)).toString());
-                    photo.setImage_path(objectMap.get(getString(R.string.image_path_field)).toString());
+                    // added a try catch as kept getting null pointer exception
+                    try {
+                        photo.setCaption(objectMap.get(getString(R.string.caption_field)).toString());
+                        photo.setUser_id(objectMap.get(getString(R.string.user_id_field)).toString());
+                        photo.setPhoto_id(objectMap.get(getString(R.string.photo_id_field)).toString());
+                        photo.setTags(objectMap.get(getString(R.string.tags_field)).toString());
+                        photo.setDate_created(objectMap.get(getString(R.string.date_created_field)).toString());
+                        photo.setImage_path(objectMap.get(getString(R.string.image_path_field)).toString());
 
-                    ArrayList<Comment> commentsArrayList = new ArrayList<Comment>();
-                    for(DataSnapshot dataSnapshot1 : singleDataSnapshot
-                            .child(getString(R.string.comments_field)).getChildren()){ // loop[ through all comments
-                        Comment comment = new Comment();
-                        comment.setUser_id(dataSnapshot1.getValue(Comment.class).getUser_id());
-                        comment.setComment(dataSnapshot1.getValue(Comment.class).getComment());
-                        comment.setDate_created(dataSnapshot1.getValue(Comment.class).getDate_created());
-                        commentsArrayList.add(comment);
+                        ArrayList<Comment> commentsArrayList = new ArrayList<Comment>();
+                        for (DataSnapshot dataSnapshot1 : singleDataSnapshot
+                                .child(getString(R.string.comments_field)).getChildren()) { // loop[ through all comments
+                            Comment comment = new Comment();
+                            comment.setUser_id(dataSnapshot1.getValue(Comment.class).getUser_id());
+                            comment.setComment(dataSnapshot1.getValue(Comment.class).getComment());
+                            comment.setDate_created(dataSnapshot1.getValue(Comment.class).getDate_created());
+                            commentsArrayList.add(comment);
+                        }
+
+                        photo.setComments(commentsArrayList);
+
+                        // list for all the photo likes
+                        List<Like> likeList = new ArrayList<Like>();
+                        for (DataSnapshot dataSnapshot1 : singleDataSnapshot
+                                .child(getString(R.string.likes_field)).getChildren()) { // loop[ through all likes
+                            Like like = new Like();
+                            like.setUser_id(dataSnapshot1.getValue(Like.class).getUser_id());
+                            likeList.add(like);
+                        }
+                        photo.setLikes(likeList);
+                        photos.add(photo);
+                    } catch (NullPointerException e) {
+                        Log.e(TAG, "onDataChange: NullPointerException " + e.getMessage());
                     }
 
-                    photo.setComments(commentsArrayList);
-
-                    // list for all the photo likes
-                    List<Like> likeList = new ArrayList<Like>();
-                    for(DataSnapshot dataSnapshot1 : singleDataSnapshot
-                            .child(getString(R.string.likes_field)).getChildren()){ // loop[ through all likes
-                        Like like = new Like();
-                        like.setUser_id(dataSnapshot1.getValue(Like.class).getUser_id());
-                        likeList.add(like);
-                    }
-                    photo.setLikes(likeList);
-                    photos.add(photo);
                 }
 
                 // image grid is setup
                 int widthGrid = getResources().getDisplayMetrics().widthPixels;
-                int widthImage = widthGrid/NUM_COLS_GRID;
+                int widthImage = widthGrid / NUM_COLS_GRID;
                 gridView.setColumnWidth(widthImage); // sets up images so they are all same size in grid
 
                 // Array list of img urls
                 ArrayList<String> imgURLs = new ArrayList<String>();
-                for(int i = 0; i < photos.size(); i++){
+                for (int i = 0; i < photos.size(); i++) {
                     imgURLs.add(photos.get(i).getImage_path());
                 }
 
@@ -275,11 +281,10 @@ public class ProfileFragment extends Fragment{
     }
 
 
-
     //------------------------FIRESBASE STUFF------------
     // Method to check if a user is signed in app
 
-    private void setupFirebaseAuth(){
+    private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -288,7 +293,7 @@ public class ProfileFragment extends Fragment{
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
-                if(user != null){
+                if (user != null) {
                     Log.d(TAG, "onAuthStateChanged: user signed in " + user);
                 } else {
                     Log.d(TAG, "onAuthStateChanged: user signed out");
@@ -322,7 +327,7 @@ public class ProfileFragment extends Fragment{
     @Override
     public void onStop() {
         super.onStop();
-        if(mAuthListener != null){
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }

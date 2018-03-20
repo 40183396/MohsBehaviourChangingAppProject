@@ -22,6 +22,7 @@ import com.napier.mohs.instagramclone.Utils.ViewProfileFragment;
  */
 
 public class ProfileActivity extends AppCompatActivity implements ProfileFragment.OnImageGridSelectedListener,
+        ViewProfileFragment.OnImageGridSelectedListener,
         ViewPostFragment.OnThreadCommentSelectedListener {
     private static final String TAG = "ProfileActivity";
     private static final int ACTIVITY_NUM = 4;
