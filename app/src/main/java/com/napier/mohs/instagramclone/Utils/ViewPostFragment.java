@@ -1,5 +1,6 @@
 package com.napier.mohs.instagramclone.Utils;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -50,13 +51,19 @@ import java.util.TimeZone;
 
 public class ViewPostFragment extends Fragment {
     private static final String TAG = "ViewPostFragment";
+
+    public interface OnThreadCommentSelectedListener{
+        void onThreadCommentSelectedListener(Photo photo);
+    }
+    OnThreadCommentSelectedListener mOnThreadCommentSelectedListener;
+
     private Photo mPhoto;
     private int mActivityNumber = 0;
 
     private ImagesSquaredView mImagePost;
     private BottomNavigationViewEx mBottomNavigationView;
     private TextView mCaption, mUsername, mDateTimestamp, mLikes;
-    private ImageView mStarYellow, mStarHollow, mImageProfile;
+    private ImageView mStarYellow, mStarHollow, mImageProfile, mComment;
 
     private String mPostUsername = "";
     private String mUrl = "";
@@ -119,12 +126,22 @@ public class ViewPostFragment extends Fragment {
         }
 
 
+        // button for going to see comments in post
+        ImageView comment = (ImageView) view.findViewById(R.id.imagePostComment);
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: clicked comment button");
+                mOnThreadCommentSelectedListener.onThreadCommentSelectedListener(mPhoto); // navigates us to our comments thread
+            }
+        });
 
         // button for menu in post
         ImageView menu = (ImageView) view.findViewById(R.id.imagePostMenu);
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "onClick: clicked menu button");
 
             }
         });
@@ -134,7 +151,8 @@ public class ViewPostFragment extends Fragment {
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: navigating back to 'ProfileActivity'");
+                Log.d(TAG, "onClick: navigating back to previous activty");
+                getActivity().getSupportFragmentManager().popBackStack();
 
             }
         });
@@ -142,6 +160,17 @@ public class ViewPostFragment extends Fragment {
         return view;
     }
 
+    // for interface
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try{
+            mOnThreadCommentSelectedListener = (OnThreadCommentSelectedListener) getActivity();
+        } catch(ClassCastException e){
+            Log.e(TAG, "onAttach: ClassCastException" + e.getMessage() );
+        }
+    }
 
     // responsible for getting likes
     // gets string of all peopple who liked photo

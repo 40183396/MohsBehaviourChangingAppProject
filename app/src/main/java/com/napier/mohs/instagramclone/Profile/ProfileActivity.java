@@ -11,13 +11,15 @@ import android.widget.ProgressBar;
 
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.R;
+import com.napier.mohs.instagramclone.Utils.ViewCommentsFragment;
 import com.napier.mohs.instagramclone.Utils.ViewPostFragment;
 
 /**
  * Created by Mohs on 15/03/2018.
  */
 
-public class ProfileActivity extends AppCompatActivity implements ProfileFragment.OnImageGridSelectedListener{
+public class ProfileActivity extends AppCompatActivity implements ProfileFragment.OnImageGridSelectedListener,
+        ViewPostFragment.OnThreadCommentSelectedListener {
     private static final String TAG = "ProfileActivity";
     private static final int ACTIVITY_NUM = 4;
     private static final int NUM_COLS_GRID = 3;
@@ -39,7 +41,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
 
     }
 
-    private void initialiseProfileFragment(){
+    private void initialiseProfileFragment() {
         Log.d(TAG, "initialiseProfileFragment: inflating " + R.string.fragment_profile);
 
         ProfileFragment profileFragment = new ProfileFragment();
@@ -67,4 +69,17 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onThreadCommentSelectedListener(Photo photo) {
+        Log.d(TAG, "onThreadCommentSelectedListener: comment thread is seleceted");
+
+        ViewCommentsFragment viewCommentsFragment = new ViewCommentsFragment();
+        Bundle bundleArgs = new Bundle(); // bundle to pass photo
+        bundleArgs.putParcelable(getString(R.string.photo), photo); // pass photo
+        viewCommentsFragment.setArguments(bundleArgs); // sets fragment arguments to bundle arguments
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.containerProfile, viewCommentsFragment); // replace container profile with view comments fragment
+        fragmentTransaction.addToBackStack(getString(R.string.fragment_viewcomments));
+        fragmentTransaction.commit();
+    }
 }

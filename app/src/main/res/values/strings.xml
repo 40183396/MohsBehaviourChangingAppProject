@@ -6,6 +6,7 @@
     <string name="fragment_sign_out">Sign Out</string>
     <string name="fragment_profile">Profile Fragment</string>
     <string name="fragment_post">View Post Fragment</string>
+    <string name="fragment_viewcomments">View Comments Fragment</string>
 
     <!--Firebase -->
     <string name="failed_auth">Authentication Failed</string>
@@ -32,6 +33,7 @@
     <string name="photo_id_field">photo_id</string>
     <string name="tags_field">tags</string>
     <string name="image_path_field">image_path</string>
+    <string name="comments_field">comments</string>
 
     <!-- Intent Extras-->
     <string name="calling_activity">calling_activity</string>
@@ -55,4 +57,7 @@
 
     <string name="photo">PHOTO</string>
     <string name="gallery">GALLERY</string>
+
+
+
 </resources>
