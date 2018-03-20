@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,6 +63,7 @@ public class ViewCommentsFragment extends Fragment {
     }
 
     private Photo mPhoto;
+    private Context mContext;
 
 
     // Firebase Stuff
@@ -86,8 +88,10 @@ public class ViewCommentsFragment extends Fragment {
         mComment = (EditText) view.findViewById(R.id.edittextCommentsComment);
         mCommentArrayList = new ArrayList<>();
         mListView = (ListView) view.findViewById(R.id.listviewComments);
+        mSend = (ImageView) view.findViewById(R.id.imageCommentPost);
+        mContext = getActivity(); // keeps context constant
 
-        setupFirebaseAuth();
+
 
         // bundle could potentially be null so need a try catch
         try{
@@ -96,26 +100,31 @@ public class ViewCommentsFragment extends Fragment {
         } catch (NullPointerException e){
             Log.e(TAG, "onCreateView: NullPointerException: " + e.getMessage() );
         }
+        setupFirebaseAuth();
 
-        // make sure to call all these things after recieveing photo data from bundle otherwise wont't work
-        // first comment will have the user who posted the picture with their caption
-        Comment commentFirst = new Comment();
-        commentFirst.setComment(mPhoto.getCaption());
-        commentFirst.setUser_id(mPhoto.getUser_id());
-        commentFirst.setDate_created(mPhoto.getDate_created());
 
-        mCommentArrayList.add(commentFirst); // adds first comment to list for testing
+        //setup the backarrow for navigating back to previous activity
+        ImageView mBackArrow = (ImageView) view.findViewById(R.id.imageCommentsBackArrow);
+        mBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: navigating back to previous activty");
+                getActivity().getSupportFragmentManager().popBackStack();
 
-        CommentsListAdapter adapter = new CommentsListAdapter(getActivity(), R.layout.layout_comments, mCommentArrayList); // adapter with comments
+            }
+        });
+
+
+        return view;
+    }
+    // sets up widgets
+    private void setupWidgets(){
+        Log.d(TAG, "setupWidgets: setting up widgets");
+        CommentsListAdapter adapter = new CommentsListAdapter(mContext, R.layout.layout_comments, mCommentArrayList); // adapter with comments
         mListView.setAdapter(adapter); //list view recieves data from adapter
 
-
-
-
-
         // button for sending a comment
-        ImageView send = (ImageView) view.findViewById(R.id.imageCommentPost);
-        send.setOnClickListener(new View.OnClickListener() {
+        mSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked send button");
@@ -132,27 +141,14 @@ public class ViewCommentsFragment extends Fragment {
 
             }
         });
-
-        //setup the backarrow for navigating back to "ProfileActivity"
-        ImageView backArrow = (ImageView) view.findViewById(R.id.imageCommentsBackArrow);
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: navigating back to previous activty");
-                getActivity().getSupportFragmentManager().popBackStack();
-
-            }
-        });
-
-
-        return view;
     }
 
     // closes keyboard method
     private void keyboardClose(){
+        Log.d(TAG, "keyboardClose: keyboard being closed");
         View view = getActivity().getCurrentFocus();
         if(view!= null){
-            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromInputMethod(view.getWindowToken(), 0); // hides keyboard
         }
     }
@@ -202,6 +198,7 @@ public class ViewCommentsFragment extends Fragment {
     private String timeStampGet() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK);
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+        Log.d(TAG, "timeStampGet: " +  simpleDateFormat.format(new Date()));
         return simpleDateFormat.format(new Date());  // returns formatted date in London timezone
     }
 
@@ -210,7 +207,7 @@ public class ViewCommentsFragment extends Fragment {
     // Method to check if a user is signed in app
 
     private void setupFirebaseAuth(){
-        Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
+        Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
@@ -228,30 +225,79 @@ public class ViewCommentsFragment extends Fragment {
             }
         };
 
-        // query that reqeuries photo so we can get updated comments
-        Query query = myDBRefFirebase
-                .child(getString(R.string.db_name_user_photos))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
-                    //photos.add(singleDataSnapshot.getValue(Photo.class)); // gets all photos user has
-                    // type casting snapshot to hashmap and then adding fields manually to field object
-                    // there is issue where datasnapshot is trying to read hashmap instead of list
-                    // work around is typecasting to hashmap and adding fields manually to objects
-                    Photo photo = new Photo();
-                    Map<String, Object> objectMap = (HashMap<String, Object>) singleDataSnapshot.getValue();
 
-                    photo.setCaption(objectMap.get(getString(R.string.caption_field)).toString());
-                    photo.setUser_id(objectMap.get(getString(R.string.user_id_field)).toString());
-                    photo.setPhoto_id(objectMap.get(getString(R.string.photo_id_field)).toString());
-                    photo.setTags(objectMap.get(getString(R.string.tags_field)).toString());
-                    photo.setDate_created(objectMap.get(getString(R.string.date_created_field)).toString());
-                    photo.setImage_path(objectMap.get(getString(R.string.image_path_field)).toString());
+        // if no comments on photo this is called to instantiate comments thread
+        if(mPhoto.getComments().size() == 0){
+            mCommentArrayList.clear(); // makes sure we have fresh list every time
+            Comment commentFirst = new Comment();
+            commentFirst.setComment(mPhoto.getCaption());
+            commentFirst.setUser_id(mPhoto.getUser_id());
+            commentFirst.setDate_created(mPhoto.getDate_created());
+            mCommentArrayList.add(commentFirst);
+            mPhoto.setComments(mCommentArrayList);
+            setupWidgets(); // widgets still get set up even with no comments
+        }
 
-                    // list for all the photo likes
-                    List<Like> likeList = new ArrayList<Like>();
+        // gets called imediately when fragment is activated and also when their is any change to the node
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_photos))
+                .child(mPhoto.getPhoto_id())
+                .child(mContext.getString(R.string.comments_field)) // this all gets called when their is a change to the comments node inside particular photo
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Log.d(TAG, "onChildAdded: ");
+                        // query that reqeuries photo so we can get updated comments
+                        Query query = myDBRefFirebase
+                                .child(mContext.getString(R.string.db_name_photos)) // looks in photos node
+                                .orderByChild(mContext.getString(R.string.photo_id_field)) // looks in photo_id field
+                                .equalTo(mPhoto.getPhoto_id()); // this is the photo comment thread we want to refresh
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Log.d(TAG, "onDataChange: ");
+                                for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
+                                    //photos.add(singleDataSnapshot.getValue(Photo.class)); // gets all photos user has
+                                    // type casting snapshot to hashmap and then adding fields manually to field object
+                                    // there is issue where datasnapshot is trying to read hashmap instead of list
+                                    // work around is typecasting to hashmap and adding fields manually to objects
+                                    Photo photo = new Photo();
+                                    Map<String, Object> objectMap = (HashMap<String, Object>) singleDataSnapshot.getValue();
+
+                                    photo.setCaption(objectMap.get(mContext.getString(R.string.caption_field)).toString());
+                                    photo.setUser_id(objectMap.get(mContext.getString(R.string.user_id_field)).toString());
+                                    photo.setPhoto_id(objectMap.get(mContext.getString(R.string.photo_id_field)).toString());
+                                    photo.setTags(objectMap.get(mContext.getString(R.string.tags_field)).toString());
+                                    photo.setDate_created(objectMap.get(mContext.getString(R.string.date_created_field)).toString());
+                                    photo.setImage_path(objectMap.get(mContext.getString(R.string.image_path_field)).toString());
+
+
+                                    // make sure to call all these things after recieveing photo data from bundle otherwise wont't work
+                                    // first comment will have the user who posted the picture with their caption
+                                    mCommentArrayList.clear(); // makes sure we have fresh list every time
+                                    Comment commentFirst = new Comment();
+                                    commentFirst.setComment(mPhoto.getCaption());
+                                    commentFirst.setUser_id(mPhoto.getUser_id());
+                                    commentFirst.setDate_created(mPhoto.getDate_created());
+
+                                    mCommentArrayList.add(commentFirst); // adds first comment to list for testing
+                                    Log.d(TAG, "onDataChange: first comment added to array: " + mCommentArrayList);
+                                    // loop checks for any more comments
+                                    for(DataSnapshot dataSnapshot1 : singleDataSnapshot
+                                            .child(mContext.getString(R.string.comments_field)).getChildren()){ // loop[ through all comments
+                                        Comment comment = new Comment();
+                                        comment.setUser_id(dataSnapshot1.getValue(Comment.class).getUser_id());
+                                        comment.setComment(dataSnapshot1.getValue(Comment.class).getComment());
+                                        comment.setDate_created(dataSnapshot1.getValue(Comment.class).getDate_created());
+                                        mCommentArrayList.add(comment);
+                                    }
+
+                                    photo.setComments(mCommentArrayList); // adds list of comments to photo
+
+                                    mPhoto = photo; // globally updated photo
+
+                                    setupWidgets();
+
+                                    //List<Like> likeList = new ArrayList<Like>();
                     /*for(DataSnapshot dataSnapshot1 : singleDataSnapshot
                             .child(getString(R.string.likes_field)).getChildren()){ // loop[ through all likes
                         Like like = new Like();
@@ -259,17 +305,40 @@ public class ViewCommentsFragment extends Fragment {
                         likeList.add(like);
                     }*/
 
-                }
+                                }
 
 
 
-            }
+                            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG, "onCancelled: query has been cancelled");
-            }
-        });
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.d(TAG, "onCancelled: query has been cancelled");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        Log.d(TAG, "onChildChanged: ");
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        Log.d(TAG, "onChildRemoved: ");
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                        Log.d(TAG, "onChildMoved: ");
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
 
     }
 

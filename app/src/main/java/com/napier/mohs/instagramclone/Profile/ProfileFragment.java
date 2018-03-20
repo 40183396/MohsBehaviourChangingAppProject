@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.instagramclone.Models.Comment;
 import com.napier.mohs.instagramclone.Models.Like;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.User;
@@ -216,6 +217,18 @@ public class ProfileFragment extends Fragment{
                     photo.setTags(objectMap.get(getString(R.string.tags_field)).toString());
                     photo.setDate_created(objectMap.get(getString(R.string.date_created_field)).toString());
                     photo.setImage_path(objectMap.get(getString(R.string.image_path_field)).toString());
+
+                    ArrayList<Comment> commentsArrayList = new ArrayList<Comment>();
+                    for(DataSnapshot dataSnapshot1 : singleDataSnapshot
+                            .child(getString(R.string.comments_field)).getChildren()){ // loop[ through all comments
+                        Comment comment = new Comment();
+                        comment.setUser_id(dataSnapshot1.getValue(Comment.class).getUser_id());
+                        comment.setComment(dataSnapshot1.getValue(Comment.class).getComment());
+                        comment.setDate_created(dataSnapshot1.getValue(Comment.class).getDate_created());
+                        commentsArrayList.add(comment);
+                    }
+
+                    photo.setComments(commentsArrayList);
 
                     // list for all the photo likes
                     List<Like> likeList = new ArrayList<Like>();

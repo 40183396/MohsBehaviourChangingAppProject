@@ -42,7 +42,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -62,7 +64,7 @@ public class ViewPostFragment extends Fragment {
 
     private ImagesSquaredView mImagePost;
     private BottomNavigationViewEx mBottomNavigationView;
-    private TextView mCaption, mUsername, mDateTimestamp, mLikes;
+    private TextView mCaption, mUsername, mDateTimestamp, mLikes, mComments;
     private ImageView mStarYellow, mStarHollow, mImageProfile, mComment;
 
     private String mPostUsername = "";
@@ -104,6 +106,7 @@ public class ViewPostFragment extends Fragment {
         mStarYellow = (ImageView) view.findViewById(R.id.imagePostStarYellow);
         mImageProfile = (ImageView) view.findViewById(R.id.imagePostProfile);
         mLikes = (TextView) view.findViewById(R.id.textviewPostLikes);
+        mComments = (TextView) view.findViewById(R.id.textviewPostComments);
 
         mStar = new Star(mStarHollow, mStarYellow); // constructor to star
         mGestureDetector = new GestureDetector(getActivity(), new GestureListener());
@@ -115,7 +118,7 @@ public class ViewPostFragment extends Fragment {
 
         // bundle could potentially be null so need a try catch
         try{
-            mPhoto = getFromBundlePhoto(); // photo retrieved form bundle
+            mPhoto = getFromBundlePhoto(); // photo retrieved from bundle
             UniversalImageLoader.setImage(mPhoto.getImage_path(), mImagePost, null, "");
             mActivityNumber = getActivityNumberFromBundle(); // activity number retrieved from bundle
             getPostDetails(); //retrieves user account settings for post
@@ -411,6 +414,21 @@ public class ViewPostFragment extends Fragment {
         } else { // if no difference
             mDateTimestamp.setText("TODAY");
         }
+
+        if(mPhoto.getComments().size() > 0){
+            mComments.setText("View all " + mPhoto.getComments().size() + " comments"); // displays link how many comments are on photo
+        } else {
+            mComments.setText(""); // if no comments link is not displayed
+        }
+
+        mComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Clicked button to go to comments");
+
+                mOnThreadCommentSelectedListener.onThreadCommentSelectedListener(mPhoto); // goes to comment thread of photo
+            }
+        });
 
         UniversalImageLoader.setImage(mUserAccountSettings.getProfile_photo(), mImageProfile, null, "");
         mUsername.setText((mUserAccountSettings.getUsername()));
