@@ -189,7 +189,7 @@ public class ViewPostFragment extends Fragment {
                             String[] usersSplit = mUsersStringBuilder.toString().split(",");
 
                             //deteermine if current user has liked photo or not
-                            if(mUsersStringBuilder.toString().contains(mUserAccountSettings.getUsername())){
+                            if(mUsersStringBuilder.toString().contains(mUserAccountSettings.getUsername() + ",")){ // needs comma otherwise there is a problem when multiple users like it
                                 // means user has liked photo
                                 mLikeCurrentUser = true;
                             } else {
@@ -386,6 +386,7 @@ public class ViewPostFragment extends Fragment {
         UniversalImageLoader.setImage(mUserAccountSettings.getProfile_photo(), mImageProfile, null, "");
         mUsername.setText((mUserAccountSettings.getUsername()));
         mLikes.setText(mStringLikes);
+        mCaption.setText(mPhoto.getCaption());
 
         // if liked by current user star is yellow
         if(mLikeCurrentUser){
