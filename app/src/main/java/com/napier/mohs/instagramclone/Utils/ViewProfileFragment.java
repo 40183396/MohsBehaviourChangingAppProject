@@ -72,7 +72,8 @@ public class ViewProfileFragment extends Fragment{
     private static final int NUM_COLS_GRID = 3;
 
 
-    private TextView mPosts, mFollowers, mFollowing, mDisplayName, mUsername, mWebsite, mDescription, mEditProfile;
+    private TextView mPosts, mFollowers, mFollowing, mDisplayName, mUsername, mWebsite, mDescription, mEditProfile,
+            mUnfollow, mFollow;
     private ProgressBar mProgressBar;
     private CircleImageView mProfilePhoto;
     private GridView gridView;
@@ -113,11 +114,15 @@ public class ViewProfileFragment extends Fragment{
         mFollowing = (TextView) view.findViewById(R.id.textviewViewProfileFollowingNumber);
         mEditProfile = (TextView) view.findViewById(R.id.textviewViewProfileEditYourProfile);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressbarViewProfile);
+        mUnfollow = (TextView) view.findViewById(R.id.textviewViewProfileUnfollowUser);
+        mFollow = (TextView) view.findViewById(R.id.textviewViewProfileFollowUser);
+
         gridView = (GridView) view.findViewById(R.id.gridviewViewProfile);
         toolbar = (Toolbar) view.findViewById(R.id.toolbarEdit);
         profileMenu = (ImageView) view.findViewById(R.id.imageProfileMenu);
         bottomNavigationView = (BottomNavigationViewEx) view.findViewById(R.id.bottomNavViewBar);
         mContext = getActivity();
+
         Log.d(TAG, "onCreateView: started view profile fragment");
 
         // try catch in case bundle returns null
@@ -134,6 +139,66 @@ public class ViewProfileFragment extends Fragment{
         setupFirebaseAuth();
         setupBottomNavigationView();
         setupToolbar();
+        checkFollowing();
+
+        mFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: started following: " + mUser.getUsername());
+
+                // updates followers and following nodes
+                FirebaseDatabase.getInstance().getReference()
+                        .child(getString(R.string.db_name_following)) // following node
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child(mUser.getUser_id())
+                        .child(getString(R.string.user_id_field))
+                        .setValue(mUser.getUser_id()); // not creating following object just inserting id
+
+                FirebaseDatabase.getInstance().getReference()
+                        .child(getString(R.string.db_name_followers)) // followers node
+                        .child(mUser.getUser_id()) // insert to other users followers node
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child(getString(R.string.user_id_field))
+                        .setValue(FirebaseAuth.getInstance().getCurrentUser().getUid()); // not creating following object just inserting id
+
+                setFollowingUser();
+            }
+        });
+
+        mUnfollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: started unfollowing: " + mUser.getUsername());
+                // updates followers and following nodes
+                FirebaseDatabase.getInstance().getReference()
+                        .child(getString(R.string.db_name_following)) // following node
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child(mUser.getUser_id())
+                        .removeValue(); // not creating following object just inserting id
+
+                FirebaseDatabase.getInstance().getReference()
+                        .child(getString(R.string.db_name_followers)) // followers node
+                        .child(mUser.getUser_id()) // insert to other users followers node
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .removeValue(); // not creating following object just inserting id
+
+                setUnfollowingUser();
+            }
+        });
+
+        // Goes to edit page fragment
+        mEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: going to edit profile fragment");
+                Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+                // flag to know that this is just a calling activity
+                intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
+                startActivity(intent);// not finishing as we want to be able to nav back to this activity
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out); // page transition to edit profile fragment
+            }
+        });
+
 
 
         return view;
@@ -224,6 +289,59 @@ public class ViewProfileFragment extends Fragment{
             }
         });
     }
+
+    // check if user is being followed
+    private void checkFollowing(){
+        Log.d(TAG, "checkFollowing: checking if you are following this user");
+        setUnfollowingUser();
+
+        // checking to see if logged in user is following the user who is in bundle
+        DatabaseReference checkReference = FirebaseDatabase.getInstance().getReference();
+        Query checkQuery = checkReference.child(getString(R.string.db_name_following)) // look in user_account_settings node
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .orderByChild(getString(R.string.user_id_field)).equalTo(mUser.getUser_id()); // look in user_id node see if we have a match
+        // if match set widgets
+        checkQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()){
+                    Log.d(TAG, "onDataChange: search has found user " + singleDataSnapShot.getValue());
+
+                    // if something is found we can just set to following
+                    setFollowingUser();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    private void setFollowingUser(){
+        Log.d(TAG, "setFollowingUser: user interface is being updated for following this user");
+        mFollow.setVisibility(View.GONE);
+        mUnfollow.setVisibility(View.VISIBLE);
+        mEditProfile.setVisibility(View.GONE);
+    }
+
+    private void setUnfollowingUser(){
+        Log.d(TAG, "setFollowingUser: user interface is being updated for unfollowing this user");
+        mFollow.setVisibility(View.VISIBLE);
+        mUnfollow.setVisibility(View.GONE);
+        mEditProfile.setVisibility(View.GONE);
+    }
+
+    private void setCurrentProfileUser(){
+        Log.d(TAG, "setFollowingUser: user interface is being updated to current user own profile");
+        mFollow.setVisibility(View.GONE);
+        mUnfollow.setVisibility(View.GONE);
+        mEditProfile.setVisibility(View.VISIBLE);
+    }
+
 
     private User retrieveUserBundle(){
         Log.d(TAG, "retrieveUserBundle: bundle arguments " + getArguments());
