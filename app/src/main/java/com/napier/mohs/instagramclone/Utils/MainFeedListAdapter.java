@@ -63,6 +63,12 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
         this.mContext = context;
     }
 
+    // for pagination of posts on main feed when user scrolls through posts
+    public interface OnItemsLoadMoreListener{
+        void onItemsLoadMore();
+    }
+    OnItemsLoadMoreListener mOnItemsLoadMoreListener;
+
     static class ViewHolder{
         TextView comments;
         CircleImageView imageProfile;
@@ -268,7 +274,33 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
             }
         });
 
+        // if we've reached end of list in adapter
+        if(endOfListReached(position)){ // pass position of adapter to see if we've reached end of list
+            dataLoadMore();
+        }
+
         return convertView;
+    }
+
+    // for detecting when youve reached end of list
+    private boolean endOfListReached(int position){
+        return position == getCount() - 1;
+
+    }
+
+    // check if position reached was end then load more data
+    private void dataLoadMore(){
+        try{
+            mOnItemsLoadMoreListener = (OnItemsLoadMoreListener) getContext(); // instantiate listener
+        } catch(ClassCastException e){
+            Log.e(TAG, "dataLoadMore: ClassCastException: " + e.getMessage() );
+        }
+
+        try{
+            mOnItemsLoadMoreListener.onItemsLoadMore();
+        } catch(NullPointerException e){
+            Log.e(TAG, "dataLoadMore: NullPointerException: " + e.getMessage() );
+        }
     }
 
     // gets the username of the current user

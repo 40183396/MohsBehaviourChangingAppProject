@@ -37,10 +37,14 @@ import java.util.Map;
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
-    private ArrayList<Photo> mPhotoArrayList;
+
     private ArrayList<String> mFollowingArrayList;
+    private ArrayList<Photo> mPhotoArrayList; // holds all photos of people you are following
+    private ArrayList<Photo> mPhotosPaginatedArrayList; // Photos that are added incrementally as you scroll through feed
+
     private ListView mListView;
     private MainFeedListAdapter mAdapter;
+    private int mResult;
 
     @Nullable
     @Override
@@ -156,18 +160,67 @@ public class HomeFragment extends Fragment {
     }
 
     // method to display the photos
-    public void displayPhotos(){
-        if(mPhotoArrayList != null){
-            // we want to sort the ArrayList
-            Collections.sort(mPhotoArrayList, new Comparator<Photo>() {
-                @Override
-                public int compare(Photo photo, Photo t1) {
-                    return t1.getDate_created().compareTo(photo.getDate_created()); // sorting by date created
+    private void displayPhotos(){
+        Log.d(TAG, "displayPhotos: attempting to display pictures ");
+        mPhotosPaginatedArrayList = new ArrayList<>(); // instantiate pagination
+        try{
+            if(mPhotoArrayList != null){
+                Log.d(TAG, "displayPhotos: Photo Array List is not null");
+                // we want to sort the ArrayList
+                Collections.sort(mPhotoArrayList, new Comparator<Photo>() {
+                    @Override
+                    public int compare(Photo photo, Photo t1) {
+                        return t1.getDate_created().compareTo(photo.getDate_created()); // sorting by date created
+                    }
+                });
+                int iterations = mPhotoArrayList.size();
+                if(iterations > 10 ){ // setting threshold for iterations at 10
+                    iterations = 10; // set it to 10 if there are more than 10 to display
                 }
-            });
+                mResult = 10;
+                for(int i = 0; i < iterations; i++){
+                    // only want to add first 10 photos
+                    mPhotosPaginatedArrayList.add(mPhotoArrayList.get(i));
+                }
+                // set up adapter with layout amd photo array list in paginated way (10 posts)
+                mAdapter = new MainFeedListAdapter(getActivity(), R.layout.layout_listitem_mainfeed, mPhotosPaginatedArrayList);
+                mListView.setAdapter(mAdapter); // sets list view with adapter
+            }
 
-            mAdapter = new MainFeedListAdapter(getActivity(), R.layout.layout_listitem_mainfeed, mPhotoArrayList); // set up adapter with layout amd photo array list
-            mListView.setAdapter(mAdapter); // sets list view with adapter
+        } catch (NullPointerException e){
+            Log.e(TAG, "displayPhotos: NullPointerException: " + e.getMessage());
+        } catch (IndexOutOfBoundsException e){
+            Log.e(TAG, "displayPhotos: IndexOutOfBoundsException: " + e.getMessage());
+        }
+    }
+
+    // if we want to display more photos when we have scrolled to bottom of list
+    public void displayMorePhotos(){
+        Log.d(TAG, "displayMorePhotos: attempting to display more photos");
+        try{
+            if(mPhotoArrayList.size() > mResult && mPhotoArrayList.size() > 0){
+                int iterations;
+                // need to know if there are more than 10 photos
+                if(mPhotoArrayList.size() > (mResult + 10)){ // means more than 10 photos
+                    Log.d(TAG, "displayMorePhotos: there are more than 10 more photos");
+                    iterations = 10; // same as before set to 10 if that is case
+                } else{
+                    Log.d(TAG, "displayMorePhotos: less than 10 more photos");
+                    iterations = mPhotoArrayList.size() - mResult; // for example if there are 12 photos, iteration would become 2 so 2 more photos willl be displayed
+                }
+
+                // add new photos to paginated array list
+                for(int i = mResult; i < mResult + iterations;  i++){
+                    mPhotosPaginatedArrayList.add(mPhotoArrayList.get(i)); //adds photos to paginated array list
+                }
+                // reset results count
+                mResult = mResult + iterations;
+                mAdapter.notifyDataSetChanged();
+            }
+        }catch (NullPointerException e){
+            Log.e(TAG, "displayPhotos: NullPointerException: " + e.getMessage());
+        } catch (IndexOutOfBoundsException e){
+            Log.e(TAG, "displayPhotos: IndexOutOfBoundsException: " + e.getMessage());
         }
     }
 }

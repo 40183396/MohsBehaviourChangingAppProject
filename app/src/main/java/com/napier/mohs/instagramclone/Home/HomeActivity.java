@@ -24,6 +24,7 @@ import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
+import com.napier.mohs.instagramclone.Utils.MainFeedListAdapter;
 import com.napier.mohs.instagramclone.Utils.SectionsPagerAdapter;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
 import com.napier.mohs.instagramclone.Utils.ViewCommentsFragment;
@@ -31,7 +32,20 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.concurrent.ExecutionException;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements MainFeedListAdapter.OnItemsLoadMoreListener{
+
+
+    // interface methods
+    @Override
+    public void onItemsLoadMore() {
+        Log.d(TAG, "onItemsLoadMore: more photos being displayed");
+        // HomeFragment is set up through view pager there is a different way to assign tag
+        HomeFragment homeFragment = (HomeFragment)getSupportFragmentManager()
+                .findFragmentByTag("android:switcher:" + R.id.viewpagerContainer + ":" + mViewPager.getCurrentItem()); // references its tag
+        if(homeFragment != null){
+            homeFragment.displayMorePhotos(); // fragment will display more photos
+        }
+    }
 
     private static final String TAG = "HomeActivity";
     private static final int ACTIVITY_NUM = 0;
@@ -194,4 +208,5 @@ public class HomeActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
 }

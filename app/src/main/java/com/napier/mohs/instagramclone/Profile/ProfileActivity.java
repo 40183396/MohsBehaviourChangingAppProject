@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.napier.mohs.instagramclone.Models.Photo;
+import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.ViewCommentsFragment;
 import com.napier.mohs.instagramclone.Utils.ViewPostFragment;
@@ -52,18 +54,33 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         Intent intent = getIntent();
         // if intent has calling_acivity string we are coming from search activity
         if(intent.hasExtra(getString(R.string.calling_activity))){ // check whether extra has calling_activity string
-            Log.d(TAG, "initialiseProfileFragment: searching for user which was attached as intent extra");
-            if(intent.hasExtra(getString(R.string.user_extra))){ // not needed if but good to use in case we have more calling_activity extras in future development
-                Log.d(TAG, "initialiseProfileFragment: viewing someone elses profile");
-                ViewProfileFragment viewProfileFragment = new ViewProfileFragment();
-                Bundle bundleArgs = new Bundle(); // bundle to pass photo
-                bundleArgs.putParcelable(getString(R.string.user_extra),
-                        intent.getParcelableExtra(getString(R.string.user_extra))); // getting parcelable extra of username
-                viewProfileFragment.setArguments(bundleArgs); // sets fragment arguments to bundle arguments
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.containerProfile, viewProfileFragment); // replace container profile with view comments fragment
-                fragmentTransaction.addToBackStack(getString(R.string.fragment_view_profile));
-                fragmentTransaction.commit();
+
+            User user = intent.getParcelableExtra(getString(R.string.user_extra));
+            // this is if you are clicking on photo from main feed you are directed to your own profile
+            if(!user.getUser_id().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                Log.d(TAG, "initialiseProfileFragment: searching for user which was attached as intent extra");
+                if(intent.hasExtra(getString(R.string.user_extra))){ // not needed if but good to use in case we have more calling_activity extras in future development
+                    Log.d(TAG, "initialiseProfileFragment: viewing someone elses profile");
+                    ViewProfileFragment viewProfileFragment = new ViewProfileFragment();
+                    Bundle bundleArgs = new Bundle(); // bundle to pass photo
+                    bundleArgs.putParcelable(getString(R.string.user_extra),
+                            intent.getParcelableExtra(getString(R.string.user_extra))); // getting parcelable extra of username
+                    viewProfileFragment.setArguments(bundleArgs); // sets fragment arguments to bundle arguments
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.containerProfile, viewProfileFragment); // replace container profile with view comments fragment
+                    fragmentTransaction.addToBackStack(getString(R.string.fragment_view_profile));
+                    fragmentTransaction.commit();
+            }else { // if no calling_activity user is just navigating to their own profile
+                    Log.d(TAG, "initialiseProfileFragment: users profile is being inflated");
+                    ProfileFragment profileFragment = new ProfileFragment();
+                    FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.containerProfile, profileFragment); // replacing activity container with fragment
+                    // fragments have different stacks to activities, have to manually track stacks with fragments
+                    transaction.addToBackStack(getString(R.string.fragment_profile));
+                    transaction.commit();
+                }
+
+
             } else {
                 Toast.makeText(mContext, "oops something went wrong", Toast.LENGTH_SHORT).show();
             }
