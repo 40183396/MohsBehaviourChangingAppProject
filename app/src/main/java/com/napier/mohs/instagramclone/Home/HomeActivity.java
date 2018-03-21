@@ -88,13 +88,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     // method to take homae activity to comment thread
-    public void onSelectedCommentThread(Photo photo){
+    public void onSelectedCommentThread(Photo photo, String callingActivity){
         Log.d(TAG, "onSelectedCommentThread: comment thread was selected");
 
         // bundles the user account settings and photo
         ViewCommentsFragment viewCommentsFragment = new ViewCommentsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(getString(R.string.photo), photo);
+        bundle.putString(getString(R.string.activity_number), getString(R.string.activity_number));
         viewCommentsFragment.setArguments(bundle);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

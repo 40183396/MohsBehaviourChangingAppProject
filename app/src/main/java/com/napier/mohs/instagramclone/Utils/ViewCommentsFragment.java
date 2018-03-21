@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.instagramclone.Home.HomeActivity;
 import com.napier.mohs.instagramclone.Models.Comment;
 import com.napier.mohs.instagramclone.Models.Like;
 import com.napier.mohs.instagramclone.Models.Photo;
@@ -109,7 +110,13 @@ public class ViewCommentsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating back to previous activty");
-                getActivity().getSupportFragmentManager().popBackStack();
+                if(getFromBundleCallingActivity().equals(getString(R.string.calling_activity))){ // means from home activity
+                    getActivity().getSupportFragmentManager().popBackStack();
+                    ((HomeActivity)getActivity()).layoutShow(); // fix so when you press back after view photo on main feed you return to ham activity
+                } else {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+
 
             }
         });
@@ -150,6 +157,20 @@ public class ViewCommentsFragment extends Fragment {
         if(view!= null){
             InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromInputMethod(view.getWindowToken(), 0); // hides keyboard
+        }
+    }
+
+    // gets from the bundle the photo from the profile activity interface
+    private String getFromBundleCallingActivity(){
+        Log.d(TAG, "getFromBundlePhoto: " + getArguments());
+
+        Bundle bundle = this.getArguments();
+        // if bundle is not null we actually have recieved somethin
+        if(bundle != null){
+            return bundle.getString(getString(R.string.calling_activity));
+        } else {
+            Log.d(TAG, "getActivityNumberFromBundle: No Calling Activity recieved");
+            return null;
         }
     }
 

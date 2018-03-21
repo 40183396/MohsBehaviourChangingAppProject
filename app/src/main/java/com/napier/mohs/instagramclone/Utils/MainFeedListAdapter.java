@@ -134,7 +134,8 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: opening comment thread for photo: " + getItem(position).getPhoto_id());
                 // begins wrapping bundle with photo at position and user account settings particular to that view
-                ((HomeActivity)mContext).onSelectedCommentThread(getItem(position));
+                ((HomeActivity)mContext).onSelectedCommentThread(getItem(position),
+                        mContext.getString(R.string.calling_activity));
 
                 // hide the layout when we go to comments thread so view pager is hidden want to display frame layout of comments
                 ((HomeActivity)mContext).layoutHide();
@@ -148,6 +149,10 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
         } else {
             viewHolder.timestamp.setText("TODAY");
         }
+
+        // sets caption of photo
+        String captionString = getItem(position).getCaption();
+        viewHolder.caption.setText(captionString);
 
         // sets profile image
         final ImageLoader imageLoader = ImageLoader.getInstance();
@@ -185,6 +190,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
                         }
                     });
 
+
                     //sets profile pic of post owner
                     final ImageLoader imageLoader = ImageLoader.getInstance();
                     imageLoader.displayImage(singleDataSnapshot.getValue(UserAccountSettings.class).getProfile_photo(), viewHolder.imageProfile);
@@ -206,7 +212,19 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
                     viewHolder.comments.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            ((HomeActivity)mContext).onSelectedCommentThread(getItem(position));
+                            ((HomeActivity)mContext).onSelectedCommentThread(getItem(position),
+                                    mContext.getString(R.string.calling_activity));
+
+                            // hide the layout when we go to comments thread so view pager is hidden want to display frame layout of comments
+                            ((HomeActivity)mContext).layoutHide();
+                        }
+                    });
+
+                    viewHolder.speechBubble.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ((HomeActivity)mContext).onSelectedCommentThread(getItem(position),
+                                    mContext.getString(R.string.calling_activity));
 
                             // hide the layout when we go to comments thread so view pager is hidden want to display frame layout of comments
                             ((HomeActivity)mContext).layoutHide();
@@ -214,7 +232,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
                     });
 
                 }
-                //setupWidgets();
+
             }
 
             @Override
@@ -255,7 +273,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
 
     // gets the username of the current user
     private void getUsernameCurrent(){
-        Log.d(TAG, "getUsernameCurrent: retrieving the current users account sccount settings");
+        Log.d(TAG, "getUsernameCurrent: retrieving the current users account settings");
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         // points to user id and retrieves their photos instead of going through db of all  photos
@@ -443,7 +461,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
                             String[] usersSplit = viewHolder.usersStringBuilder.toString().split(",");
 
                             //deteermine if current user has liked photo or not
-                            if(viewHolder.usersStringBuilder.toString().contains(viewHolder.mUser.getUsername() + ",")){ // needs comma otherwise there is a problem when multiple users like it
+                            if(viewHolder.usersStringBuilder.toString().contains(currentUsername + ",")){ // needs comma otherwise there is a problem when multiple users like it
                                 // means user has liked photo
                                 viewHolder.likedCurrentUser = true;
                             } else {
@@ -506,11 +524,11 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
 
     // sets up the strings of like of a photo
     private void likesStringSetup(final ViewHolder viewHolder, String likesString){
-        Log.d(TAG, "likesStingeSetup: string of likes: " + viewHolder.mStringLikes);
+        Log.d(TAG, "likesStringSetup: string of likes: " + viewHolder.mStringLikes);
 
         // if photo is like by current user
         if(viewHolder.likedCurrentUser){
-            Log.d(TAG, "likesStingeSetup: current user likes photo");
+            Log.d(TAG, "likesStringSetup: current user likes photo");
             viewHolder.hollowStar.setVisibility(View.GONE);
             viewHolder.yellowStar.setVisibility(View.VISIBLE);
             viewHolder.yellowStar.setOnTouchListener(new View.OnTouchListener() {
@@ -520,7 +538,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
                 }
             });
         } else { // if photo is not liked by current user
-            Log.d(TAG, "likesStingeSetup: current user does not like hpoto");
+            Log.d(TAG, "likesStringSetup: current user does not like hpoto");
             viewHolder.hollowStar.setVisibility(View.VISIBLE);
             viewHolder.yellowStar.setVisibility(View.GONE);
             viewHolder.hollowStar.setOnTouchListener(new View.OnTouchListener() {
