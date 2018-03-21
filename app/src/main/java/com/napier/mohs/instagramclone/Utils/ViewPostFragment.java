@@ -407,7 +407,7 @@ public class ViewPostFragment extends Fragment {
 
         // adds like to user photos node
         myDBRefFirebase.child(getString(R.string.db_name_user_photos))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()) //current users user_id
+                .child(mPhoto.getUser_id()) //current users user_id
                 .child(mPhoto.getPhoto_id())
                 .child(getString(R.string.likes_field))
                 .child(newLikeID) // gets key of id

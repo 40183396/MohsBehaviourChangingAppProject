@@ -187,7 +187,7 @@ public class ViewCommentsFragment extends Fragment {
 
         // inserts into user_photos node
         myDBRefFirebase.child(getString(R.string.db_name_user_photos)) // look in user_photos node
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()) //get user_id
+                .child(mPhoto.getUser_id()) //get user_id of whoevers photo it is
                 .child(mPhoto.getPhoto_id()) //get photo_id
                 .child(getString(R.string.comments_field)) // gets list of comments
                 .child(commentID) // gets id of new comment

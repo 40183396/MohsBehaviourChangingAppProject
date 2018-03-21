@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/relLayout1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/imageMainFeedProfile"
+                android:layout_marginTop="20dp"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="0.5dp"
+                android:layout_marginLeft="25dp"
+                android:layout_centerVertical="true"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="mohs.akhtar"
+                android:layout_toRightOf="@+id/imageMainFeedProfile"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:id="@+id/textviewMainFeedUsername"
+                android:textColor="@color/black"
+                />
+
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_profilemenu"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:id="@+id/imageMainFeedMenu"/>
+
+        </RelativeLayout>
+
+        <com.napier.mohs.instagramclone.Utils.ImagesSquaredView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageMainFeedPostPicture"
+            android:layout_below="@id/relLayout1"
+            android:scaleType="centerCrop"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/relLayout2"
+            android:layout_below="@+id/imageMainFeedPostPicture"
+            android:background="@color/white">
+
+            <RelativeLayout
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:id="@+id/starLayout"
+                android:background="@color/white">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:id="@+id/imageMainFeedStarYellow"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/ic_star_yellow"
+                    android:visibility="invisible"/>
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:id="@+id/imageMainFeedStarHollow"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/ic_star_hollow"
+                    android:visibility="visible"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:id="@+id/imageMainFeedSpeechBubble"
+                android:layout_toRightOf="@+id/starLayout"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_speech_bubble"
+                android:visibility="visible"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/relLayout3"
+            android:layout_below="@+id/relLayout2"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Liked by Mohs, Amaan, Steven and 100 others"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:id="@+id/textviewMainFeedLikes"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="mohs.akhtar Loving Life"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:id="@+id/textviewMainFeedCaption"
+                android:layout_below="@+id/textviewMainFeedLikes"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View all 15 comments"
+                android:textColor="@color/grey"
+                android:textSize="18sp"
+                android:layout_below="@+id/textviewMainFeedCaption"
+                android:id="@+id/textviewMainFeedComments"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 DAYS AGO"
+                android:textColor="@color/grey"
+                android:textSize="18sp"
+                android:layout_below="@+id/textviewMainFeedComments"
+                android:id="@+id/textviewMainFeedTimeStamp"
+                android:layout_marginTop="15dp"/>
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

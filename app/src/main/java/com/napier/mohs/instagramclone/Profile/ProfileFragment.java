@@ -84,6 +84,10 @@ public class ProfileFragment extends Fragment {
     private DatabaseReference myDBRefFirebase;
     private FirebaseMethods mFirebaseMethods;
 
+    private int mCountFollowers;
+    private int mCountFollowing;
+    private int mCountPosts;
+
 
     @Nullable
     @Override
@@ -116,6 +120,9 @@ public class ProfileFragment extends Fragment {
         setupBottomNavigationView();
         setupToolbar();
         setupGridView();
+        retrieveFollowersCount();
+        retrieveFollowingCount();
+        retrievePostsCount();
 
         // Goes to edit page fragment
         mEditProfile.setOnClickListener(new View.OnClickListener() {
@@ -158,10 +165,6 @@ public class ProfileFragment extends Fragment {
         mUsername.setText(userAccountSettings.getUsername());
         mWebsite.setText(userAccountSettings.getWebsite());
         mDescription.setText(userAccountSettings.getDescription());
-        mPosts.setText(String.valueOf(userAccountSettings.getPosts()));
-        mFollowers.setText(String.valueOf(userAccountSettings.getFollowers()));
-        mFollowing.setText(String.valueOf(userAccountSettings.getFollowing()));
-
         mProgressBar.setVisibility(View.GONE);
     }
 
@@ -280,6 +283,86 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    // method to count number of followers
+    private void retrieveFollowersCount(){
+        mCountFollowers = 0;
+
+        DatabaseReference followersReference = FirebaseDatabase.getInstance().getReference();
+        Query followersQuery = followersReference.child(getString(R.string.db_name_followers)) // look in user_account_settings node
+                .child(mAuth.getCurrentUser().getUid()); // look in user_id node see if we have a match
+        //
+        followersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // every time we find a match in this query we add one to followers
+                for(DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()){
+                    Log.d(TAG, "onDataChange: follower found" + singleDataSnapShot.getValue());
+                    mCountFollowers++;
+                }
+                mFollowers.setText(String.valueOf(mCountFollowers)); // sets the followers text field with the number of followers found
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    // method to count number of users following
+    private void retrieveFollowingCount(){
+        mCountFollowing = 0;
+
+        DatabaseReference followingReference = FirebaseDatabase.getInstance().getReference();
+        Query followingQuery = followingReference.child(getString(R.string.db_name_following)) // look in following node
+                .child(mAuth.getCurrentUser().getUid()); // look in user_id node see if we have a match
+        //
+        followingQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // every time we find a match in this query we add one to following
+                for(DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()){
+                    Log.d(TAG, "onDataChange: following found" + singleDataSnapShot.getValue());
+                    mCountFollowing++;
+                }
+                mFollowing.setText(String.valueOf(mCountFollowing)); // sets the following text field with the number of followers found
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    // method to count number of followers
+    private void retrievePostsCount(){
+        mCountPosts = 0;
+
+        DatabaseReference postsReference = FirebaseDatabase.getInstance().getReference();
+        Query postsQuery = postsReference.child(getString(R.string.db_name_user_photos)) // look in user_account_settings node
+                .child(mAuth.getCurrentUser().getUid()); // look in user_id node see if we have a match
+        //
+        postsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // every time we find a match in this query we add one to followers
+                for(DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()){
+                    Log.d(TAG, "onDataChange: number of posts found" + singleDataSnapShot.getValue());
+                    mCountPosts++;
+                }
+                mPosts.setText(String.valueOf(mCountPosts)); // sets the followers text field with the number of followers found
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
     //------------------------FIRESBASE STUFF------------
     // Method to check if a user is signed in app
