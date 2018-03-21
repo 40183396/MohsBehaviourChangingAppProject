@@ -75,7 +75,8 @@ public class HomeFragment extends Fragment {
 
                     mFollowingArrayList.add(singleDataSnapshot.child(getString(R.string.user_id_field)).getValue().toString()); //sets who we are following to array list
                 }
-
+                // this makes sure users own photos are added to following array list and main feed
+                mFollowingArrayList.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 // retrieve photos
                 retrievePhotos();
             }
