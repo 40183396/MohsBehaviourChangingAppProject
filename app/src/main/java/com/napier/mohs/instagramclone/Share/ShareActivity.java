@@ -64,12 +64,14 @@ public class ShareActivity extends AppCompatActivity{
         mViewPager = (ViewPager) findViewById(R.id.viewpagerContainer);
         mViewPager.setAdapter(adapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.bottomTabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        setupBottomNavigationView();
 
-        // set text for each of tabs
-        tabLayout.getTabAt(0).setText(getString(R.string.gallery));
-        tabLayout.getTabAt(1).setText(getString(R.string.photo));
+//        TabLayout tabLayout = (TabLayout) findViewById(R.id.bottomTabs);
+//        tabLayout.setupWithViewPager(mViewPager);
+//
+//        // set text for each of tabs
+//        tabLayout.getTabAt(0).setText(getString(R.string.gallery));
+//        tabLayout.getTabAt(1).setText(getString(R.string.photo));
     }
 
     public int taskGet(){
