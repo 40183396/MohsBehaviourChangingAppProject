@@ -4,53 +4,111 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.instagramclone.Login.LoginActivity;
+import com.napier.mohs.instagramclone.Models.Photo;
+import com.napier.mohs.instagramclone.Models.User;
+import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.instagramclone.Utils.SectionsPagerAdapter;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
+import com.napier.mohs.instagramclone.Utils.ViewCommentsFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.concurrent.ExecutionException;
 
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
     private static final int ACTIVITY_NUM = 0;
+    private static final int FRAGMENT_HOME = 1; // 1 because it is middle tab
     private Context mContext = HomeActivity.this;
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    private ViewPager mViewPager;
+    private FrameLayout mFrameLayout;
+    private RelativeLayout mRelativeLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.d(TAG, "onCreate: starting.");
+        mViewPager = (ViewPager) findViewById(R.id.viewpagerContainer);
+        mFrameLayout = (FrameLayout) findViewById(R.id.container);
+        mRelativeLayout = (RelativeLayout) findViewById(R.id.relLayoutParent);
+
+
         setupFirebaseAuth();
         // make sure to initiliases image loader first
         initImageLoader();
-        //mAuth.signOut();
+
+
 
         setupBottomNavigationView();
         setupViewPager();
     }
 
+    public void layoutHide(){
+        Log.d(TAG, "layoutHide: hiding relative layout in activity home");
+        mRelativeLayout.setVisibility(View.GONE);
+        mFrameLayout.setVisibility(View.VISIBLE); // FrameLayout is where comments fragments is going to be insereted into
+    }
+
+    public void layoutShow(){
+        Log.d(TAG, "layoutShow: hiding frame layout");
+        mRelativeLayout.setVisibility(View.VISIBLE);
+        mFrameLayout.setVisibility(View.GONE); // FrameLayout is where comments fragments is going to be insereted into
+    }
+
+    // overriding on back press method when we are navigating away from comments thread we hide fram layout
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(mFrameLayout.getVisibility() == View.VISIBLE){
+            layoutShow();
+        }
+    }
+
+    // method to take homae activity to comment thread
+    public void onSelectedCommentThread(Photo photo){
+        Log.d(TAG, "onSelectedCommentThread: comment thread was selected");
+
+        // bundles the user account settings and photo
+        ViewCommentsFragment viewCommentsFragment = new ViewCommentsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(getString(R.string.photo), photo);
+        viewCommentsFragment.setArguments(bundle);
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.container, viewCommentsFragment); // replace home container with this fragment
+        fragmentTransaction.addToBackStack(getString(R.string.fragment_viewcomments));
+        fragmentTransaction.commit();
+    }
 
     // initialises image loader here to be able to use in all other activities
     private void initImageLoader(){
         UniversalImageLoader universalImageLoader = new UniversalImageLoader(mContext);
         ImageLoader.getInstance().init(universalImageLoader.getConfig()); // retrieves configuration
     }
+
 
     /*
     * Responsible for adding 3 tabs: Camera, Home, Messages
@@ -60,11 +118,10 @@ public class HomeActivity extends AppCompatActivity {
         adapter.addFragment(new CameraFragment()); // index 0
         adapter.addFragment(new HomeFragment()); // index 1
         adapter.addFragment(new MessagesFragment()); // index 2
-        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
-        viewPager.setAdapter(adapter);
+        mViewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(mViewPager);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_instagram);
@@ -125,6 +182,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
         FirebaseUser user = mAuth.getCurrentUser();
+        mViewPager.setCurrentItem(FRAGMENT_HOME); // displays home as default first view
         currentUserCheck(user);
     }
 

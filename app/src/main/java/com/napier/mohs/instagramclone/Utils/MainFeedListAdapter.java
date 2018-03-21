@@ -1,6 +1,7 @@
 package com.napier.mohs.instagramclone.Utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,11 +22,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.napier.mohs.instagramclone.Home.HomeActivity;
+import com.napier.mohs.instagramclone.Models.Comment;
 import com.napier.mohs.instagramclone.Models.Like;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
+import com.napier.mohs.instagramclone.Profile.ProfileActivity;
 import com.napier.mohs.instagramclone.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,10 +55,11 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
     private DatabaseReference mDatabaseReference;
     private String currentUsername = "";
 
-    public MainFeedListAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<Photo> objects) {
-        super(context, resource, textViewResourceId, objects);
+    public MainFeedListAdapter(@NonNull Context context, int resource, @NonNull List<Photo> objects) {
+        super(context, resource, objects);
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mLayoutResource = resource;
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         this.mContext = context;
     }
 
@@ -81,7 +87,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         final ViewHolder viewHolder;
 
         if(convertView == null){
@@ -113,7 +119,170 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        // retrieves  current users username for checking likes string
+        getUsernameCurrent();
+        getStringLikes(viewHolder);
+
+        // list for all comments of photo
+        List<Comment> comments = getItem(position).getComments();
+        viewHolder.comments.setText("View all " + comments.size() + " comments"); // sets comment text field with how many comments there are for photo
+
+        // when we press comments text field we start intent to comments
+        viewHolder.comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: opening comment thread for photo: " + getItem(position).getPhoto_id());
+                // begins wrapping bundle with photo at position and user account settings particular to that view
+                ((HomeActivity)mContext).onSelectedCommentThread(getItem(position));
+
+                // hide the layout when we go to comments thread so view pager is hidden want to display frame layout of comments
+                ((HomeActivity)mContext).layoutHide();
+            }
+        });
+
+        // sets timestamp for photo
+        String differenceTimeStamp = getDateTimeStampDifference(getItem(position));
+        if (!differenceTimeStamp.equals("0")){
+            viewHolder.timestamp.setText((differenceTimeStamp + " DAYS AGO")); // if there is a difference in timestamp
+        } else {
+            viewHolder.timestamp.setText("TODAY");
+        }
+
+        // sets profile image
+        final ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(getItem(position).getImage_path(), viewHolder.imagePost);
+
+        // gets username and profile image for the post
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        // points to user id and retrieves their photos instead of going through db of all  photos
+        Query query = databaseReference
+                .child(mContext.getString(R.string.db_name_user_account_settings)) // looks in user_account_settings node
+                .orderByChild(mContext.getString(R.string.user_id_field)) // looks for user_id field
+                .equalTo(getItem(position).getUser_id()); // gets photo and user id attached to the phoot
+
+        Log.d(TAG, "getPostDetails: query: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener(){
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
+                    Log.d(TAG, "onDataChange: found user: " + singleDataSnapshot.getValue(UserAccountSettings.class).getUsername() );
+
+                    // sets username of post owner in text field in view holder
+                    viewHolder.username.setText(singleDataSnapshot.getValue(UserAccountSettings.class).getUsername());
+                    // on click listener so we can navigate to that users profile
+                    viewHolder.username.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Log.d(TAG, "onClick: going to the profile of user: " + viewHolder.username);
+                            Intent intent = new Intent(mContext, ProfileActivity.class); // intent to nav to profile activity
+                            intent.putExtra(mContext.getString(R.string.calling_activity),
+                                    mContext.getString(R.string.home_activity));
+                            intent.putExtra(mContext.getString(R.string.user_extra), viewHolder.mUser); // another extra for passing user object
+                            mContext.startActivity(intent);
+                        }
+                    });
+
+                    //sets profile pic of post owner
+                    final ImageLoader imageLoader = ImageLoader.getInstance();
+                    imageLoader.displayImage(singleDataSnapshot.getValue(UserAccountSettings.class).getProfile_photo(), viewHolder.imageProfile);
+                    // on click listener to navigate to users profile when their picture is clicked
+                    viewHolder.imageProfile.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Log.d(TAG, "onClick: going to the profile of user: " + viewHolder.username);
+                            Intent intent = new Intent(mContext, ProfileActivity.class); // intent to nav to profile activity
+                            intent.putExtra(mContext.getString(R.string.calling_activity),
+                                    mContext.getString(R.string.home_activity));
+                            intent.putExtra(mContext.getString(R.string.user_extra), viewHolder.mUser); // another extra for passing user object
+                            mContext.startActivity(intent);
+                        }
+                    });
+
+                    viewHolder.mUserAccountSettings = singleDataSnapshot.getValue(UserAccountSettings.class); // getting settings
+                    // onclick listener to go to comments thread
+                    viewHolder.comments.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ((HomeActivity)mContext).onSelectedCommentThread(getItem(position));
+
+                            // hide the layout when we go to comments thread so view pager is hidden want to display frame layout of comments
+                            ((HomeActivity)mContext).layoutHide();
+                        }
+                    });
+
+                }
+                //setupWidgets();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: query has been cancelled");
+            }
+        });
+
+        // retrieves user object
+        // points to user id and retrieves their photos instead of going through db of all  photos
+        Query userQuery = mDatabaseReference
+                .child(mContext.getString(R.string.db_name_users)) // looks in user_account_settings node
+                .orderByChild(mContext.getString(R.string.user_id_field)) // looks for user_id field
+                .equalTo(getItem(position).getUser_id()); // checks if we have a match to the current users user id
+
+        Log.d(TAG, "getPostDetails: query: " + getItem(position).getUser_id().toString());
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener(){
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
+                    Log.d(TAG, "onDataChange: user found " + singleDataSnapshot.getValue(User.class).getUsername());
+
+                    viewHolder.mUser = singleDataSnapshot.getValue(User.class);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: query has been cancelled");
+            }
+        });
+
         return convertView;
+    }
+
+    // gets the username of the current user
+    private void getUsernameCurrent(){
+        Log.d(TAG, "getUsernameCurrent: retrieving the current users account sccount settings");
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        // points to user id and retrieves their photos instead of going through db of all  photos
+        Query query = databaseReference
+                .child(mContext.getString(R.string.db_name_users)) // looks in user_account_settings node
+                .orderByChild(mContext.getString(R.string.user_id_field)) // looks for user_id field
+                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid()); // checks if we have a match to the current users user id
+
+        Log.d(TAG, "getPostDetails: query: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener(){
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
+                    currentUsername = singleDataSnapshot.getValue(UserAccountSettings.class).getUsername(); // gets user name for current user
+                    Log.d(TAG, "onDataChange: User: " + singleDataSnapshot.getValue(UserAccountSettings.class).getUsername() );
+
+                }
+                //setupWidgets();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: query has been cancelled");
+            }
+        });
     }
 
     public class GestureListener extends GestureDetector.SimpleOnGestureListener{

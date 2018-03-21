@@ -47,11 +47,14 @@
 
     <!-- Bundle argument names Strings-->
     <string name="activity_number">activity_number</string>
+    <string name="user_account_settings_bundle">user_account_settings_bundle</string>
+    <string name="photo_bundle">photo_bundle</string>
 
 
     <!-- Activity Strings -->
     <string name="profile_activity">Profile Activity</string>
     <string name="search_activity">Search Activity</string>
+    <string name="home_activity">Home Activity</string>
 
     <!--Dialog Strings-->
     <string name="dialog_password_confirm">PasswordConfirmDialog</string>
