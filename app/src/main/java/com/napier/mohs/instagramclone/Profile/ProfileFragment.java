@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -67,14 +68,21 @@ public class ProfileFragment extends Fragment {
     private static final int ACTIVITY_NUM = 4;
     private static final int NUM_COLS_GRID = 3;
 
-
-    private TextView mPosts, mFollowers, mFollowing, mDisplayName, mUsername, mWebsite, mDescription, mEditProfile;
-    private ProgressBar mProgressBar;
-    private CircleImageView mProfilePhoto;
-    private GridView gridView;
-    private Toolbar toolbar;
-    private ImageView profileMenu;
-    private BottomNavigationViewEx bottomNavigationView;
+    // Widgets
+    @BindView(R.id.textviewProfilePostsNumber) TextView mPosts;
+    @BindView(R.id.textviewProfileFollowersNumber) TextView mFollowers;
+    @BindView(R.id.textviewProfileFollowingNumber) TextView mFollowing;
+    @BindView(R.id.textviewProfileDisplayName) TextView mDisplayName;
+    @BindView(R.id.textviewProfileName) TextView mUsername;
+    @BindView(R.id.textviewProfileWebsite) TextView mWebsite;
+    @BindView(R.id.textviewProfileDescription) TextView mDescription;
+    @BindView(R.id.textviewProfileEditYourProfile) TextView mEditProfile;
+    @BindView(R.id.progressbarProfile) ProgressBar mProgressBar;
+    @BindView(R.id.imageProfile) CircleImageView mProfilePhoto;
+    @BindView(R.id.gridviewProfile) GridView gridView;
+    @BindView(R.id.toolbarEdit) Toolbar toolbar;
+    @BindView(R.id.imageProfileMenu) ImageView profileMenu;
+    @BindView(R.id.bottomNavViewBar) BottomNavigationViewEx bottomNavigationView;
 
     private Context mContext;
 
@@ -95,26 +103,13 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
-        
+
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
         mFirebaseMethods = new FirebaseMethods(getActivity());
 
-        mDisplayName = (TextView) view.findViewById(R.id.textviewProfileDisplayName);
-        mUsername = (TextView) view.findViewById(R.id.textviewProfileName);
-        mWebsite = (TextView) view.findViewById(R.id.textviewProfileWebsite);
-        mDescription = (TextView) view.findViewById(R.id.textviewProfileDescription);
-        mProfilePhoto = (CircleImageView) view.findViewById(R.id.imageProfile);
-        mPosts = (TextView) view.findViewById(R.id.textviewProfilePostsNumber);
-        mFollowers = (TextView) view.findViewById(R.id.textviewProfileFollowersNumber);
-        mFollowing = (TextView) view.findViewById(R.id.textviewProfileFollowingNumber);
-        mEditProfile = (TextView) view.findViewById(R.id.textviewProfileEditYourProfile);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progressbarProfile);
-        gridView = (GridView) view.findViewById(R.id.gridviewProfile);
-        toolbar = (Toolbar) view.findViewById(R.id.toolbarEdit);
-        profileMenu = (ImageView) view.findViewById(R.id.imageProfileMenu);
-        bottomNavigationView = (BottomNavigationViewEx) view.findViewById(R.id.bottomNavViewBar);
+
         mContext = getActivity();
         Log.d(TAG, "onCreateView: started profile fragment");
 
@@ -153,7 +148,7 @@ public class ProfileFragment extends Fragment {
     }
 
     // sets up the profile page with data from db
-    private void seupWidgets(UserSettings userSettings) {
+    private void setupWidgets(UserSettings userSettings) {
         Log.d(TAG, "seupWidgets: settings up widget with data from firebase db ");
 
         // User settings not needed here but added here anyway
@@ -391,7 +386,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // retrievs the user info from db
-                seupWidgets(mFirebaseMethods.getUserSettings(dataSnapshot)); // retrieves datasnapshot of user settings and sets up widgets
+                setupWidgets(mFirebaseMethods.getUserSettings(dataSnapshot)); // retrieves datasnapshot of user settings and sets up widgets
                 // retrievs images for the user
             }
 

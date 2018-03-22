@@ -88,14 +88,6 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
                     transaction.replace(R.id.containerProfile, viewProfileFragment); // replace container profile with view comments fragment
                     transaction.addToBackStack(viewprofile_fragment);
                     transaction.commit();
-                } else { // if no calling_activity user is just navigating to their own profile
-                    Log.d(TAG, "initialiseProfileFragment: users profile is being inflated");
-                    ProfileFragment profileFragment = new ProfileFragment();
-                    FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.containerProfile, profileFragment); // replacing activity container with fragment
-                    // fragments have different stacks to activities, have to manually track stacks with fragments
-                    transaction.addToBackStack(profile_fragment);
-                    transaction.commit();
                 }
 
             }else { // if no calling_activity user is just navigating to their own profile
@@ -108,9 +100,16 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
                 transaction.commit();
             }
 
-        }
+        } else { // if no calling_activity user is just navigating to their own profile
+            Log.d(TAG, "initialiseProfileFragment: users profile is being inflated");
+            ProfileFragment profileFragment = new ProfileFragment();
+            FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.containerProfile, profileFragment); // replacing activity container with fragment
+            // fragments have different stacks to activities, have to manually track stacks with fragments
+            transaction.addToBackStack(profile_fragment);
+            transaction.commit();
 
-    }
+    }}
 
     // makes it so when we click on any photo from anywhere it loads up the post of the photo
     @Override

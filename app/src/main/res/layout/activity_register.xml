@@ -98,8 +98,7 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:id="@+id/textviewRegisterLoggingIn"
-        android:layout_alignBottom="@id/progressbarLogin"
-        android:layout_alignRight="@id/progressbarLogin"
-        android:layout_alignLeft="@id/progressbarLogin"/>
+        android:layout_below="@+id/progressbarRegister"
+        android:layout_alignRight="@id/progressbarRegister"/>
 
 </RelativeLayout>

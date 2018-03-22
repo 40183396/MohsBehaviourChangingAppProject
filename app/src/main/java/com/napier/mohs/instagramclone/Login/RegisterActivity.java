@@ -26,6 +26,7 @@ import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Mohs on 17/03/2018.
@@ -59,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        ButterKnife.bind(this);
         mContext = RegisterActivity.this;
 
         fbMethods = new FirebaseMethods(mContext);
