@@ -70,13 +70,9 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
     OnItemsLoadMoreListener mOnItemsLoadMoreListener;
 
     static class ViewHolder{
-        TextView comments;
-        CircleImageView imageProfile;
-        TextView username;
-        TextView timestamp;
-        TextView caption;
-        TextView likes;
+        TextView comments, username, timestamp, caption, likes;
         ImageView yellowStar, hollowStar, speechBubble;
+        CircleImageView imageProfile;
         String stringLikes;
         ImagesSquaredView imagePost;
 

@@ -7,10 +7,9 @@ import java.util.List;
  */
 
 public class Comment {
-    private String comment;
-    private String user_id;
+    private String comment, user_id, date_created;
     private List<Like> likes;
-    private String date_created;
+
 
     public Comment() {
     }

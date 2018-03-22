@@ -40,12 +40,8 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference myDBRefFirebase;
 
     private Context mContext;
-    private String email;
-    private String password;
-    private String username;
-    private EditText mEmail;
-    private EditText mPassword;
-    private EditText mUsername;
+    private String email, password, username;
+    private EditText mEmail, mPassword, mUsername;
     private TextView mSigningIn;
     private Button mRegisterButton;
     private ProgressBar mProgressBar;

@@ -85,14 +85,10 @@ public class ViewProfileFragment extends Fragment{
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
 
     // variables
     private User mUser;
-    private int mCountFollowers;
-    private int mCountFollowing;
-    private int mCountPosts;
+    private int mCountFollowers, mCountFollowing, mCountPosts;
 
 
     @Nullable
@@ -102,8 +98,6 @@ public class ViewProfileFragment extends Fragment{
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myDBRefFirebase = mFirebaseDatabase.getReference();
-        mFirebaseMethods = new FirebaseMethods(getActivity());
 
         mDisplayName = (TextView) view.findViewById(R.id.textviewViewProfileDisplayName);
         mUsername = (TextView) view.findViewById(R.id.textviewViewProfileUsername);

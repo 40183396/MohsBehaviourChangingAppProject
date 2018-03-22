@@ -15,6 +15,8 @@ import com.napier.mohs.instagramclone.R;
 
 /**
  * Created by Mohs on 18/03/2018.
+ *
+ * This class is only needed for email change
  */
 
 public class PasswordConfirmDialog extends DialogFragment{

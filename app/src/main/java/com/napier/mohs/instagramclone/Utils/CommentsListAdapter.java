@@ -53,12 +53,8 @@ public class CommentsListAdapter extends ArrayAdapter<Comment>{
     // View Holder build pattern for list view
     private static class ViewHolder{ // using this instead of recycler view, does same thing with but with less code
         // load widgets into memory instead of loading them all at once
-        TextView comment;
+        TextView comment, username, timestamp, reply, likes;
         CircleImageView imageProfile;
-        TextView username;
-        TextView timestamp;
-        TextView reply;
-        TextView likes;
         ImageView imageLike;
     }
 

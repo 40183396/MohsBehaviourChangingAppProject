@@ -35,8 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Context mContext;
     private ProgressBar mProgressBar;
-    private EditText mEmail;
-    private EditText mPassword;
+    private EditText mEmail, mPassword;
     private TextView mSigningIn;
 
     @Override

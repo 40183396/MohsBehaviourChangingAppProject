@@ -41,7 +41,8 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
         Log.d(TAG, "onItemsLoadMore: more photos being displayed");
         // HomeFragment is set up through view pager there is a different way to assign tag
         HomeFragment homeFragment = (HomeFragment)getSupportFragmentManager()
-                .findFragmentByTag("android:switcher:" + R.id.viewpagerContainer + ":" + mViewPager.getCurrentItem()); // references its tag
+                .findFragmentByTag("android:switcher:" + R.id.viewpagerContainer
+                        + ":" + mViewPager.getCurrentItem()); // references its tag
         if(homeFragment != null){
             homeFragment.displayMorePhotos(); // fragment will display more photos
         }
@@ -69,13 +70,9 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
         mFrameLayout = (FrameLayout) findViewById(R.id.container);
         mRelativeLayout = (RelativeLayout) findViewById(R.id.relLayoutParent);
 
-
         setupFirebaseAuth();
         // make sure to initiliases image loader first
         initImageLoader();
-
-
-
         setupBottomNavigationView();
         setupViewPager();
     }
@@ -83,16 +80,16 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
     public void layoutHide(){
         Log.d(TAG, "layoutHide: hiding relative layout in activity home");
         mRelativeLayout.setVisibility(View.GONE);
-        mFrameLayout.setVisibility(View.VISIBLE); // FrameLayout is where comments fragments is going to be insereted into
+        mFrameLayout.setVisibility(View.VISIBLE); // FrameLayout is where comments fragments is going to be inserted into
     }
 
     public void layoutShow(){
         Log.d(TAG, "layoutShow: hiding frame layout");
         mRelativeLayout.setVisibility(View.VISIBLE);
-        mFrameLayout.setVisibility(View.GONE); // FrameLayout is where comments fragments is going to be insereted into
+        mFrameLayout.setVisibility(View.GONE); // FrameLayout is where comments fragments is going to be inserted into
     }
 
-    // overriding on back press method when we are navigating away from comments thread we hide fram layout
+    // overriding on back press method when we are navigating away from comments thread we hide frame layout for comments
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -101,7 +98,7 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
         }
     }
 
-    // method to take homae activity to comment thread
+    // method to take home activity to comment thread
     public void onSelectedCommentThread(Photo photo, String callingActivity){
         Log.d(TAG, "onSelectedCommentThread: comment thread was selected");
 
@@ -109,7 +106,7 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
         ViewCommentsFragment viewCommentsFragment = new ViewCommentsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(getString(R.string.photo), photo);
-        bundle.putString(getString(R.string.activity_number), getString(R.string.activity_number));
+        bundle.putString(getString(R.string.home_activity), getString(R.string.home_activity));
         viewCommentsFragment.setArguments(bundle);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

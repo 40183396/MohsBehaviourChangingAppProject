@@ -57,7 +57,13 @@ import java.util.TimeZone;
 public class ViewCommentsFragment extends Fragment {
     private static final String TAG = "ViewCommentsFragment";
 
-    // this constructor prevents NullPointerException when recieving a bundle from a interface
+    // Firebase Stuff
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myDBRefFirebase;
+
+    // this constructor prevents NullPointerException when receiving a bundle from a interface
     public ViewCommentsFragment(){
         super();
         setArguments(new Bundle());
@@ -67,15 +73,8 @@ public class ViewCommentsFragment extends Fragment {
     private Context mContext;
 
 
-    // Firebase Stuff
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
 
-    private ImageView mBackArrow;
-    private ImageView mSend;
+    private ImageView  mSend;
     private EditText mComment;
     private ListView mListView;
 
@@ -92,43 +91,46 @@ public class ViewCommentsFragment extends Fragment {
         mSend = (ImageView) view.findViewById(R.id.imageCommentPost);
         mContext = getActivity(); // keeps context constant
 
-
-
         // bundle could potentially be null so need a try catch
         try{
-            mPhoto = getFromBundlePhoto(); // photo retrieved form bundle
+            mPhoto = getFromBundlePhoto(); // photo retrieved from bundle
+            getFromBundleCallingActivity();
 
         } catch (NullPointerException e){
             Log.e(TAG, "onCreateView: NullPointerException: " + e.getMessage() );
         }
-        setupFirebaseAuth();
 
+        setupFirebaseAuth();
 
         //setup the backarrow for navigating back to previous activity
         ImageView mBackArrow = (ImageView) view.findViewById(R.id.imageCommentsBackArrow);
         mBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: navigating back to previous activty");
-                if(getFromBundleCallingActivity().equals(getString(R.string.calling_activity))){ // means from home activity
-                    getActivity().getSupportFragmentManager().popBackStack();
-                    ((HomeActivity)getActivity()).layoutShow(); // fix so when you press back after view photo on main feed you return to ham activity
-                } else {
-                    getActivity().getSupportFragmentManager().popBackStack();
+                Log.d(TAG, "onClick: navigating back to previous activity");
+                try{
+                    if(getFromBundleCallingActivity().equals(getString(R.string.home_activity))){ // means from home activity
+
+                        getActivity().getSupportFragmentManager().popBackStack();
+                        ((HomeActivity)getActivity()).layoutShow(); // fix so when you press back after view photo on main feed you return to home activity
+
+                    } else {
+                        getActivity().getSupportFragmentManager().popBackStack();
+                    }
+                } catch(NullPointerException e){
+                    Log.e(TAG, "onClick: NullPointerException" + e.getMessage() );
                 }
-
-
             }
         });
 
-
         return view;
     }
+
     // sets up widgets
     private void setupWidgets(){
         Log.d(TAG, "setupWidgets: setting up widgets");
         CommentsListAdapter adapter = new CommentsListAdapter(mContext, R.layout.layout_comments, mCommentArrayList); // adapter with comments
-        mListView.setAdapter(adapter); //list view recieves data from adapter
+        mListView.setAdapter(adapter); //list view receives data from adapter
 
         // button for sending a comment
         mSend.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +147,6 @@ public class ViewCommentsFragment extends Fragment {
                 } else {
                     Log.d(TAG, "onClick: Comments field is blank");
                 }
-
             }
         });
     }
@@ -153,6 +154,7 @@ public class ViewCommentsFragment extends Fragment {
     // closes keyboard method
     private void keyboardClose(){
         Log.d(TAG, "keyboardClose: keyboard being closed");
+
         View view = getActivity().getCurrentFocus();
         if(view!= null){
             InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -162,12 +164,13 @@ public class ViewCommentsFragment extends Fragment {
 
     // gets from the bundle the photo from the profile activity interface
     private String getFromBundleCallingActivity(){
-        Log.d(TAG, "getFromBundlePhoto: " + getArguments());
+        Log.d(TAG, "getFromBundleCallingActivity: " + getArguments());
 
         Bundle bundle = this.getArguments();
-        // if bundle is not null we actually have recieved somethin
+        // if bundle is not null we actually have received something
         if(bundle != null){
-            return bundle.getString(getString(R.string.calling_activity));
+            Log.d(TAG, "getFromBundleCallingActivity: recieved from calling activity" + bundle.getString(getString(R.string.home_activity)));
+            return bundle.getString(getString(R.string.home_activity));
         } else {
             Log.d(TAG, "getActivityNumberFromBundle: No Calling Activity recieved");
             return null;
@@ -183,7 +186,7 @@ public class ViewCommentsFragment extends Fragment {
         if(bundle != null){
             return bundle.getParcelable(getString(R.string.photo));
         } else {
-            Log.d(TAG, "getActivityNumberFromBundle: No Photo recieved");
+            Log.d(TAG, "getActivityNumberFromBundle: No Photo received");
             return null;
         }
     }
@@ -318,17 +321,7 @@ public class ViewCommentsFragment extends Fragment {
 
                                     setupWidgets();
 
-                                    //List<Like> likeList = new ArrayList<Like>();
-                    /*for(DataSnapshot dataSnapshot1 : singleDataSnapshot
-                            .child(getString(R.string.likes_field)).getChildren()){ // loop[ through all likes
-                        Like like = new Like();
-                        like.setUser_id(dataSnapshot1.getValue(Like.class).getUser_id());
-                        likeList.add(like);
-                    }*/
-
                                 }
-
-
 
                             }
 
@@ -359,7 +352,6 @@ public class ViewCommentsFragment extends Fragment {
 
                     }
                 });
-
 
     }
 

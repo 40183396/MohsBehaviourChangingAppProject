@@ -9,15 +9,8 @@ import android.os.Parcelable;
 
 public class UserAccountSettings implements Parcelable{
 
-    private String description;
-    private String display_name;
-    private long followers;
-    private long following;
-    private long posts;
-    private String profile_photo;
-    private String username;
-    private String website;
-    private String user_id;
+    private String description, display_name, profile_photo, username, website, user_id;
+    private long followers, following, posts;
 
     public UserAccountSettings(String description, String display_name, long followers,
                                long following, long posts, String profile_photo, String username,

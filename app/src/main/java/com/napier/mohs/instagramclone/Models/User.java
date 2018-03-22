@@ -10,10 +10,8 @@ import android.os.Parcelable;
 public class User  implements Parcelable{
 
     // text has to match exactly to what is in firebase
-    private String user_id;
-    private String email;
+    private String user_id, email, username;
     private long phone_number; // fb stores numbers as longs
-    private String username;
 
     public User(String user_id, long phone_number, String email, String username) {
         this.user_id = user_id;

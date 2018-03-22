@@ -37,7 +37,6 @@ import java.util.Map;
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
-
     private ArrayList<String> mFollowingArrayList;
     private ArrayList<Photo> mPhotoArrayList; // holds all photos of people you are following
     private ArrayList<Photo> mPhotosPaginatedArrayList; // Photos that are added incrementally as you scroll through feed
@@ -54,14 +53,13 @@ public class HomeFragment extends Fragment {
         mFollowingArrayList = new ArrayList<>();
         mPhotoArrayList = new ArrayList<>();
 
-
         getFollowing();
         return view;
     }
 
     // if we are following a user get his posts
     private void getFollowing() {
-        Log.d(TAG, "getFollowing: seraching for who is following user");
+        Log.d(TAG, "getFollowing: searching for who is following user");
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         // points to following node
