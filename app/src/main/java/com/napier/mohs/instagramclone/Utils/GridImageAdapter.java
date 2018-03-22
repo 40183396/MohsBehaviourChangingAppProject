@@ -17,6 +17,9 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Mohs on 17/03/2018.
  *
@@ -41,10 +44,15 @@ public class GridImageAdapter extends ArrayAdapter{
     }
 
     // reusing view holder build pattern to view images
-    private static class ViewHolder{
+    static class ViewHolder{
         // makes images in grid squared
-        ImagesSquaredView gridImages; // need to remake this otherwise gird images will be stretched and skewed
-        ProgressBar mProgressBar;
+
+        @BindView(R.id.progressbarGridImage) ProgressBar mProgressBar;
+        @BindView(R.id.imageGridView) ImagesSquaredView gridImages; // need to remake this otherwise gird images will be stretched and skewed
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view); // Butterknife For ViewHolder Pattern
+        }
     }
 
     @NonNull
@@ -56,9 +64,7 @@ public class GridImageAdapter extends ArrayAdapter{
             // viewHolder doesn't load all images at once only a few so app is faster
             // Similar to a recylcer view but easier to set up
             convertView = mLayoutInflater.inflate(layoutResource, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.mProgressBar = (ProgressBar) convertView.findViewById(R.id.progressbarGridImage);
-            viewHolder.gridImages = (ImagesSquaredView) convertView.findViewById(R.id.imageGridView);
+            viewHolder = new ViewHolder(convertView);
 
             convertView.setTag(viewHolder); // Tag is a way to store widgets (View) in memory so app does not slow down
             // ViewHolder creates all widgets
