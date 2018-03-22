@@ -32,6 +32,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.concurrent.ExecutionException;
 
+import butterknife.ButterKnife;
+
 public class HomeActivity extends AppCompatActivity implements MainFeedListAdapter.OnItemsLoadMoreListener{
 
 
@@ -65,6 +67,7 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
         Log.d(TAG, "onCreate: starting.");
         mViewPager = (ViewPager) findViewById(R.id.viewpagerContainer);
         mFrameLayout = (FrameLayout) findViewById(R.id.container);

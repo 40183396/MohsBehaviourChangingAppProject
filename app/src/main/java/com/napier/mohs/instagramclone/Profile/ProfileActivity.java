@@ -44,7 +44,10 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
     // Intent Strings
     @BindString(R.string.calling_activity) String calling_activity;
     @BindString(R.string.user_extra) String user_extra;
+    @BindString(R.string.photo) String photo_extra;
+    @BindString(R.string.activity_number) String activity_number;
     @BindString(R.string.fragment_view_profile) String viewprofile_fragment;
+    @BindString(R.string.fragment_viewcomments) String viewcomments_fragment;
     @BindString(R.string.fragment_profile) String profile_fragment;
     @BindString(R.string.fragment_post) String post_fragment;
     @BindView(R.id.containerProfile) FrameLayout containerProfile;
@@ -77,14 +80,14 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
                 if (intent.hasExtra(user_extra)) { // not needed if but good to use in case we have more calling_activity extras in future development
                     Log.d(TAG, "initialiseProfileFragment: viewing someone elses profile");
                     ViewProfileFragment viewProfileFragment = new ViewProfileFragment();
-                    Bundle bundleArgs = new Bundle(); // bundle to pass photo
-                    bundleArgs.putParcelable(user_extra,
+                    Bundle bundle = new Bundle(); // bundle to pass photo
+                    bundle.putParcelable(user_extra,
                             intent.getParcelableExtra(user_extra)); // getting parcelable extra of username
-                    viewProfileFragment.setArguments(bundleArgs); // sets fragment arguments to bundle arguments
-                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.containerProfile, viewProfileFragment); // replace container profile with view comments fragment
-                    fragmentTransaction.addToBackStack(viewprofile_fragment);
-                    fragmentTransaction.commit();
+                    viewProfileFragment.setArguments(bundle); // sets fragment arguments to bundle arguments
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.containerProfile, viewProfileFragment); // replace container profile with view comments fragment
+                    transaction.addToBackStack(viewprofile_fragment);
+                    transaction.commit();
                 } else { // if no calling_activity user is just navigating to their own profile
                     Log.d(TAG, "initialiseProfileFragment: users profile is being inflated");
                     ProfileFragment profileFragment = new ProfileFragment();
@@ -104,12 +107,8 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
                 transaction.addToBackStack(profile_fragment);
                 transaction.commit();
             }
-//            } else {
-//                Toast.makeText(mContext, "oops something went wrong", Toast.LENGTH_SHORT).show();
-//            }
 
         }
-
 
     }
 
@@ -119,15 +118,15 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         Log.d(TAG, "onImageGridSelected: image in gridview selected: " + photo.toString());
 
         ViewPostFragment viewPostFragment = new ViewPostFragment();
-        Bundle bundleArguments = new Bundle();
-        bundleArguments.putParcelable(getString(R.string.photo), photo);
-        bundleArguments.putInt(getString(R.string.activity_number), activityNumber);
-        viewPostFragment.setArguments(bundleArguments);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(photo_extra, photo);
+        bundle.putInt(activity_number, activityNumber);
+        viewPostFragment.setArguments(bundle);
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.containerProfile, viewPostFragment);
-        fragmentTransaction.addToBackStack(post_fragment);
-        fragmentTransaction.commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.containerProfile, viewPostFragment);
+        transaction.addToBackStack(post_fragment);
+        transaction.commit();
     }
 
     @Override
@@ -135,12 +134,12 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         Log.d(TAG, "onThreadCommentSelectedListener: comment thread is seleceted");
 
         ViewCommentsFragment viewCommentsFragment = new ViewCommentsFragment();
-        Bundle bundleArgs = new Bundle(); // bundle to pass photo
-        bundleArgs.putParcelable(getString(R.string.photo), photo); // pass photo
-        viewCommentsFragment.setArguments(bundleArgs); // sets fragment arguments to bundle arguments
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.containerProfile, viewCommentsFragment); // replace container profile with view comments fragment
-        fragmentTransaction.addToBackStack(getString(R.string.fragment_viewcomments));
-        fragmentTransaction.commit();
+        Bundle bundle = new Bundle(); // bundle to pass photo
+        bundle.putParcelable(photo_extra, photo); // pass photo
+        viewCommentsFragment.setArguments(bundle); // sets fragment arguments to bundle arguments
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.containerProfile, viewCommentsFragment); // replace container profile with view comments fragment
+        transaction.addToBackStack(viewcomments_fragment);
+        transaction.commit();
     }
 }
