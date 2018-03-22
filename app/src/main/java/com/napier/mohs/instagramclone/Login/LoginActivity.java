@@ -22,6 +22,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.napier.mohs.instagramclone.Home.HomeActivity;
 import com.napier.mohs.instagramclone.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Mohs on 17/03/2018.
  */
@@ -32,21 +35,21 @@ public class LoginActivity extends AppCompatActivity {
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
+    @BindView(R.id.edittextLoginEmail) EditText mEmail;
+    @BindView(R.id.edittextLoginPassword) EditText mPassword;
+    @BindView(R.id.textviewLoginSigningIn) TextView mSigningIn;
+    @BindView(R.id.progressbarLogin) ProgressBar mProgressBar;
     private Context mContext;
-    private ProgressBar mProgressBar;
-    private EditText mEmail, mPassword;
-    private TextView mSigningIn;
+    
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this); // bind butterknife after
+
         Log.d(TAG, "onCreate: started login");
-        mProgressBar = (ProgressBar) findViewById(R.id.progressbarLogin);
-        mSigningIn = (TextView) findViewById(R.id.textviewLoginSigningIn);
-        mEmail = (EditText) findViewById((R.id.edittextLoginEmail));
-        mPassword = (EditText) findViewById((R.id.edittextLoginPassword));
+
         mContext = LoginActivity.this;
 
         // This is invisible till user signs in

@@ -16,11 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Home.HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".Likes.LikesActivity"></activity>
         <activity android:name=".Profile.ProfileActivity"></activity>
@@ -28,7 +24,13 @@
             android:windowSoftInputMode="adjustNothing"></activity>
         <activity android:name=".Share.ShareActivity"></activity>
         <activity android:name=".Profile.AccountSettingsActivity"></activity>
-        <activity android:name=".Login.LoginActivity" />
+        <activity android:name=".Login.LoginActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity android:name=".Login.RegisterActivity" />
         <activity android:name=".Share.NextActivity" />
     </application>
