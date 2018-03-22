@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.textviewLoginSigningIn) TextView mSigningIn;
     @BindView(R.id.textviewRegisterAlreadyHaveAccount) TextView signUpLink;
     @BindView(R.id.progressbarLogin) ProgressBar mProgressBar;
+    @BindView(R.id.buttonLogin) Button loginButton;
 
     private Context mContext;
 
@@ -82,10 +83,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    //------------------------FIRESBASE STUFF------------
-    // Button which initialises lgging in
+    //------------------------FIREBASE STUFF------------
+    // Button which initialises logging in
     private void initialiseLoggingIn(){
-        Button loginButton = (Button) findViewById(R.id.buttonLogin);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

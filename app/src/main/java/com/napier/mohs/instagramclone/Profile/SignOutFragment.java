@@ -18,6 +18,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.napier.mohs.instagramclone.Login.LoginActivity;
 import com.napier.mohs.instagramclone.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * Created by User on 6/4/2017.
@@ -31,18 +34,16 @@ public class SignOutFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private ProgressBar mProgressBar;
-    private TextView mTextViewSignOut, mTextViewSigningOut;
+    @BindView(R.id.progressbarSignOutConfirm) ProgressBar mProgressBar;
+    @BindView(R.id.textviewSignOutConfirm) TextView mTextViewSignOut;
+    @BindView(R.id.textviewSigningOut) TextView mTextViewSigningOut;
+    @BindView(R.id.buttonSignOutConfirm)Button mSignOutButton;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signout, container, false);
-
-        mTextViewSignOut = (TextView) view.findViewById(R.id.textviewSignOutConfirm);
-        mTextViewSigningOut = (TextView) view.findViewById(R.id.textviewSigningOut);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progressbarSignOutConfirm);
-        Button mSignOutButton = (Button) view.findViewById(R.id.buttonSignOutConfirm);
+        ButterKnife.bind(this, view);
 
         mProgressBar.setVisibility(View.GONE);
         mTextViewSigningOut.setVisibility(View.GONE);

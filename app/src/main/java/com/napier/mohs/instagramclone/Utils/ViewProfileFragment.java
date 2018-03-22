@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -90,12 +91,30 @@ public class ViewProfileFragment extends Fragment{
     @BindView(R.id.bottomNavViewBar) BottomNavigationViewEx bottomNavigationView;
     @BindView(R.id.imageViewProfileBackArrow) ImageView backArrow;
 
+    // database queries
+    @BindString(R.string.db_name_following) String db_following;
+    @BindString(R.string.db_name_followers) String db_followers;
+    @BindString(R.string.db_name_user_photos) String db_user_photos;
+    @BindString(R.string.db_name_user_account_settings) String db_user_account_settings;
+    @BindString(R.string.user_id_field) String userID_field;
+    @BindString(R.string.caption_field) String caption_field;
+    @BindString(R.string.comments_field) String comments_field;
+    @BindString(R.string.likes_field) String likes_field;
+    @BindString(R.string.photo_id_field) String photoID_field;
+    @BindString(R.string.tags_field) String tags_field;
+    @BindString(R.string.date_created_field) String date_created_field;
+    @BindString(R.string.image_path_field) String image_path_field;
+
+    // Strings
+    @BindString(R.string.calling_activity) String calling_activity;
+    @BindString(R.string.profile_activity) String profile_activity;
+    @BindString(R.string.user_extra) String user_extra;
+
     private Context mContext;
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseDatabase mFirebaseDatabase;
 
     // variables
     private User mUser;
@@ -109,7 +128,6 @@ public class ViewProfileFragment extends Fragment{
         ButterKnife.bind(this, view); // butterknife for fragments
 
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
 
         mContext = getActivity();
 
@@ -141,17 +159,17 @@ public class ViewProfileFragment extends Fragment{
 
                 // updates followers and following nodes
                 FirebaseDatabase.getInstance().getReference()
-                        .child(getString(R.string.db_name_following)) // following node
+                        .child(db_following) // following node
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .child(mUser.getUser_id())
-                        .child(getString(R.string.user_id_field))
+                        .child(userID_field)
                         .setValue(mUser.getUser_id()); // not creating following object just inserting id
 
                 FirebaseDatabase.getInstance().getReference()
-                        .child(getString(R.string.db_name_followers)) // followers node
+                        .child(db_followers) // followers node
                         .child(mUser.getUser_id()) // insert to other users followers node
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child(getString(R.string.user_id_field))
+                        .child(userID_field)
                         .setValue(FirebaseAuth.getInstance().getCurrentUser().getUid()); // not creating following object just inserting id
 
                 setFollowingUser();
@@ -164,13 +182,13 @@ public class ViewProfileFragment extends Fragment{
                 Log.d(TAG, "onClick: started unfollowing: " + mUser.getUsername());
                 // updates followers and following nodes
                 FirebaseDatabase.getInstance().getReference()
-                        .child(getString(R.string.db_name_following)) // following node
+                        .child(db_following) // following node
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .child(mUser.getUser_id())
                         .removeValue(); // not creating following object just inserting id
 
                 FirebaseDatabase.getInstance().getReference()
-                        .child(getString(R.string.db_name_followers)) // followers node
+                        .child(db_followers) // followers node
                         .child(mUser.getUser_id()) // insert to other users followers node
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .removeValue(); // not creating following object just inserting id
@@ -186,7 +204,7 @@ public class ViewProfileFragment extends Fragment{
                 Log.d(TAG, "onClick: going to edit profile fragment");
                 Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
                 // flag to know that this is just a calling activity
-                intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
+                intent.putExtra(calling_activity, profile_activity);
                 startActivity(intent);// not finishing as we want to be able to nav back to this activity
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out); // page transition to edit profile fragment
             }
@@ -208,8 +226,8 @@ public class ViewProfileFragment extends Fragment{
     private void initialiseUserDetails(){
         // sets the profile widgets
         DatabaseReference widgetsReference = FirebaseDatabase.getInstance().getReference();
-        Query widgetsQuery = widgetsReference.child(getString(R.string.db_name_user_account_settings)) // look in user_account_settings node
-                .orderByChild(getString(R.string.user_id_field)).equalTo(mUser.getUser_id()); // look in user_id node see if we have a match
+        Query widgetsQuery = widgetsReference.child(db_user_account_settings) // look in user_account_settings node
+                .orderByChild(userID_field).equalTo(mUser.getUser_id()); // look in user_id node see if we have a match
         // if match set widgets
         widgetsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -221,7 +239,7 @@ public class ViewProfileFragment extends Fragment{
                     userSettings.setUser(mUser); // set user to mUser
                     userSettings.setUserAccountsettings(singleDataSnapShot.getValue(UserAccountSettings.class)); // sets the user account settings retrieved from db
                     // the other users widgets are set up
-                    seupWidgets(userSettings);
+                    setupWidgets(userSettings);
                 }
             }
 
@@ -235,7 +253,7 @@ public class ViewProfileFragment extends Fragment{
         DatabaseReference photosReference = FirebaseDatabase.getInstance().getReference();
         // points to user id and retrieves their photos instead of going through db of all  photos
         Query photosQuery = photosReference
-                .child(getString(R.string.db_name_user_photos))
+                .child(db_user_photos)
                 .child(mUser.getUser_id());
         photosQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -249,16 +267,16 @@ public class ViewProfileFragment extends Fragment{
                     Photo photo = new Photo();
                     Map<String, Object> objectMap = (HashMap<String, Object>) singleDataSnapshot.getValue();
 
-                    photo.setCaption(objectMap.get(getString(R.string.caption_field)).toString());
-                    photo.setUser_id(objectMap.get(getString(R.string.user_id_field)).toString());
-                    photo.setPhoto_id(objectMap.get(getString(R.string.photo_id_field)).toString());
-                    photo.setTags(objectMap.get(getString(R.string.tags_field)).toString());
-                    photo.setDate_created(objectMap.get(getString(R.string.date_created_field)).toString());
-                    photo.setImage_path(objectMap.get(getString(R.string.image_path_field)).toString());
+                    photo.setCaption(objectMap.get(caption_field).toString());
+                    photo.setUser_id(objectMap.get(userID_field).toString());
+                    photo.setPhoto_id(objectMap.get(photoID_field).toString());
+                    photo.setTags(objectMap.get(tags_field).toString());
+                    photo.setDate_created(objectMap.get(date_created_field).toString());
+                    photo.setImage_path(objectMap.get(image_path_field).toString());
 
                     ArrayList<Comment> commentsArrayList = new ArrayList<Comment>();
                     for(DataSnapshot dataSnapshot1 : singleDataSnapshot
-                            .child(getString(R.string.comments_field)).getChildren()){ // loop[ through all comments
+                            .child(comments_field).getChildren()){ // loop[ through all comments
                         Comment comment = new Comment();
                         comment.setUser_id(dataSnapshot1.getValue(Comment.class).getUser_id());
                         comment.setComment(dataSnapshot1.getValue(Comment.class).getComment());
@@ -271,7 +289,7 @@ public class ViewProfileFragment extends Fragment{
                     // list for all the photo likes
                     List<Like> likeList = new ArrayList<Like>();
                     for(DataSnapshot dataSnapshot1 : singleDataSnapshot
-                            .child(getString(R.string.likes_field)).getChildren()){ // loop[ through all likes
+                            .child(likes_field).getChildren()){ // loop[ through all likes
                         Like like = new Like();
                         like.setUser_id(dataSnapshot1.getValue(Like.class).getUser_id());
                         likeList.add(like);
@@ -298,9 +316,9 @@ public class ViewProfileFragment extends Fragment{
 
         // checking to see if logged in user is following the user who is in bundle
         DatabaseReference checkReference = FirebaseDatabase.getInstance().getReference();
-        Query checkQuery = checkReference.child(getString(R.string.db_name_following)) // look in user_account_settings node
+        Query checkQuery = checkReference.child(db_following) // look in user_account_settings node
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .orderByChild(getString(R.string.user_id_field)).equalTo(mUser.getUser_id()); // look in user_id node see if we have a match
+                .orderByChild(userID_field).equalTo(mUser.getUser_id()); // look in user_id node see if we have a match
         // if match set widgets
         checkQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -326,7 +344,7 @@ public class ViewProfileFragment extends Fragment{
         mCountFollowers = 0;
 
         DatabaseReference followersReference = FirebaseDatabase.getInstance().getReference();
-        Query followersQuery = followersReference.child(getString(R.string.db_name_followers)) // look in user_account_settings node
+        Query followersQuery = followersReference.child(db_followers) // look in user_account_settings node
                 .child(mUser.getUser_id()); // look in user_id node see if we have a match
         //
         followersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -353,7 +371,7 @@ public class ViewProfileFragment extends Fragment{
         mCountFollowing = 0;
 
         DatabaseReference followingReference = FirebaseDatabase.getInstance().getReference();
-        Query followingQuery = followingReference.child(getString(R.string.db_name_following)) // look in following node
+        Query followingQuery = followingReference.child(db_following) // look in following node
                 .child(mUser.getUser_id()); // look in user_id node see if we have a match
         //
         followingQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -380,7 +398,7 @@ public class ViewProfileFragment extends Fragment{
         mCountPosts = 0;
 
         DatabaseReference postsReference = FirebaseDatabase.getInstance().getReference();
-        Query postsQuery = postsReference.child(getString(R.string.db_name_user_photos)) // look in user_account_settings node
+        Query postsQuery = postsReference.child(db_user_photos) // look in user_account_settings node
                 .child(mUser.getUser_id()); // look in user_id node see if we have a match
         //
         postsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -429,7 +447,7 @@ public class ViewProfileFragment extends Fragment{
 
         Bundle bundle = this.getArguments();
         if(bundle != null){
-            return bundle.getParcelable(getString(R.string.user_extra)); // returns username from bundle
+            return bundle.getParcelable(user_extra); // returns username from bundle
         } else {
             // if no bundle return null
             return null;
@@ -447,8 +465,8 @@ public class ViewProfileFragment extends Fragment{
     }
 
     // sets up the profile page with data from db
-    private void seupWidgets(UserSettings userSettings){
-        Log.d(TAG, "seupWidgets: settings up widget with data from firebase db " );
+    private void setupWidgets(UserSettings userSettings){
+        Log.d(TAG, "setupWidgets: settings up widget with data from firebase db " );
 
         // User settings not needed here but added here anyway
         User user = userSettings.getUser();

@@ -88,7 +88,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
             ButterKnife.bind(this, view); // Butterknife For ViewHolder Pattern
         }
 
-        // we are saving sopecific things for each post in this view holder
+        // we are saving specific things for each post in this view holder
         UserAccountSettings mUserAccountSettings = new UserAccountSettings();
         User mUser = new User();
         StringBuilder usersStringBuilder;

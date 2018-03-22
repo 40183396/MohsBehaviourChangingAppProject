@@ -36,6 +36,8 @@ import com.napier.mohs.instagramclone.Share.ShareActivity;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -53,11 +55,18 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
     private DatabaseReference myDBRefFirebase;
     private FirebaseMethods mFirebaseMethods;
 
-    private EditText mDisplayName, mUsername, mWebsite, mDescription, mEmail, mPhoneNumber;
-    private TextView mChangeProfilePhoto;
-    private CircleImageView mProfilePhoto;
+    @BindView(R.id.edittextEditDisplayName) EditText mDisplayName;
+    @BindView(R.id.edittextEditUsername) EditText mUsername;
+    @BindView(R.id.edittextEditWebsite) EditText mWebsite;
+    @BindView(R.id.edittextEditDescription) EditText mDescription;
+    @BindView(R.id.edittextEditEmail) EditText mEmail;
+    @BindView(R.id.edittextEditPhoneNumber) EditText mPhoneNumber;
+    @BindView(R.id.textviewEditChangeProfilePhoto) TextView mChangeProfilePhoto;
+    @BindView(R.id.imageEditProfilePhoto) CircleImageView mProfilePhoto;
+    @BindView(R.id.imageEditBackArrow) ImageView backArrow;
+    @BindView(R.id.imageEditSaveChange) ImageView save;
 
-    private UserSettings mUserSetings;
+    private UserSettings mUserSettings;
     private String userID;
 
 
@@ -127,29 +136,15 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_editprofile, container, false);
-        mProfilePhoto = (CircleImageView) view.findViewById(R.id.imageEditProfilePhoto);
-
-        mDisplayName = (EditText) view.findViewById(R.id.edittextEditDisplayName);
-        mUsername = (EditText) view.findViewById(R.id.edittextEditUsername);
-        mWebsite = (EditText) view.findViewById(R.id.edittextEditWebsite);
-        mDescription = (EditText) view.findViewById(R.id.edittextEditDescription);
-        mEmail = (EditText) view.findViewById(R.id.edittextEditEmail);
-        mPhoneNumber = (EditText) view.findViewById(R.id.edittextEditPhoneNumber);
-        mChangeProfilePhoto = (TextView) view.findViewById(R.id.textviewEditChangeProfilePhoto);
-
+        ButterKnife.bind(this, view);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
         mFirebaseMethods = new FirebaseMethods(getActivity());
 
-
-        //setProfileImage();
-
         setupFirebaseAuth();
 
         // back arrow which goes to profile activity
-        ImageView backArrow = (ImageView) view.findViewById(R.id.imageEditBackArrow);
-
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,9 +153,7 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
             }
         });
 
-
-        ImageView save = (ImageView) view.findViewById(R.id.imageEditSaveChange);
-
+        // saves details changed in edit profile
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,25 +178,16 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
         final String email = mEmail.getText().toString();
         final long phone = Long.parseLong(mPhoneNumber.getText().toString());
 
-
-        //Original search method for searching for username in db which was too slow
-                /*User user = new User();
-                for(DataSnapshot ds : dataSnapshot.child(getString(R.string.db_name_users)).getChildren()){
-                    if(ds.getKey().equals(userID)){
-                        user.setUsername(ds.getValue(User.class).getUsername());
-                    }
-                }*/
-
         // using query instead which checks username entered into text field and compare it to what was originally loaded into fragment
-        Log.d(TAG, "onDataChange: current username is: " + mUserSetings.getUser().getUsername());
+        Log.d(TAG, "onDataChange: current username is: " + mUserSettings.getUser().getUsername());
 
         // if username has nchanged
-        if (!mUserSetings.getUser().getUsername().equals(username)) {
+        if (!mUserSettings.getUser().getUsername().equals(username)) {
             checkUsernameExist(username);
         }
 
         //if email is changed
-        if (!mUserSetings.getUser().getEmail().equals(email)) {
+        if (!mUserSettings.getUser().getEmail().equals(email)) {
 
             // first reauthenticate email (only needed is emails have to be verified
             // check email is registered already
@@ -215,15 +199,15 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
         }
 
         // if displayname is changed
-        if(!mUserSetings.getUserAccountsettings().getDisplay_name().equals(displayname)){
+        if(!mUserSettings.getUserAccountsettings().getDisplay_name().equals(displayname)){
             mFirebaseMethods.usersettingsUpdate(displayname, null, null, 0);
         }
 
-        if(!mUserSetings.getUserAccountsettings().getWebsite().equals(web)){
+        if(!mUserSettings.getUserAccountsettings().getWebsite().equals(web)){
             mFirebaseMethods.usersettingsUpdate(null, web, null, 0);
         }
 
-        if(!mUserSetings.getUserAccountsettings().getDescription().equals(description)){
+        if(!mUserSettings.getUserAccountsettings().getDescription().equals(description)){
             mFirebaseMethods.usersettingsUpdate(null, null, description, 0);
         }
 
@@ -269,24 +253,12 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
         });
     }
 
-
-    // Test method to display profil image without db
-//    private void setProfileImage(){
-//        Log.d(TAG, "setProfileImage: profile image is being set");
-//        String imgURL = "http://cdn.newsapi.com.au/image/v1/9fdbf585d17c95f7a31ccacdb6466af9";
-//        UniversalImageLoader.setImage(imgURL, mProfilePhoto, null, "");
-//
-//        // if have 'www' use append as 'http://'
-//        // String imgURL = "http://cdn.newsapi.com.au/image/v1/9fdbf585d17c95f7a31ccacdb6466af9";
-//        // UniversalImageLoader.setImage(imgURL, mProfilePhoto, null, "");
-//    }
-
     // sets up the edit profile page with data from db
-    private void seupWidgets(UserSettings userSettings) {
-        Log.d(TAG, "seupWidgets: settings up edit profile widgets with data from firebase db ");
+    private void setupWidgets(UserSettings userSettings) {
+        Log.d(TAG, "setupWidgets: settings up edit profile widgets with data from firebase db ");
 
         // when activity starts this user settings object is set
-        mUserSetings = userSettings;
+        mUserSettings = userSettings;
 
         User user = userSettings.getUser();
         UserAccountSettings userAccountSettings = userSettings.getUserAccountsettings();
@@ -317,7 +289,7 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
     }
 
 
-    //------------------------FIRESBASE STUFF-------------
+    //------------------------FIREBASE STUFF-------------
     // Method to check if a user is signed in app
 
     private void setupFirebaseAuth() {
@@ -343,9 +315,9 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
         myDBRefFirebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // retrievs the user info from db
-                seupWidgets(mFirebaseMethods.getUserSettings(dataSnapshot)); // retrieves datasnapshot of user settings and sets up widgets
-                // retrievs images for the user
+                // retrieves the user info from db
+                setupWidgets(mFirebaseMethods.getUserSettings(dataSnapshot)); // retrieves datasnapshot of user settings and sets up widgets
+                // retrieves images for the user
             }
 
             @Override
