@@ -35,12 +35,15 @@ public class LoginActivity extends AppCompatActivity {
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
     @BindView(R.id.edittextLoginEmail) EditText mEmail;
     @BindView(R.id.edittextLoginPassword) EditText mPassword;
     @BindView(R.id.textviewLoginSigningIn) TextView mSigningIn;
+    @BindView(R.id.textviewRegisterAlreadyHaveAccount) TextView signUpLink;
     @BindView(R.id.progressbarLogin) ProgressBar mProgressBar;
+
     private Context mContext;
-    
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +54,10 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: started login");
 
         mContext = LoginActivity.this;
+
+        // quick log in
+        mEmail.setText("test@test.com");
+        mPassword.setText("11111111");
 
         // This is invisible till user signs in
         mProgressBar.setVisibility(View.GONE);
@@ -175,7 +182,8 @@ public class LoginActivity extends AppCompatActivity {
                 }*/
             }
         });
-        TextView signUpLink = (TextView) findViewById(R.id.textviewRegisterAlreadyHaveAccount);
+
+
         signUpLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

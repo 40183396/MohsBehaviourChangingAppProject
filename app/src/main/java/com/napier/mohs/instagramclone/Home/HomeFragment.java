@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Mohs on 15/03/2018.
  */
@@ -41,15 +45,19 @@ public class HomeFragment extends Fragment {
     private ArrayList<Photo> mPhotoArrayList; // holds all photos of people you are following
     private ArrayList<Photo> mPhotosPaginatedArrayList; // Photos that are added incrementally as you scroll through feed
 
-    private ListView mListView;
+
     private MainFeedListAdapter mAdapter;
     private int mResult;
+
+    @BindView(R.id.listviewHome) ListView mListView;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        mListView = (ListView) view.findViewById(R.id.listviewHome);
+        ButterKnife.bind(this, view); // Binding for fragments
+
         mFollowingArrayList = new ArrayList<>();
         mPhotoArrayList = new ArrayList<>();
 

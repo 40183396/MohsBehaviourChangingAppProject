@@ -25,6 +25,8 @@ import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 
+import butterknife.BindView;
+
 /**
  * Created by Mohs on 17/03/2018.
  */
@@ -39,12 +41,18 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
 
+
+
     private Context mContext;
     private String email, password, username;
-    private EditText mEmail, mPassword, mUsername;
-    private TextView mSigningIn;
-    private Button mRegisterButton;
-    private ProgressBar mProgressBar;
+
+    @BindView(R.id.textviewRegisterLoggingIn) TextView mSigningIn;
+    @BindView(R.id.edittextRegisterEmail) EditText mEmail;
+    @BindView(R.id.edittextRegisterPassword) EditText mPassword;
+    @BindView(R.id.edittextRegisterUsername) EditText mUsername;
+    @BindView(R.id.progressbarRegister) ProgressBar mProgressBar;
+    @BindView(R.id.buttonRegister) Button mRegisterButton;
+
 
     private String append = "";
     @Override
@@ -55,13 +63,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         fbMethods = new FirebaseMethods(mContext);
         Log.d(TAG, "onCreate: started register");
-
-        mProgressBar = (ProgressBar) findViewById(R.id.progressbarRegister);
-        mSigningIn = (TextView) findViewById(R.id.textviewRegisterLoggingIn);
-        mEmail = (EditText) findViewById((R.id.edittextRegisterEmail));
-        mPassword = (EditText) findViewById((R.id.edittextRegisterPassword));
-        mUsername = (EditText) findViewById((R.id.edittextRegisterUsername));
-        mRegisterButton = (Button) findViewById(R.id.buttonRegister);
 
         // Invisible till user attempts to register
         mProgressBar.setVisibility(View.GONE);

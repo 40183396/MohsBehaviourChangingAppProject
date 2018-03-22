@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -51,11 +53,22 @@ public class CommentsListAdapter extends ArrayAdapter<Comment>{
     }
 
     // View Holder build pattern for list view
-    private static class ViewHolder{ // using this instead of recycler view, does same thing with but with less code
+    public static class ViewHolder{ // using this instead of recycler view, does same thing with but with less code
         // load widgets into memory instead of loading them all at once
-        TextView comment, username, timestamp, reply, likes;
-        CircleImageView imageProfile;
-        ImageView imageLike;
+
+        @BindView(R.id.textviewCommentsComments) TextView comment;
+        @BindView(R.id.textviewCommentsUsername) TextView username;
+        @BindView(R.id.textviewCommentsTime) TextView timestamp;
+        @BindView(R.id.textviewCommentsReply) TextView reply;
+        @BindView(R.id.textviewCommentsLikes) TextView likes;
+        @BindView(R.id.imageCommentLike) ImageView imageLike;
+        @BindView(R.id.imageCommentsProfile) ImageView imageProfile;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view); // Butterknife For ViewHolder Pattern
+        }
+
+
     }
 
     @NonNull
@@ -65,15 +78,7 @@ public class CommentsListAdapter extends ArrayAdapter<Comment>{
 
         if(convertView == null){ // means we have a new view
             convertView = mLayoutInflater.inflate(mLayoutResource, parent, false);
-            viewHolder = new ViewHolder();
-            // gets widgets
-            viewHolder.comment = (TextView) convertView.findViewById(R.id.textviewCommentsComments);
-            viewHolder.username = (TextView) convertView.findViewById(R.id.textviewCommentsUsername);
-            viewHolder.timestamp = (TextView) convertView.findViewById(R.id.textviewCommentsTime);
-            viewHolder.reply = (TextView) convertView.findViewById(R.id.textviewCommentsReply);
-            viewHolder.likes = (TextView) convertView.findViewById(R.id.textviewCommentsLikes);
-            viewHolder.imageLike = (ImageView) convertView.findViewById(R.id.imageCommentLike);
-            viewHolder.imageProfile = (CircleImageView) convertView.findViewById(R.id.imageCommentsProfile);
+            viewHolder = new ViewHolder(convertView);
 
             // stores view in memory
             convertView.setTag(viewHolder);
