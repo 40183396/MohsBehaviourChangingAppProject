@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -49,7 +50,18 @@ public class HomeFragment extends Fragment {
     private MainFeedListAdapter mAdapter;
     private int mResult;
 
+    // widgets
     @BindView(R.id.listviewHome) ListView mListView;
+
+    // database queries
+    @BindString(R.string.db_name_following) String db_following;
+    @BindString(R.string.db_name_user_photos) String db_user_photos;
+    @BindString(R.string.user_id_field) String userID_field;
+    @BindString(R.string.caption_field) String caption_field;
+    @BindString(R.string.photo_id_field) String photoID_field;
+    @BindString(R.string.tags_field) String tags_field;
+    @BindString(R.string.date_created_field) String date_created_field;
+    @BindString(R.string.image_path_field) String image_path_field;
 
 
     @Nullable
@@ -72,7 +84,7 @@ public class HomeFragment extends Fragment {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         // points to following node
         Query query = databaseReference
-                .child(getString(R.string.db_name_following)) // looks in following node
+                .child(db_following) // looks in following node
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()); // checks if we have a match to the current users user id
 
         Log.d(TAG, "getPostDetails: query: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -81,9 +93,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "onDataChange: User found: " + singleDataSnapshot.child(getString(R.string.user_id_field)).getValue());
+                    Log.d(TAG, "onDataChange: User found: " + singleDataSnapshot.child(userID_field).getValue());
 
-                    mFollowingArrayList.add(singleDataSnapshot.child(getString(R.string.user_id_field)).getValue().toString()); //sets who we are following to array list
+                    mFollowingArrayList.add(singleDataSnapshot.child(userID_field).getValue().toString()); //sets who we are following to array list
                 }
                 // this makes sure users own photos are added to following array list and main feed
                 mFollowingArrayList.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -106,9 +118,9 @@ public class HomeFragment extends Fragment {
             final int count = i;
             // points to following node
             Query query = databaseReference
-                    .child(getString(R.string.db_name_user_photos)) // looks in following node
+                    .child(db_user_photos) // looks in user photos node
                     .child(mFollowingArrayList.get(i))// i here is the user id
-                    .orderByChild(getString(R.string.user_id_field)) // look in user id field
+                    .orderByChild(userID_field) // look in user id field
                     .equalTo(mFollowingArrayList.get(i)); // check if we have a match in array list
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -122,12 +134,12 @@ public class HomeFragment extends Fragment {
                         // set object map
                         Map<String, Object> objectMap = (HashMap<String, Object>) singleDataSnapshot.getValue();
                         // set photo properties
-                        photo.setCaption(objectMap.get(getString(R.string.caption_field)).toString());
-                        photo.setUser_id(objectMap.get(getString(R.string.user_id_field)).toString());
-                        photo.setPhoto_id(objectMap.get(getString(R.string.photo_id_field)).toString());
-                        photo.setTags(objectMap.get(getString(R.string.tags_field)).toString());
-                        photo.setDate_created(objectMap.get(getString(R.string.date_created_field)).toString());
-                        photo.setImage_path(objectMap.get(getString(R.string.image_path_field)).toString());
+                        photo.setCaption(objectMap.get(caption_field).toString());
+                        photo.setUser_id(objectMap.get(userID_field).toString());
+                        photo.setPhoto_id(objectMap.get(photoID_field).toString());
+                        photo.setTags(objectMap.get(tags_field).toString());
+                        photo.setDate_created(objectMap.get(date_created_field).toString());
+                        photo.setImage_path(objectMap.get(image_path_field).toString());
 
                         // gets comments for photo
                         ArrayList<Comment> commentsArrayList = new ArrayList<Comment>();

@@ -32,6 +32,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.concurrent.ExecutionException;
 
+import butterknife.BindString;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity implements MainFeedListAdapter.OnItemsLoadMoreListener{
@@ -59,9 +61,15 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private ViewPager mViewPager;
-    private FrameLayout mFrameLayout;
-    private RelativeLayout mRelativeLayout;
+    // widgets
+    @BindView(R.id.viewpagerContainer) ViewPager mViewPager;
+    @BindView(R.id.container) FrameLayout mFrameLayout;
+    @BindView(R.id.relLayoutParent) RelativeLayout mRelativeLayout;
+
+    // Strings
+    @BindString(R.string.home_activity) String home_activity;
+    @BindString(R.string.photo) String photo_extra;
+    @BindString(R.string.fragment_viewcomments) String viewcomments_fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +77,8 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         Log.d(TAG, "onCreate: starting.");
-        mViewPager = (ViewPager) findViewById(R.id.viewpagerContainer);
-        mFrameLayout = (FrameLayout) findViewById(R.id.container);
-        mRelativeLayout = (RelativeLayout) findViewById(R.id.relLayoutParent);
-
         setupFirebaseAuth();
+
         // make sure to initiliases image loader first
         initImageLoader();
         setupBottomNavigationView();
@@ -108,14 +113,14 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
         // bundles the user account settings and photo
         ViewCommentsFragment viewCommentsFragment = new ViewCommentsFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(getString(R.string.photo), photo);
-        bundle.putString(getString(R.string.home_activity), getString(R.string.home_activity));
+        bundle.putParcelable(photo_extra, photo);
+        bundle.putString(home_activity, home_activity);
         viewCommentsFragment.setArguments(bundle);
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.container, viewCommentsFragment); // replace home container with this fragment
-        fragmentTransaction.addToBackStack(getString(R.string.fragment_viewcomments));
-        fragmentTransaction.commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, viewCommentsFragment); // replace home container with this fragment
+        transaction.addToBackStack(viewcomments_fragment);
+        transaction.commit();
     }
 
     // initialises image loader here to be able to use in all other activities
@@ -161,10 +166,10 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
 
 
 
-    //------------------------FIRESBASE STUFF------------
+    //------------------------FIREBASE STUFF------------
     // Method to check if a user is signed in app
     private void currentUserCheck(FirebaseUser user){
-        Log.d(TAG, "currentUserCheck:  check if a user has suigned in");
+        Log.d(TAG, "currentUserCheck:  check if a user has signed in");
 
         if(user == null){
             Intent intent = new Intent(mContext, LoginActivity.class);
@@ -173,7 +178,7 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
     }
 
     private void setupFirebaseAuth(){
-        Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
+        Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
