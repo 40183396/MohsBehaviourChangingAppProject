@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -70,11 +72,21 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
     OnItemsLoadMoreListener mOnItemsLoadMoreListener;
 
     static class ViewHolder{
-        TextView comments, username, timestamp, caption, likes;
-        ImageView yellowStar, hollowStar, speechBubble;
-        CircleImageView imageProfile;
-        String stringLikes;
-        ImagesSquaredView imagePost;
+
+        @BindView(R.id.textviewMainFeedComments) TextView comments;
+        @BindView(R.id.textviewMainFeedUsername) TextView username;
+        @BindView(R.id.textviewMainFeedTimeStamp) TextView timestamp;
+        @BindView(R.id.textviewMainFeedCaption) TextView caption;
+        @BindView(R.id.textviewMainFeedLikes) TextView likes;
+        @BindView(R.id.imageMainFeedPostPicture) ImagesSquaredView imagePost;
+        @BindView(R.id.imageMainFeedProfile) CircleImageView imageProfile;
+        @BindView(R.id.imageMainFeedStarYellow) ImageView yellowStar;
+        @BindView(R.id.imageMainFeedStarHollow) ImageView hollowStar;
+        @BindView(R.id.imageMainFeedSpeechBubble) ImageView speechBubble;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view); // Butterknife For ViewHolder Pattern
+        }
 
         // we are saving sopecific things for each post in this view holder
         UserAccountSettings mUserAccountSettings = new UserAccountSettings();
@@ -94,28 +106,14 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
 
         if(convertView == null){
             convertView = mLayoutInflater.inflate(mLayoutResource, parent, false);
-            viewHolder = new ViewHolder();
-
-            viewHolder.comments = (TextView) convertView.findViewById(R.id.textviewMainFeedComments);
-            viewHolder.username = (TextView) convertView.findViewById(R.id.textviewMainFeedUsername);
-            viewHolder.timestamp = (TextView) convertView.findViewById(R.id.textviewMainFeedTimeStamp);
-            viewHolder.caption = (TextView) convertView.findViewById(R.id.textviewMainFeedCaption);
-            viewHolder.likes = (TextView) convertView.findViewById(R.id.textviewMainFeedLikes);
-
-            viewHolder.yellowStar = (ImageView) convertView.findViewById(R.id.imageMainFeedStarYellow);
-            viewHolder.hollowStar = (ImageView) convertView.findViewById(R.id.imageMainFeedStarHollow);
-            viewHolder.speechBubble = (ImageView) convertView.findViewById(R.id.imageMainFeedSpeechBubble);
-
-            viewHolder.imagePost = (ImagesSquaredView) convertView.findViewById(R.id.imageMainFeedPostPicture);
-
-            viewHolder.imageProfile = (CircleImageView) convertView.findViewById(R.id.imageMainFeedProfile);
+            viewHolder = new ViewHolder(convertView);
 
             viewHolder.star = new Star(viewHolder.yellowStar, viewHolder.hollowStar);
             viewHolder.mPhoto = getItem(position);
             viewHolder.mGestureDetector = new GestureDetector(mContext, new GestureListener(viewHolder));
             viewHolder.usersStringBuilder = new StringBuilder();
 
-            // set tag  on the vonvert view
+            // set tag  on the convert view
             convertView.setTag(viewHolder);
 
         } else {
