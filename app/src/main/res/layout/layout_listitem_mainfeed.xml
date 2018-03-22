@@ -57,6 +57,12 @@
             android:id="@+id/imageMainFeedPostPicture"
             android:layout_below="@id/relLayout1"
             android:scaleType="centerCrop"/>
+        <ProgressBar
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/progressbarMainFeed"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

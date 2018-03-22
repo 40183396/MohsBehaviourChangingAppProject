@@ -46,7 +46,6 @@ public class HomeFragment extends Fragment {
     private ArrayList<Photo> mPhotoArrayList; // holds all photos of people you are following
     private ArrayList<Photo> mPhotosPaginatedArrayList; // Photos that are added incrementally as you scroll through feed
 
-
     private MainFeedListAdapter mAdapter;
     private int mResult;
 

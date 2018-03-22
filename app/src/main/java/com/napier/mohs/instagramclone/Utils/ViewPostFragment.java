@@ -148,7 +148,6 @@ public class ViewPostFragment extends Fragment {
     // Butterknife example
     @OnClick(R.id.imagePostMenu)
     public void submit() {
-
         Toast.makeText(getActivity(),
                 "Hello from Butterknife OnClick annotation", Toast.LENGTH_SHORT).show();
     }

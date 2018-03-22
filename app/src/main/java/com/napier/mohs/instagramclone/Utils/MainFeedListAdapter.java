@@ -2,6 +2,7 @@ package com.napier.mohs.instagramclone.Utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +33,8 @@ import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.Profile.ProfileActivity;
 import com.napier.mohs.instagramclone.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,6 +87,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
         @BindView(R.id.imageMainFeedStarYellow) ImageView yellowStar;
         @BindView(R.id.imageMainFeedStarHollow) ImageView hollowStar;
         @BindView(R.id.imageMainFeedSpeechBubble) ImageView speechBubble;
+        @BindView(R.id.progressbarMainFeed) ProgressBar mProgressBar;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view); // Butterknife For ViewHolder Pattern
@@ -156,7 +161,37 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
 
         // sets profile image
         final ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(getItem(position).getImage_path(), viewHolder.imagePost);
+       // imageLoader.displayImage(getItem(position).getImage_path(), viewHolder.imagePost);
+
+        imageLoader.displayImage(getItem(position).getImage_path(), viewHolder.imagePost, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageURL, View view) {
+                if(viewHolder.mProgressBar != null){
+                    viewHolder.mProgressBar.setVisibility(View.VISIBLE); // This is when loading has started so want progress bar visible
+                }
+            }
+
+            @Override
+            public void onLoadingFailed(String imageURL, View view, FailReason failReason) {
+                if(viewHolder.mProgressBar != null){
+                    viewHolder.mProgressBar.setVisibility(View.GONE); // This is when loading has failed so want progress bar invisible
+                }
+            }
+
+            @Override
+            public void onLoadingComplete(String imageURL, View view, Bitmap loadedImage) {
+                if(viewHolder.mProgressBar != null){
+                    viewHolder.mProgressBar.setVisibility(View.GONE); // This is when loading has completed so want progress bar invisible
+                }
+            }
+
+            @Override
+            public void onLoadingCancelled(String imageURL, View view) {
+                if(viewHolder.mProgressBar != null){
+                    viewHolder.mProgressBar.setVisibility(View.GONE); // This is when loading has canceled so want progress bar invisible
+                }
+            }
+        });
 
         // gets username and profile image for the post
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
