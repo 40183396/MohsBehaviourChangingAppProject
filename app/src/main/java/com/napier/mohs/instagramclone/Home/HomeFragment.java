@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment {
     @BindString(R.string.db_name_user_photos) String db_user_photos;
     @BindString(R.string.user_id_field) String userID_field;
     @BindString(R.string.caption_field) String caption_field;
+    @BindString(R.string.comments_field) String comments_field;
     @BindString(R.string.photo_id_field) String photoID_field;
     @BindString(R.string.tags_field) String tags_field;
     @BindString(R.string.date_created_field) String date_created_field;
@@ -144,7 +145,7 @@ public class HomeFragment extends Fragment {
                         // gets comments for photo
                         ArrayList<Comment> commentsArrayList = new ArrayList<Comment>();
                         for (DataSnapshot dataSnapshot1 : singleDataSnapshot
-                                .child(getString(R.string.comments_field)).getChildren()) { // loop[ through all comments
+                                .child(comments_field).getChildren()) { // loop[ through all comments
                             Comment comment = new Comment();
                             comment.setUser_id(dataSnapshot1.getValue(Comment.class).getUser_id());
                             comment.setComment(dataSnapshot1.getValue(Comment.class).getComment());

@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,6 +51,7 @@ import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Mohs on 19/03/2018.
@@ -77,7 +79,7 @@ public class ViewPostFragment extends Fragment {
     @BindView(R.id.imagePostStar) ImageView mStarHollow;
     @BindView(R.id.imagePostProfile) ImageView mImageProfile;
     @BindView(R.id.imagePostComment) ImageView mCommentLink;
-    @BindView(R.id.imagePostMenu) ImageView menu;
+    //@BindView(R.id.imagePostMenu) ImageView menu;
     @BindView(R.id.imagePostBackArrow) ImageView backArrow;
 
     private String mPostUsername = "";
@@ -111,7 +113,7 @@ public class ViewPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_viewpost, container, false);
-        ButterKnife.bind(this, view); // buttknife for fragments
+        ButterKnife.bind(this, view); // butterknife for fragments
         mStar = new Star(mStarHollow, mStarYellow); // constructor to star
         mGestureDetector = new GestureDetector(getActivity(), new GestureListener());
 
@@ -127,14 +129,7 @@ public class ViewPostFragment extends Fragment {
             }
         });
 
-        // button for menu in post ==================NOT USED YET=============
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked menu button");
 
-            }
-        });
 
         //setup the backarrow for navigating back to "ProfileActivity"
         backArrow.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +142,15 @@ public class ViewPostFragment extends Fragment {
         });
 
         return view;
+    }
+
+    // button for menu in post ==================NOT USED YET=============
+    // Butterknife example
+    @OnClick(R.id.imagePostMenu)
+    public void submit() {
+
+        Toast.makeText(getActivity(),
+                "Hello from Butterknife OnClick annotation", Toast.LENGTH_SHORT).show();
     }
 
     private void initialiseFragment(){

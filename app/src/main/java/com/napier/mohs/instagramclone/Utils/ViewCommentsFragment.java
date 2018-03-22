@@ -231,7 +231,7 @@ public class ViewCommentsFragment extends Fragment {
     }
 
 
-//------------------------FIRESBASE STUFF------------
+//------------------------FIREBASE STUFF------------
     // Method to check if a user is signed in app
 
     private void setupFirebaseAuth(){
