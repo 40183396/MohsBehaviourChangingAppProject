@@ -20,6 +20,9 @@ import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.instagramclone.Utils.Permissions;
 import com.napier.mohs.instagramclone.Utils.SectionsPagerAdapter;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Mohs on 15/03/2018.
  */
@@ -29,7 +32,7 @@ public class ShareActivity extends AppCompatActivity{
     private static final int PERMISSIONS_VERIFY_REQUEST = 1;
     private static final int ACTIVITY_NUM = 2;
 
-    private ViewPager mViewPager;
+    @BindView(R.id.viewpagerContainer) ViewPager mViewPager;
 
     private Context mContext = ShareActivity.this;
 
@@ -37,6 +40,8 @@ public class ShareActivity extends AppCompatActivity{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
+        ButterKnife.bind(this);
+
         Log.d(TAG, "onCreate: started");
 
         if(permissionsCheckArray(Permissions.PERMISSIONS)){
@@ -60,8 +65,6 @@ public class ShareActivity extends AppCompatActivity{
         adapter.addFragment(new GalleryFragment());
         adapter.addFragment(new PhotoFragment());
 
-
-        mViewPager = (ViewPager) findViewById(R.id.viewpagerContainer);
         mViewPager.setAdapter(adapter);
 
         setupBottomNavigationView();

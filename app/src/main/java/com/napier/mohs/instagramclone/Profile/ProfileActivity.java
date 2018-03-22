@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -18,6 +19,10 @@ import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.ViewCommentsFragment;
 import com.napier.mohs.instagramclone.Utils.ViewPostFragment;
 import com.napier.mohs.instagramclone.Utils.ViewProfileFragment;
+
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Mohs on 15/03/2018.
@@ -36,10 +41,20 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
 
     private ImageView mProfilePhoto;
 
+    // Intent Strings
+    @BindString(R.string.calling_activity) String calling_activity;
+    @BindString(R.string.user_extra) String user_extra;
+    @BindString(R.string.fragment_view_profile) String viewprofile_fragment;
+    @BindString(R.string.fragment_profile) String profile_fragment;
+    @BindString(R.string.fragment_post) String post_fragment;
+    @BindView(R.id.containerProfile) FrameLayout containerProfile;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        ButterKnife.bind(this);
         Log.d(TAG, "onCreate: started profile ");
 
         // inflates fragments for profile
@@ -53,46 +68,46 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         // intent to differentiate whther we go to user profile or someone elses
         Intent intent = getIntent();
         // if intent has calling_acivity string we are coming from search activity
-        if(intent.hasExtra(getString(R.string.calling_activity))){ // check whether extra has calling_activity string
-
-            User user = intent.getParcelableExtra(getString(R.string.user_extra));
+        if(intent.hasExtra(calling_activity)){ // check whether extra has calling_activity string
+            Log.d(TAG, "initialiseProfileFragment: has calling_activity");
+            User user = intent.getParcelableExtra(user_extra);
             // this is if you are clicking on photo from main feed you are directed to your own profile
-            if(!user.getUser_id().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+            if(!user.getUser_id().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 Log.d(TAG, "initialiseProfileFragment: searching for user which was attached as intent extra");
-                if(intent.hasExtra(getString(R.string.user_extra))){ // not needed if but good to use in case we have more calling_activity extras in future development
+                if (intent.hasExtra(user_extra)) { // not needed if but good to use in case we have more calling_activity extras in future development
                     Log.d(TAG, "initialiseProfileFragment: viewing someone elses profile");
                     ViewProfileFragment viewProfileFragment = new ViewProfileFragment();
                     Bundle bundleArgs = new Bundle(); // bundle to pass photo
-                    bundleArgs.putParcelable(getString(R.string.user_extra),
-                            intent.getParcelableExtra(getString(R.string.user_extra))); // getting parcelable extra of username
+                    bundleArgs.putParcelable(user_extra,
+                            intent.getParcelableExtra(user_extra)); // getting parcelable extra of username
                     viewProfileFragment.setArguments(bundleArgs); // sets fragment arguments to bundle arguments
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.containerProfile, viewProfileFragment); // replace container profile with view comments fragment
-                    fragmentTransaction.addToBackStack(getString(R.string.fragment_view_profile));
+                    fragmentTransaction.addToBackStack(viewprofile_fragment);
                     fragmentTransaction.commit();
-            }else { // if no calling_activity user is just navigating to their own profile
+                } else { // if no calling_activity user is just navigating to their own profile
                     Log.d(TAG, "initialiseProfileFragment: users profile is being inflated");
                     ProfileFragment profileFragment = new ProfileFragment();
                     FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.containerProfile, profileFragment); // replacing activity container with fragment
                     // fragments have different stacks to activities, have to manually track stacks with fragments
-                    transaction.addToBackStack(getString(R.string.fragment_profile));
+                    transaction.addToBackStack(profile_fragment);
                     transaction.commit();
                 }
 
-
-            } else {
-                Toast.makeText(mContext, "oops something went wrong", Toast.LENGTH_SHORT).show();
+            }else { // if no calling_activity user is just navigating to their own profile
+                Log.d(TAG, "initialiseProfileFragment: users profile is being inflated");
+                ProfileFragment profileFragment = new ProfileFragment();
+                FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.containerProfile, profileFragment); // replacing activity container with fragment
+                // fragments have different stacks to activities, have to manually track stacks with fragments
+                transaction.addToBackStack(profile_fragment);
+                transaction.commit();
             }
+//            } else {
+//                Toast.makeText(mContext, "oops something went wrong", Toast.LENGTH_SHORT).show();
+//            }
 
-        } else { // if no calling_activity user is just navigating to their own profile
-            Log.d(TAG, "initialiseProfileFragment: users profile is being inflated");
-            ProfileFragment profileFragment = new ProfileFragment();
-            FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.containerProfile, profileFragment); // replacing activity container with fragment
-            // fragments have different stacks to activities, have to manually track stacks with fragments
-            transaction.addToBackStack(getString(R.string.fragment_profile));
-            transaction.commit();
         }
 
 
@@ -111,7 +126,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.containerProfile, viewPostFragment);
-        fragmentTransaction.addToBackStack(getString(R.string.fragment_post));
+        fragmentTransaction.addToBackStack(post_fragment);
         fragmentTransaction.commit();
     }
 

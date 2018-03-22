@@ -48,6 +48,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -72,12 +74,21 @@ public class ViewProfileFragment extends Fragment{
     private static final int NUM_COLS_GRID = 3;
 
 
-    private TextView mPosts, mFollowers, mFollowing, mDisplayName, mUsername, mWebsite, mDescription, mEditProfile,
-            mUnfollow, mFollow;
-    private ProgressBar mProgressBar;
-    private CircleImageView mProfilePhoto;
-    private GridView gridView;
-    private BottomNavigationViewEx bottomNavigationView;
+    @BindView(R.id.textviewViewProfilePostsNumber) TextView mPosts;
+    @BindView(R.id.textviewViewProfileFollowersNumber) TextView mFollowers;
+    @BindView(R.id.textviewViewProfileFollowingNumber) TextView mFollowing;
+    @BindView(R.id.textviewViewProfileDisplayName) TextView mDisplayName;
+    @BindView(R.id.textviewViewProfileUsername) TextView mUsername;
+    @BindView(R.id.textviewViewProfileWebsite) TextView mWebsite;
+    @BindView(R.id.textviewViewProfileDescription) TextView mDescription;
+    @BindView(R.id.textviewViewProfileEditYourProfile) TextView mEditProfile;
+    @BindView(R.id.textviewViewProfileUnfollowUser) TextView mUnfollow;
+    @BindView(R.id.textviewViewProfileFollowUser) TextView mFollow;
+    @BindView(R.id.progressbarViewProfile) ProgressBar mProgressBar;
+    @BindView(R.id.imageViewProfile) CircleImageView mProfilePhoto;
+    @BindView(R.id.gridviewViewProfile) GridView gridView;
+    @BindView(R.id.bottomNavViewBar) BottomNavigationViewEx bottomNavigationView;
+    @BindView(R.id.imageViewProfileBackArrow) ImageView backArrow;
 
     private Context mContext;
 
@@ -95,25 +106,11 @@ public class ViewProfileFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_profile, container, false);
+        ButterKnife.bind(this, view); // butterknife for fragments
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-        mDisplayName = (TextView) view.findViewById(R.id.textviewViewProfileDisplayName);
-        mUsername = (TextView) view.findViewById(R.id.textviewViewProfileUsername);
-        mWebsite = (TextView) view.findViewById(R.id.textviewViewProfileWebsite);
-        mDescription = (TextView) view.findViewById(R.id.textviewViewProfileDescription);
-        mProfilePhoto = (CircleImageView) view.findViewById(R.id.imageViewProfile);
-        mPosts = (TextView) view.findViewById(R.id.textviewViewProfilePostsNumber);
-        mFollowers = (TextView) view.findViewById(R.id.textviewViewProfileFollowersNumber);
-        mFollowing = (TextView) view.findViewById(R.id.textviewViewProfileFollowingNumber);
-        mEditProfile = (TextView) view.findViewById(R.id.textviewViewProfileEditYourProfile);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progressbarViewProfile);
-        mUnfollow = (TextView) view.findViewById(R.id.textviewViewProfileUnfollowUser);
-        mFollow = (TextView) view.findViewById(R.id.textviewViewProfileFollowUser);
-
-        gridView = (GridView) view.findViewById(R.id.gridviewViewProfile);
-        bottomNavigationView = (BottomNavigationViewEx) view.findViewById(R.id.bottomNavViewBar);
         mContext = getActivity();
 
         Log.d(TAG, "onCreateView: started view profile fragment");
@@ -196,8 +193,6 @@ public class ViewProfileFragment extends Fragment{
         });
 
         // back arrow which goes to profile activity
-        ImageView backArrow = (ImageView) view.findViewById(R.id.imageViewProfileBackArrow);
-
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -23,6 +23,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -47,10 +49,15 @@ public class UserListAdapter extends ArrayAdapter<User>{
 
 
     // View holder holds these items
-    private static  class ViewHolder{
-        TextView username;
-        TextView email;
-        CircleImageView imageProfile;
+    static  class ViewHolder{
+        // attach widgets to their relative id's
+        @BindView(R.id.textviewUsersListItemUsername) TextView username;
+        @BindView(R.id.textviewUsersListItemEmail) TextView email;
+        @BindView(R.id.imageUsersListItemProfile) CircleImageView imageProfile;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view); // Butterknife For ViewHolder Pattern
+        }
     }
 
     @NonNull
@@ -61,14 +68,9 @@ public class UserListAdapter extends ArrayAdapter<User>{
         // view holder build pattern
         if (convertView == null) {
             convertView = mLayoutInflater.inflate(mLayoutResource, parent, false);
-            viewHolder = new ViewHolder();
+            viewHolder = new ViewHolder(convertView);
 
-            // attach widgets to their relative id's
-            viewHolder.username = (TextView) convertView.findViewById(R.id.textviewUsersListItemUsername);
-            viewHolder.email = (TextView) convertView.findViewById(R.id.textviewUsersListItemEmail);
-            viewHolder.imageProfile = (CircleImageView) convertView.findViewById(R.id.imageUsersListItemProfile);
-
-            convertView.setTag(viewHolder);
+          convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }

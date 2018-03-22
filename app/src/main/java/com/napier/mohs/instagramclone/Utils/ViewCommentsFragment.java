@@ -1,6 +1,7 @@
 package com.napier.mohs.instagramclone.Utils;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -50,6 +52,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Mohs on 19/03/2018.
  */
@@ -72,11 +77,11 @@ public class ViewCommentsFragment extends Fragment {
     private Photo mPhoto;
     private Context mContext;
 
-
-
-    private ImageView  mSend;
-    private EditText mComment;
-    private ListView mListView;
+    // widgets
+    @BindView(R.id.imageCommentPost) ImageView  mSend;
+    @BindView(R.id.edittextCommentsComment) EditText mComment;
+    @BindView(R.id.listviewComments) ListView mListView;
+    @BindView(R.id.imageCommentsBackArrow) ImageView mBackArrow;
 
     private ArrayList<Comment> mCommentArrayList; // contains list of all comments in thread
 
@@ -85,10 +90,9 @@ public class ViewCommentsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_viewcomments, container, false);
-        mComment = (EditText) view.findViewById(R.id.edittextCommentsComment);
+        ButterKnife.bind(this, view); // butterknife for fragments
+
         mCommentArrayList = new ArrayList<>();
-        mListView = (ListView) view.findViewById(R.id.listviewComments);
-        mSend = (ImageView) view.findViewById(R.id.imageCommentPost);
         mContext = getActivity(); // keeps context constant
 
         // bundle could potentially be null so need a try catch
@@ -103,7 +107,7 @@ public class ViewCommentsFragment extends Fragment {
         setupFirebaseAuth();
 
         //setup the backarrow for navigating back to previous activity
-        ImageView mBackArrow = (ImageView) view.findViewById(R.id.imageCommentsBackArrow);
+
         mBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

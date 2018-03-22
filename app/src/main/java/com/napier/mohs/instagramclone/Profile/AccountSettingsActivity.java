@@ -25,6 +25,9 @@ import com.napier.mohs.instagramclone.Utils.SectionsStatePagerAdapter;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * Created by User on 6/4/2017.
@@ -38,17 +41,20 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private Context mContext;
 
     public SectionsStatePagerAdapter pagerAdapter;
-    private ViewPager mViewPager;
-    private RelativeLayout mRelativeLayout;
+
+    // Widgets
+    @BindView(R.id.imageAccountBackArrow) ImageView backArrow;
+    @BindView(R.id.viewpagerContainer)ViewPager mViewPager;
+    @BindView(R.id.relLayout1) RelativeLayout mRelativeLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accountsettings);
+        ButterKnife.bind(this);
+
         mContext = AccountSettingsActivity.this;
         Log.d(TAG, "onCreate: started.");
-        mViewPager = (ViewPager) findViewById(R.id.viewpagerContainer);
-        mRelativeLayout = (RelativeLayout) findViewById(R.id.relLayout1);
 
         setupSettingsList();
         setupBottomNavigationView();
@@ -56,7 +62,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
         getIntentIncoming();
 
         //setup the backarrow for navigating back to "ProfileActivity"
-        ImageView backArrow = (ImageView) findViewById(R.id.imageAccountBackArrow);
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

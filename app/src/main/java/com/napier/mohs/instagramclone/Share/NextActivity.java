@@ -26,6 +26,9 @@ import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Mohs on 18/03/2018.
  */
@@ -40,7 +43,11 @@ public class NextActivity extends AppCompatActivity{
     private DatabaseReference myDBRefFirebase;
     private FirebaseMethods mFirebaseMethods;
 
-    private EditText mCaption;
+    @BindView(R.id.edittextNextCaption) EditText mCaption;
+    @BindView(R.id.textviewNextShare) TextView share;
+    @BindView(R.id.imageNextBack) ImageView back;
+    @BindView(R.id.imageNextShare) ImageView img;
+
 
     private String mAppend = "file:/";
     private int imgCount = 0;
@@ -54,9 +61,9 @@ public class NextActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
-        mFirebaseMethods = new FirebaseMethods(mContext);
+        ButterKnife.bind(this);
 
-        mCaption = (EditText) findViewById(R.id.edittextNextCaption) ;
+        mFirebaseMethods = new FirebaseMethods(mContext);
 
         setupFirebaseAuth();
         imageSet();
@@ -64,7 +71,6 @@ public class NextActivity extends AppCompatActivity{
         Log.d(TAG, "onCreate: recieved selected image: " + getIntent().getStringExtra(getString(R.string.image_selected)));
 
         // Button to close gallery
-        ImageView back = (ImageView) findViewById(R.id.imageNextBack);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,8 +79,7 @@ public class NextActivity extends AppCompatActivity{
             }
         });
 
-        // goes to share activty
-        TextView share = (TextView) findViewById(R.id.textviewNextShare);
+        // goes to share activity
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,8 +109,6 @@ public class NextActivity extends AppCompatActivity{
     // when activity starts automatically sets image incomming image url of intent
     private void imageSet(){
         mIntent = getIntent();
-        ImageView img = (ImageView) findViewById(R.id.imageNextShare);
-
         // if intent has extra
         if(mIntent.hasExtra(getString(R.string.image_selected))){ // image means came from gallery
             imgURL = mIntent.getStringExtra(getString(R.string.image_selected)); // imgURL set to incoming intent
@@ -123,20 +126,7 @@ public class NextActivity extends AppCompatActivity{
     }
 
 
-    private void someMethod(){
-        /*
-        1) first data model of photos
-        2) properties added to Photo Objects: (caption, date, imageURL, photo_id, tags, user_id)
-        3) Count number photos user has already
-        4) photo is uploaded firbase storage and insert two more nodes in firebase db
-            'photo' node
-            'user_photos' node
-         */
-    }
-
-
-
-    //------------------------FIRESBASE STUFF------------
+    //------------------------FIREBASE STUFF------------
     // Method to check if a user is signed in app
 
     private void setupFirebaseAuth(){

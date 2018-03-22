@@ -33,6 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Mohs on 15/03/2018.
  *
@@ -45,8 +48,8 @@ public class SearchActivity extends AppCompatActivity{
 
     private Context mContext = SearchActivity.this;
 
-    private EditText mSearch;
-    private ListView mListView;
+    @BindView(R.id.edittextSearchSearch) EditText mSearch;
+    @BindView(R.id.listviewSearch) ListView mListView;
 
     private List<User> mUsersList;
 
@@ -57,9 +60,9 @@ public class SearchActivity extends AppCompatActivity{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        ButterKnife.bind(this);
+
         Log.d(TAG, "onCreate: started");
-        mSearch = (EditText) findViewById(R.id.edittextSearchSearch);
-        mListView = (ListView) findViewById(R.id.listviewSearch);
 
         hideKeyboard();
         setupBottomNavigationView();

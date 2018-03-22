@@ -16,6 +16,9 @@ import com.napier.mohs.instagramclone.Profile.AccountSettingsActivity;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.Permissions;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Mohs on 18/03/2018.
  */
@@ -27,15 +30,18 @@ public class PhotoFragment extends Fragment{
     private static final int GALLERYFRAGMENT_NUM = 2;
     private static final int REQUEST_CODE_CAMERA = 3; // does not matter what value this is, just added for consistency
 
+    // widgets
+    @BindView(R.id.buttonPhotoOpenCamera) Button buttonOpenCamera;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
+        ButterKnife.bind(this, view);
 
         Log.d(TAG, "onCreateView: photo fragment started");
 
         // Button which launches the camera
-        Button buttonOpenCamera = (Button) view.findViewById(R.id.buttonPhotoOpenCamera);
         buttonOpenCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

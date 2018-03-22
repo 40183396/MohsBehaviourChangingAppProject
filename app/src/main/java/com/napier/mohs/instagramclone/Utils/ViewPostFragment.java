@@ -48,6 +48,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Mohs on 19/03/2018.
  */
@@ -63,10 +66,19 @@ public class ViewPostFragment extends Fragment {
     private Photo mPhoto;
     private int mActivityNumber = 0;
 
-    private ImagesSquaredView mImagePost;
-    private BottomNavigationViewEx mBottomNavigationView;
-    private TextView mCaption, mUsername, mDateTimestamp, mLikes, mComments;
-    private ImageView mStarYellow, mStarHollow, mImageProfile, mComment;
+    @BindView(R.id.imagePostPicture) ImagesSquaredView mImagePost;
+    @BindView(R.id.bottomNavViewBar) BottomNavigationViewEx mBottomNavigationView;
+    @BindView(R.id.textviewPostCaption) TextView mCaption;
+    @BindView(R.id.textviewPostUsername) TextView mUsername;
+    @BindView(R.id.textviewPostDate) TextView mDateTimestamp;
+    @BindView(R.id.textviewPostLikes) TextView mLikes;
+    @BindView(R.id.textviewPostComments) TextView mComments;
+    @BindView(R.id.imagePostStarYellow) ImageView mStarYellow;
+    @BindView(R.id.imagePostStar) ImageView mStarHollow;
+    @BindView(R.id.imagePostProfile) ImageView mImageProfile;
+    @BindView(R.id.imagePostComment) ImageView mCommentLink;
+    @BindView(R.id.imagePostMenu) ImageView menu;
+    @BindView(R.id.imagePostBackArrow) ImageView backArrow;
 
     private String mPostUsername = "";
     private String mUrl = "";
@@ -99,31 +111,15 @@ public class ViewPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_viewpost, container, false);
-        mImagePost = (ImagesSquaredView) view.findViewById(R.id.imagePostPicture);
-        mBottomNavigationView = (BottomNavigationViewEx) view.findViewById(R.id.bottomNavViewBar);
-
-        mCaption = (TextView) view.findViewById(R.id.textviewPostCaption);
-        mUsername = (TextView) view.findViewById(R.id.textviewPostUsername);
-        mDateTimestamp = (TextView) view.findViewById(R.id.textviewPostDate);
-        mStarHollow = (ImageView) view.findViewById(R.id.imagePostStar);
-        mStarYellow = (ImageView) view.findViewById(R.id.imagePostStarYellow);
-        mImageProfile = (ImageView) view.findViewById(R.id.imagePostProfile);
-        mLikes = (TextView) view.findViewById(R.id.textviewPostLikes);
-        mComments = (TextView) view.findViewById(R.id.textviewPostComments);
-
+        ButterKnife.bind(this, view); // buttknife for fragments
         mStar = new Star(mStarHollow, mStarYellow); // constructor to star
         mGestureDetector = new GestureDetector(getActivity(), new GestureListener());
-
 
         setupFirebaseAuth();
         setupBottomNavigationView();
 
-
-
-
         // button for going to see comments in post
-        ImageView comment = (ImageView) view.findViewById(R.id.imagePostComment);
-        comment.setOnClickListener(new View.OnClickListener() {
+        mCommentLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked comment button");
@@ -131,8 +127,7 @@ public class ViewPostFragment extends Fragment {
             }
         });
 
-        // button for menu in post
-        ImageView menu = (ImageView) view.findViewById(R.id.imagePostMenu);
+        // button for menu in post ==================NOT USED YET=============
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,7 +137,6 @@ public class ViewPostFragment extends Fragment {
         });
 
         //setup the backarrow for navigating back to "ProfileActivity"
-        ImageView backArrow = (ImageView) view.findViewById(R.id.imagePostBackArrow);
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

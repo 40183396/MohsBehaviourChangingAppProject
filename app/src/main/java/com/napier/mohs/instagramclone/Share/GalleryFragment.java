@@ -29,6 +29,9 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import java.io.File;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Mohs on 18/03/2018.
  */
@@ -38,11 +41,12 @@ public class GalleryFragment extends Fragment{
     private static final int NUM_COLS_GRID = 3;
 
 
-    private GridView mGridView;
-    private ImageView mGalleryImage;
-    private ProgressBar mProgressBar;
-    private Spinner mDirectorySpinner;
-
+    @BindView(R.id.gridviewGallery) GridView mGridView;
+    @BindView(R.id.imageGalleryImageView) ImageView mGalleryImage;
+    @BindView(R.id.progressbarGallery) ProgressBar mProgressBar;
+    @BindView(R.id.spinnerGalleryDirectory) Spinner mDirectorySpinner;
+    @BindView(R.id.imageGalleryClose) ImageView close;
+    @BindView(R.id.textviewGalleryNext) TextView next;
     private ArrayList<String> directories;
     private String mAppend = "file:/";
     private String mImageSelected;
@@ -51,12 +55,9 @@ public class GalleryFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+        ButterKnife.bind(this, view);
         Log.d(TAG, "onCreateView: gallery fragment started");
 
-        mGalleryImage = (ImageView) view.findViewById(R.id.imageGalleryImageView);
-        mGridView = (GridView) view.findViewById(R.id.gridviewGallery);
-        mDirectorySpinner = (Spinner) view.findViewById(R.id.spinnerGalleryDirectory);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progressbarGallery);
         mProgressBar.setVisibility(View.GONE);
 
         directories = new ArrayList<>();
@@ -64,7 +65,6 @@ public class GalleryFragment extends Fragment{
         initialiseFolders();
 
         // Button to close gallery
-        ImageView close = (ImageView) view.findViewById(R.id.imageGalleryClose);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,8 +73,7 @@ public class GalleryFragment extends Fragment{
             }
         });
 
-        // goes to share activty
-        TextView next = (TextView) view.findViewById(R.id.textviewGalleryNext);
+        // goes to share activity
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
