@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.napier.mohs.instagramclone.Home.HomeActivity;
 import com.napier.mohs.instagramclone.R;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
@@ -37,14 +39,27 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    @BindView(R.id.edittextLoginEmail) EditText mEmail;
-    @BindView(R.id.edittextLoginPassword) EditText mPassword;
-    @BindView(R.id.textviewLoginSigningIn) TextView mSigningIn;
-    @BindView(R.id.textviewRegisterAlreadyHaveAccount) TextView signUpLink;
-    @BindView(R.id.progressbarLogin) ProgressBar mProgressBar;
-    @BindView(R.id.buttonLogin) Button loginButton;
+    @BindView(R.id.edittextLoginEmail)
+    EditText mEmail;
+    @BindView(R.id.edittextLoginPassword)
+    EditText mPassword;
+    @BindView(R.id.textviewLoginSigningIn)
+    TextView mSigningIn;
+    @BindView(R.id.textviewRegisterAlreadyHaveAccount)
+    TextView signUpLink;
+    @BindView(R.id.progressbarLogin)
+    ProgressBar mProgressBar;
+    @BindView(R.id.buttonLogin)
+    Button loginButton;
 
     private Context mContext;
+
+    private String email, password, username;
+
+    // Strings
+    @BindString(R.string.error_invalid_password) String invalid_password;
+    @BindString(R.string.error_invalid_email) String invalid_email;
+    @BindString(R.string.error_field_required) String field_required;
 
 
     @Override
@@ -70,36 +85,57 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    // method to check if input fields are not null
-    private boolean checkIfStringNull(String input){
-        Log.d(TAG, "checkIfStringNull: checking if fields are null");
-
-        if(input.equals("")){
-            Log.d(TAG, "checkIfStringNull: fields are null");
-            return true;
-        } else {
-            Log.d(TAG, "checkIfStringNull: fields filled");
-            return false;
-        }
+    private boolean isPasswordValid(String password) {
+        return password.length() > 6;
     }
 
+    private boolean isEmailValid(String email) {
+        // TODO: Add More email checks here
+        return email.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+");
+    }
 
     //------------------------FIREBASE STUFF------------
 
 
-
     // Button which initialises logging in
-    private void initialiseLoggingIn(){
+    private void initialiseLoggingIn() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Attempting to log in");
 
-                String email = mEmail.getText().toString();
-                String password = mPassword.getText().toString();
+                // Reset errors displayed in the form.
+                mEmail.setError(null);
+                mPassword.setError(null);
 
-                if(checkIfStringNull(email) || checkIfStringNull(password)){
+                email = mEmail.getText().toString();
+                password = mPassword.getText().toString();
+
+                boolean cancel = false;
+                View focusView = null;
+
+                // Check for a valid password, if the user entered one.
+                if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
+                    mPassword.setError(invalid_password);
+                    focusView = mPassword;
+                    cancel = true;
+                }
+
+                // Check email field is filled or email is valid
+                if (TextUtils.isEmpty(email)) {
+                    mEmail.setError(field_required);
+                    focusView = mEmail;
+                    cancel = true;
+                } else if (!isEmailValid(email)) {
+                    mEmail.setError(invalid_email);
+                    focusView = mEmail;
+                    cancel = true;
+                }
+
+                if (cancel) {
+                    // error does not attempt log in
                     Toasty.error(mContext, "You must fill out all the fields", Toast.LENGTH_SHORT).show();
+                    focusView.requestFocus();
                 } else {
                     // If Fields are not empty, attempt a log in and progress bar shows
                     mProgressBar.setVisibility(View.VISIBLE);
@@ -122,23 +158,13 @@ public class LoginActivity extends AppCompatActivity {
                                                 Toast.LENGTH_SHORT).show();
                                         mProgressBar.setVisibility(View.GONE);
                                         mSigningIn.setVisibility(View.GONE);
-                                    }
-                                    else{
-                                        //try{
-                                           // if(user.isEmailVerified()){
-                                               // Log.d(TAG, "onComplete: success. email is verified.");
-                                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                                startActivity(intent);
-                                           // }else{
-                                              //  Toast.makeText(mContext, "Email is not verified \n check your email inbox.", Toast.LENGTH_SHORT).show();
-                                                Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();
-                                                mProgressBar.setVisibility(View.GONE);
-                                                mSigningIn.setVisibility(View.GONE);
-                                               // mAuth.signOut();
-                                          //  }
-                                        //}catch (NullPointerException e){
-                                           // Log.e(TAG, "onComplete: NullPointerException: " + e.getMessage() );
-                                       // }
+                                    } else {
+                                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                        startActivity(intent);
+
+                                        Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();
+                                        mProgressBar.setVisibility(View.GONE);
+                                        mSigningIn.setVisibility(View.GONE);
                                     }
 
                                 }
@@ -158,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         // navigates to home activity if user is logged in
-        if(mAuth.getCurrentUser() != null){
+        if (mAuth.getCurrentUser() != null) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
             // closes login activity
@@ -166,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void setupFirebaseAuth(){
+    private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -174,7 +200,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                if(user != null){
+                if (user != null) {
                     Log.d(TAG, "onAuthStateChanged: user signed in " + user);
                 } else {
                     Log.d(TAG, "onAuthStateChanged: user signed out");
@@ -192,7 +218,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if(mAuthListener != null){
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }

@@ -267,6 +267,7 @@ public class FirebaseMethods {
 
     // registers the given email and pasword to firebase db
     public void newEmailRegister(final String email, String password, final String username) {
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() { //Because not in activty can not apply context here
                     @Override
@@ -278,8 +279,9 @@ public class FirebaseMethods {
                             sendVerEmail();
                             userID = mAuth.getCurrentUser().getUid();
                             Log.d(TAG, "createUserWithEmail:success, userID: " + userID);
-                            Toasty.success(mContext, "Successfully Authenticated!",
+                            Toasty.success(mContext, "Successfully Authenticated! \n\t\t\t\tPlease Sign In",
                                     Toast.LENGTH_SHORT).show();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -289,9 +291,11 @@ public class FirebaseMethods {
 
                     }
                 });
+
     }
 
     // sends verification email to user
+    // took this out
     public void sendVerEmail() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 

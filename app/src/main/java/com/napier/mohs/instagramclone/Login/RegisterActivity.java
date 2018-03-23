@@ -1,6 +1,7 @@
 package com.napier.mohs.instagramclone.Login;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
@@ -126,9 +128,15 @@ public class RegisterActivity extends AppCompatActivity {
                     focusView.requestFocus();
                 } else {
                     // If Fields are not empty, attempt registration and progress bar shows
-                    mProgressBar.setVisibility(View.VISIBLE);
-                    mSigningIn.setVisibility(View.VISIBLE);
-
+                    //TODO Figure out how to get progress bar to disappear
+                    //mProgressBar.setVisibility(View.VISIBLE);
+                    //mSigningIn.setVisibility(View.VISIBLE);
+                    new StyleableToast
+                            .Builder(mContext)
+                            .text("Registering...")
+                            .textColor(Color.WHITE)
+                            .backgroundColor(Color.BLUE)
+                            .show();
                     fbMethods.newEmailRegister(email, password, username);
 
                 }
@@ -139,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Add another comfirm password field
+        //TODO: Add another confirm password field
         //String confirmPassword = mConfirmPasswordView.getText().toString();
 
         return password.length() > 6;
@@ -147,21 +155,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean isEmailValid(String email) {
         // TODO: Add More email checks here
-        return email.contains("@");
+        return email.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+");
     }
 
-    // method to check if input fields are not null
-    private boolean checkIfStringNull(String input){
-        Log.d(TAG, "checkIfStringNull: checking if fields are null");
-
-        if(input.equals("")){
-            Log.d(TAG, "checkIfStringNull: fields are null");
-            return true;
-        } else {
-            Log.d(TAG, "checkIfStringNull: fields are filled");
-            return false;
-        }
-    }
 
     //------------------------FIREBASE STUFF------------
 
@@ -172,7 +168,7 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "checkUsernameExist: Checking if this username exists already: " + username);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        // looks for node that contains object that is being lookexd for then gets field in that object
+        // looks for node that contains object that is being looked for then gets field in that object
         Query qry = ref
                 .child(getString(R.string.db_name_users))
                 .orderByChild(getString(R.string.username_field))
@@ -200,8 +196,6 @@ public class RegisterActivity extends AppCompatActivity {
                 fbMethods.addNewUser(email, mUsername, "", "", "");
                 Log.d(TAG, "onDataChange: email: " + email + ", username = " + mUsername );
 
-                Toasty.success(mContext, "Successfully Signed Up, Please Log In", Toast.LENGTH_SHORT).show();
-
                 mAuth.signOut();
             }
 
@@ -214,7 +208,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void setupFirebaseAuth(){
-        Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
+        Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
