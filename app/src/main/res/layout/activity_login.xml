@@ -3,22 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/relLayout1">
+
+        <com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper
+            android:id="@+id/custom_switcher"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="55dp"
         android:paddingLeft="25dp"
-        android:paddingRight="25dp">
-        
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="75dp"
-            android:src="@drawable/batman"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="40dp"
-            />
+        android:paddingRight="25dp"
+        android:layout_below="@id/relLayout1">
+
+
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

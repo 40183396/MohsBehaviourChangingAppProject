@@ -205,6 +205,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
         query.addListenerForSingleValueEvent(new ValueEventListener(){
 
 
+            // retrieve details
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
@@ -366,7 +367,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
 
     public class GestureListener extends GestureDetector.SimpleOnGestureListener{
         ViewHolder mViewHolder;
-        // we dont have global photo soo we create a default constructor and pass the view holder
+        // we dont have global photo so we create a default constructor and pass the view holder
         public GestureListener(ViewHolder viewHolder){
             mViewHolder = viewHolder;
         }

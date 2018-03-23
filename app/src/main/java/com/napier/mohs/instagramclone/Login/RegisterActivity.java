@@ -196,6 +196,7 @@ public class RegisterActivity extends AppCompatActivity {
                 fbMethods.addNewUser(email, mUsername, "", "", "");
                 Log.d(TAG, "onDataChange: email: " + email + ", username = " + mUsername );
 
+                // signs user out after registering
                 mAuth.signOut();
             }
 

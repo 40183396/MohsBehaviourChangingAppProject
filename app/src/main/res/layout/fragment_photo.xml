@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Button
         android:layout_width="match_parent"
@@ -15,5 +15,23 @@
         android:layout_marginLeft="30dp"
         android:background="@drawable/white_rounded_button"
         android:id="@+id/buttonPhotoOpenCamera"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relLayout2"
+        android:layout_marginTop="150dp">
+
+        <com.airbnb.lottie.LottieAnimationView
+
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="camera.json"
+            android:scaleType="centerCrop"/>
+    </RelativeLayout>
 
 </RelativeLayout>

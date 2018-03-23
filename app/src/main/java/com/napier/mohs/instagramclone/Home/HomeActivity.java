@@ -17,6 +17,9 @@ import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.instagramclone.Login.LoginActivity;
 import com.napier.mohs.instagramclone.Models.Photo;
@@ -60,6 +63,9 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myDBRefFirebase;
+    private StorageReference mStorageRefFirebase;
 
     // widgets
     @BindView(R.id.viewpagerContainer) ViewPager mViewPager;
@@ -70,6 +76,7 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
     @BindString(R.string.home_activity) String home_activity;
     @BindString(R.string.photo) String photo_extra;
     @BindString(R.string.fragment_viewcomments) String viewcomments_fragment;
+    private String a = "activities";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +85,13 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
         ButterKnife.bind(this);
         Log.d(TAG, "onCreate: starting.");
         setupFirebaseAuth();
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.push().setValue(1);
+
+        mDatabase.child("numbers").push().setValue(1);
+        mDatabase.child("numbers").push().setValue(53);
+        mDatabase.child("numbers").push().setValue(42);
 
         // make sure to initiliases image loader first
         initImageLoader();

@@ -3,6 +3,7 @@ package com.napier.mohs.instagramclone.Share;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,8 @@ import com.napier.mohs.instagramclone.Profile.ProfileActivity;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
+import com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper;
+import com.sdsmdg.harjot.rotatingtext.models.Rotatable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -103,10 +106,23 @@ public class NextActivity extends AppCompatActivity{
 
             }
         });
+
+        rotatingText();
+    }
+
+    private void rotatingText(){
+        RotatingTextWrapper rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
+        rotatingTextWrapper.setSize(35);
+
+        Rotatable rotatable = new Rotatable(Color.parseColor("#FFA036"), 1000, "Word", "Word01", "Word02");
+        rotatable.setSize(35);
+        rotatable.setAnimationDuration(500);
+
+        rotatingTextWrapper.setContent("This is ?", rotatable);
     }
 
 
-    // when activity starts automatically sets image incomming image url of intent
+    // when activity starts automatically sets image incoming image url of intent
     private void imageSet(){
         mIntent = getIntent();
         // if intent has extra

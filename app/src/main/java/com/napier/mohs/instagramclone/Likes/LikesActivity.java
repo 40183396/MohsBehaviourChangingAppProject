@@ -1,5 +1,6 @@
 package com.napier.mohs.instagramclone.Likes;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.napier.mohs.instagramclone.R;
@@ -40,58 +42,8 @@ public class LikesActivity extends AppCompatActivity{
 
     String toastMsg = "Hello World!";
 
-    @OnClick(R.id.button2)
-    public void submit(View view) {
-        new StyleableToast.Builder(this)
-                .text(toastMsg)
-                .textColor(Color.CYAN)
-                .textBold()
-                .show();
-    }
-    @OnClick(R.id.button3)
-    public void submit1(View view) {
-        new StyleableToast.Builder(this)
-                .text(toastMsg)
-                .textColor(Color.CYAN)
-                .textBold()
-                .show();
-    }
-    @OnClick(R.id.button4)
-    public void submit2(View view) {
-        new StyleableToast.Builder(this)
-                .text(toastMsg)
-                .cornerRadius(5)
-                .show();
-    }
-    @OnClick(R.id.button5)
-    public void submit3(View view) {
-        new StyleableToast
-                .Builder(mContext)
-                .text("Hello world!")
-                .textColor(Color.WHITE)
-                .backgroundColor(Color.BLUE)
-                .show();
-    }
-    @OnClick(R.id.button6)
-    public void submit4(View view) {
+    @BindView(R.id.lottieAnimationView) LottieAnimationView animation;
 
-    }
-    @OnClick(R.id.button7)
-    public void submit5(View view) {
-        Drawable icon = getResources().getDrawable(R.drawable.ic_arrow);
-        Toasty.normal(mContext, "Normal toast w/ icon", icon).show();
-    }
-
-    private CharSequence getFormattedMessage() {
-        final String prefix = "Formatted ";
-        final String highlight = "bold italic";
-        final String suffix = " text";
-        SpannableStringBuilder ssb = new SpannableStringBuilder(prefix).append(highlight).append(suffix);
-        int prefixLen = prefix.length();
-        ssb.setSpan(new StyleSpan(BOLD_ITALIC),
-                prefixLen, prefixLen + highlight.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return ssb;
-    }
 
 
     @Override
@@ -101,7 +53,30 @@ public class LikesActivity extends AppCompatActivity{
         ButterKnife.bind(this);
         Log.d(TAG, "onCreate: started");
 
+        animation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCheckAnimation();
+            }
+        });
+
         setupBottomNavigationView();
+    }
+
+    private void startCheckAnimation() {
+        ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f).setDuration(500);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                animation.setProgress((Float) valueAnimator.getAnimatedValue());
+            }
+        });
+
+        if (animation.getProgress() == 0f) {
+            animator.start();
+        } else {
+            animation.setProgress(0f);
+        }
     }
 
     /**
@@ -116,4 +91,6 @@ public class LikesActivity extends AppCompatActivity{
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
         menuItem.setChecked(true);
     }
+
+
 }

@@ -2,6 +2,8 @@ package com.napier.mohs.instagramclone.Login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -22,6 +26,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.napier.mohs.instagramclone.Home.HomeActivity;
 import com.napier.mohs.instagramclone.R;
+import com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper;
+import com.sdsmdg.harjot.rotatingtext.models.Rotatable;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -73,15 +79,28 @@ public class LoginActivity extends AppCompatActivity {
         mContext = LoginActivity.this;
 
         // quick log in
-        mEmail.setText("test@test.com");
+        mEmail.setText("mohsy@mohsy.com");
         mPassword.setText("11111111");
 
         // This is invisible till user signs in
         mProgressBar.setVisibility(View.GONE);
         mSigningIn.setVisibility(View.GONE);
-
+        rotatingText();
         setupFirebaseAuth();
         initialiseLoggingIn();
+    }
+
+    private void rotatingText(){
+        RotatingTextWrapper rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Reckoner_Bold.ttf");
+        rotatingTextWrapper.setSize(35);
+
+        Rotatable rotatable = new Rotatable(Color.parseColor("#FFA036"), 1000, "Awesome", "Better", "Your Best");
+        rotatable.setTypeface(typeface);
+        rotatable.setSize(35);
+        rotatable.setAnimationDuration(500);
+        signUpLink.setTypeface(typeface);
+        rotatingTextWrapper.setContent("Be \n?", rotatable);
     }
 
 

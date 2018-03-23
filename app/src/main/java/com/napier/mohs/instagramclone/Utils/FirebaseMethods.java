@@ -257,7 +257,7 @@ public class FirebaseMethods {
         photo.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
         photo.setPhoto_id(photoNewKey);
 
-        // databse insertiion
+        // database insertiion
         myDBRefFirebase.child(mContext.getString(R.string.db_name_user_photos))
                 .child(FirebaseAuth.getInstance()
                         .getCurrentUser().getUid())
@@ -381,7 +381,8 @@ public class FirebaseMethods {
     // updates other settings apaart from email and username
     // These do not haave to be unique
     public void usersettingsUpdate(String displayname, String web, String description, long phone) {
-        Log.d(TAG, "usernameUpdate: updating the users settings, displayname: " + displayname + " web: " + web + " phone: " + phone + " decription: " + description);
+        Log.d(TAG, "usernameUpdate: updating the users settings, displayname: " + displayname + " web: " + web
+                + " phone: " + phone + " decription: " + description);
 
         if (displayname != null) {
             myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))

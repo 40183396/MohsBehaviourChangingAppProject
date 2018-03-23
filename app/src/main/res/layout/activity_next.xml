@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,48 +9,70 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@id/relLayout1"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <RelativeLayout
+                android:id="@+id/relLayout1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/relLayout1">
+                android:layout_height="wrap_content">
 
                 <!-- For Toolbar -->
                 <include layout="@layout/snippet_top_nexttoolbar" />
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@id/relLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/relLayout1"
-                android:id="@id/relLayout2"
                 android:background="@drawable/grey_border_bottom">
 
                 <ImageView
+                    android:id="@+id/imageNextShare"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:id="@+id/imageNextShare"
-                    android:scaleType="centerCrop"
                     android:layout_centerVertical="true"
+                    android:layout_marginBottom="40dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="40dp"/>
+                    android:scaleType="centerCrop" />
 
                 <!--background null to get rid of line-->
                 <EditText
+                    android:id="@+id/edittextNextCaption"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/edittextNextCaption"
-                    android:layout_toRightOf="@id/imageNextShare"
-                    android:hint="Write description here"
-                    android:layout_marginLeft="20dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/imageNextShare"
                     android:background="@null"
-                    />
+                    android:hint="Write description here" />
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/relLayout2"
+                android:layout_marginTop="50dp">
+
+                <com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper
+                    android:id="@+id/custom_switcher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottieAnimationView"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="great_work.json"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"/>
+            </RelativeLayout>
 
 
         </RelativeLayout>
