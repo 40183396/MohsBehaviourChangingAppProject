@@ -36,7 +36,7 @@ public class PhotoFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_photo, container, false);
+        View view = inflater.inflate(R.layout.fragment_sharecamera, container, false);
         ButterKnife.bind(this, view);
 
         Log.d(TAG, "onCreateView: photo fragment started");

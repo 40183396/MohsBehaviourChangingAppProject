@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content">
 
                 <!-- For Toolbar -->
-                <include layout="@layout/snippet_top_nexttoolbar" />
+                <include layout="@layout/top_nexttoolbar" />
             </RelativeLayout>
 
             <RelativeLayout

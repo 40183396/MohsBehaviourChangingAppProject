@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,12 +35,7 @@ import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.Models.UserSettings;
 import com.napier.mohs.instagramclone.Profile.AccountSettingsActivity;
-import com.napier.mohs.instagramclone.Profile.ProfileActivity;
 import com.napier.mohs.instagramclone.R;
-import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
-import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
-import com.napier.mohs.instagramclone.Utils.GridImageAdapter;
-import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,7 +118,7 @@ public class ViewProfileFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_viewprofile, container, false);
         ButterKnife.bind(this, view); // butterknife for fragments
 
         mAuth = FirebaseAuth.getInstance();

@@ -1,27 +1,18 @@
 package com.napier.mohs.instagramclone.Utils;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,22 +23,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.instagramclone.Home.HomeActivity;
 import com.napier.mohs.instagramclone.Models.Comment;
-import com.napier.mohs.instagramclone.Models.Like;
 import com.napier.mohs.instagramclone.Models.Photo;
-import com.napier.mohs.instagramclone.Models.User;
-import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.R;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -133,7 +117,7 @@ public class ViewCommentsFragment extends Fragment {
     // sets up widgets
     private void setupWidgets(){
         Log.d(TAG, "setupWidgets: setting up widgets");
-        CommentsListAdapter adapter = new CommentsListAdapter(mContext, R.layout.layout_comments, mCommentArrayList); // adapter with comments
+        CommentsListAdapter adapter = new CommentsListAdapter(mContext, R.layout.listitem_comments, mCommentArrayList); // adapter with comments
         mListView.setAdapter(adapter); //list view receives data from adapter
 
         // button for sending a comment

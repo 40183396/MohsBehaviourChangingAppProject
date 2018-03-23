@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -18,9 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.instagramclone.Models.Comment;
-import com.napier.mohs.instagramclone.Models.Like;
 import com.napier.mohs.instagramclone.Models.Photo;
-import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.MainFeedListAdapter;
 
@@ -28,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindString;
@@ -201,7 +197,7 @@ public class HomeFragment extends Fragment {
                     mPhotosPaginatedArrayList.add(mPhotoArrayList.get(i));
                 }
                 // set up adapter with layout amd photo array list in paginated way (10 posts)
-                mAdapter = new MainFeedListAdapter(getActivity(), R.layout.layout_listitem_mainfeed, mPhotosPaginatedArrayList);
+                mAdapter = new MainFeedListAdapter(getActivity(), R.layout.listitem_mainfeed, mPhotosPaginatedArrayList);
                 mListView.setAdapter(mAdapter); // sets list view with adapter
             }
 

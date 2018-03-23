@@ -135,7 +135,7 @@ public class SearchActivity extends AppCompatActivity{
         Log.d(TAG, "usersListUpdate: the userlist is being updated");
 
         // sets adapter with users list item layout and user list data
-        mUserListAdapter = new UserListAdapter(SearchActivity.this, R.layout.layout_listitem_users, mUsersList);
+        mUserListAdapter = new UserListAdapter(SearchActivity.this, R.layout.listitem_users, mUsersList);
 
         // sets adapter on list view
         mListView.setAdapter(mUserListAdapter);

@@ -28,12 +28,6 @@ public class DiaryActivity extends AppCompatActivity{
 
     private Context mContext = DiaryActivity.this;
 
-    String toastMsg = "Hello World!";
-
-    @BindView(R.id.lottieAnimationView) LottieAnimationView animation;
-
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,31 +35,10 @@ public class DiaryActivity extends AppCompatActivity{
         ButterKnife.bind(this);
         Log.d(TAG, "onCreate: started");
 
-        animation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startCheckAnimation();
-            }
-        });
-
         setupBottomNavigationView();
     }
 
-    private void startCheckAnimation() {
-        ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f).setDuration(500);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                animation.setProgress((Float) valueAnimator.getAnimatedValue());
-            }
-        });
 
-        if (animation.getProgress() == 0f) {
-            animator.start();
-        } else {
-            animation.setProgress(0f);
-        }
-    }
 
     /**
      * BottomNavigationView setup
