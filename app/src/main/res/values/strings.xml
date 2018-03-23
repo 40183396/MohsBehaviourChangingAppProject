@@ -58,6 +58,10 @@
 
     <!--Dialog Strings-->
     <string name="dialog_password_confirm">PasswordConfirmDialog</string>
+    <string name="error_invalid_email">This email is not invalid</string>
+    <string name="error_invalid_password">Password too short</string>
+    <string name="error_incorrect_password">Password is incorrect</string>
+    <string name="error_field_required">Please fill this field out</string>
 
     <!--Types of Photo Strings -->
     <string name="new_photo">new_photo</string>

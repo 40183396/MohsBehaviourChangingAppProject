@@ -36,6 +36,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import es.dmoral.toasty.Toasty;
+
 /**
  * Created by Mohs on 17/03/2018.
  */
@@ -44,14 +46,13 @@ public class FirebaseMethods {
     private static final String TAG = "FirebaseMethods";
     private Context mContext;
     private double mUploadPhotoProgress = 0;
+
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
     private StorageReference mStorageRefFirebase;
-
-
 
     private String userID;
 
@@ -75,7 +76,7 @@ public class FirebaseMethods {
     public int getImgCount(DataSnapshot dataSnapshot) {
         int imgCount = 0;
 
-        // targetting specific node so loop is faster
+        // targeting specific node so loop is faster
         for (DataSnapshot ds : dataSnapshot.child(mContext
                 .getString(R.string.db_name_user_photos))
                 .child(userID).getChildren()) {
@@ -102,7 +103,7 @@ public class FirebaseMethods {
                     .child(filePaths.IMAGE_FIREBASE_STORAGE + "/" + user_id + "/photo" + (count + 1));
 
             // Converts img url to bitmap
-            if(bitmap == null){
+            if (bitmap == null) {
                 bitmap = ManageImages.getBtm(imgURL);
             }
 
@@ -159,15 +160,13 @@ public class FirebaseMethods {
             Log.d(TAG, "newPhotoUpload: new profile photo being uploaded");
 
 
-
-
             String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid(); // instead of global using this local
 
             StorageReference storageReference = mStorageRefFirebase
                     .child(filePaths.IMAGE_FIREBASE_STORAGE + "/" + user_id + "/profile_photo"); // removed count as there is only single photo being uploaded
 
             // Converts img url to bitmap
-            if(bitmap == null){
+            if (bitmap == null) {
                 bitmap = ManageImages.getBtm(imgURL);
             }
             byte[] bytes = ManageImages.getBytesOfBitmap(bitmap, IMG_QUALITY);
@@ -183,7 +182,7 @@ public class FirebaseMethods {
                     // get download photo url in storage location in firebase
                     Uri firebaseURL = taskSnapshot.getDownloadUrl();
 
-                    Toast.makeText(mContext, "Upload was successful", Toast.LENGTH_SHORT).show();
+                    Toasty.success(mContext, "Upload was successful", Toast.LENGTH_SHORT).show();
 
                     // add to pointers in firebase database
                     // add new photo to 'user_account_settings' nodes
@@ -191,8 +190,8 @@ public class FirebaseMethods {
 
                     // sets viewpager so returns us back to edit profile fragment
                     // opens up edit profile fragment and skips showing account settings activity
-                    ((AccountSettingsActivity)mContext).setViewPager(
-                            ((AccountSettingsActivity)mContext).pagerAdapter
+                    ((AccountSettingsActivity) mContext).setViewPager(
+                            ((AccountSettingsActivity) mContext).pagerAdapter
                                     .getFragmentNumber(mContext.getString(R.string.fragment_edit_profile))
                     );
 
@@ -202,7 +201,7 @@ public class FirebaseMethods {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Log.d(TAG, "onFailure: Upload failed");
-                    Toast.makeText(mContext, "Upload failed", Toast.LENGTH_SHORT).show();
+                    Toasty.warning(mContext, "Upload failed", Toast.LENGTH_SHORT).show();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 // constantly updates as we go
@@ -227,7 +226,7 @@ public class FirebaseMethods {
     }
 
     // setting single parameter  to change profile photo and uploads to db
-    private void profilePhotoSet(String url){
+    private void profilePhotoSet(String url) {
         Log.d(TAG, "profilePhotoSet: new profile photo being set " + url);
 
         myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
@@ -266,35 +265,6 @@ public class FirebaseMethods {
         myDBRefFirebase.child(mContext.getString(R.string.db_name_photos)).child(photoNewKey).setValue(photo);
     }
 
-    // OLD METHOD FOR CHECKING IF USERNAME EXISTS IN DB
-
-    // method to check is username is already in use in db
-//    public boolean checkUsernameExists(String username, DataSnapshot dataSnapshot) {
-//        Log.d(TAG, "checkUsernameExists: checking if the user " + username + " is already in db");
-//
-//        User user = new User();
-//
-//        // Now loops through DataSnapshot to see if user exists
-//        // DataSnapshot goes through all nodes
-//        // 0th iteration only gets first node in this case user_acount settings
-//        // 1st would be users etc.
-//        for (DataSnapshot ds : dataSnapshot.child(userID).getChildren()) {
-//            Log.d(TAG, "checkUsernameExists: DataSnapshot " + ds);
-//
-//            //sets user to username
-//            user.setUsername(ds.getValue(User.class).getUsername());
-//            Log.d(TAG, "checkUsernameExists: username: " + user.getUsername());
-//
-//            // checks if username already exists by removing period and replacing with space and then comparing to String username
-//            if (ManipulateStrings.usernameRemovePeriod(user.getUsername()).equals(username)) {
-//                Log.d(TAG, "checkUsernameExists: username already exists: " + user.getUsername());
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
-
     // registers the given email and pasword to firebase db
     public void newEmailRegister(final String email, String password, final String username) {
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -308,12 +278,12 @@ public class FirebaseMethods {
                             sendVerEmail();
                             userID = mAuth.getCurrentUser().getUid();
                             Log.d(TAG, "createUserWithEmail:success, userID: " + userID);
-                            Toast.makeText(mContext, R.string.success_auth,
+                            Toasty.success(mContext, "Successfully Authenticated!",
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(mContext, R.string.failed_auth,
+                            Toasty.error(mContext, "Failed To Authenticate! " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -333,7 +303,7 @@ public class FirebaseMethods {
                             if (task.isSuccessful()) {
 
                             } else
-                                Toast.makeText(mContext, "Verification email could not be sent", Toast.LENGTH_SHORT).show();
+                                Toasty.error(mContext, "Verification email could not be sent", Toast.LENGTH_SHORT).show();
                         }
                     });
         }

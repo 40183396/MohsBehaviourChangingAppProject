@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,8 +26,10 @@ import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by Mohs on 17/03/2018.
@@ -42,10 +45,9 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
 
-
-
     private Context mContext;
     private String email, password, username;
+    private String append = "";
 
     @BindView(R.id.textviewRegisterLoggingIn) TextView mSigningIn;
     @BindView(R.id.edittextRegisterEmail) EditText mEmail;
@@ -54,8 +56,10 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.progressbarRegister) ProgressBar mProgressBar;
     @BindView(R.id.buttonRegister) Button mRegisterButton;
 
+    // Strings
+    @BindString(R.string.error_invalid_password) String invalid_password;
+    @BindString(R.string.error_invalid_email) String invalid_email;
 
-    private String append = "";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,19 +78,52 @@ public class RegisterActivity extends AppCompatActivity {
         initialiseRegisterUser();
     }
 
-    // Button which initialises resgistering
+    // Button which initialises registering
     private void initialiseRegisterUser(){
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Attempting to register user ");
+                // Reset errors displayed in the form.
+                mEmail.setError(null);
+                mPassword.setError(null);
 
                 email = mEmail.getText().toString();
                 password = mPassword.getText().toString();
                 username = mUsername.getText().toString();
 
-                if(checkIfStringNull(email) || checkIfStringNull(password) || checkIfStringNull(username)){
-                    Toast.makeText(mContext, "You must fill out all the fields", Toast.LENGTH_SHORT).show();
+                boolean cancel = false;
+                View focusView = null;
+
+                // Check for a valid password, if the user entered one.
+                if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
+                    mPassword.setError(getString(R.string.error_invalid_password));
+                    focusView = mPassword;
+                    cancel = true;
+                }
+
+                // Check email field is filled or email is valid
+                if (TextUtils.isEmpty(email)) {
+                    mEmail.setError(getString(R.string.error_field_required));
+                    focusView = mEmail;
+                    cancel = true;
+                } else if (!isEmailValid(email)) {
+                    mEmail.setError(getString(R.string.error_invalid_email));
+                    focusView = mEmail;
+                    cancel = true;
+                }
+
+                // check if username field is filled
+                if (TextUtils.isEmpty(username)) {
+                    mUsername.setError(getString(R.string.error_field_required));
+                    focusView = mUsername;
+                    cancel = true;
+                }
+
+                if(cancel){
+                    // error does not attempt log in
+                    Toasty.error(mContext, "You must fill out all the fields", Toast.LENGTH_SHORT).show();
+                    focusView.requestFocus();
                 } else {
                     // If Fields are not empty, attempt registration and progress bar shows
                     mProgressBar.setVisibility(View.VISIBLE);
@@ -101,7 +138,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    private boolean isPasswordValid(String password) {
+        //TODO: Add another comfirm password field
+        //String confirmPassword = mConfirmPasswordView.getText().toString();
 
+        return password.length() > 6;
+    }
+
+    private boolean isEmailValid(String email) {
+        // TODO: Add More email checks here
+        return email.contains("@");
+    }
 
     // method to check if input fields are not null
     private boolean checkIfStringNull(String input){
@@ -116,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    //------------------------FIRESBASE STUFF------------
+    //------------------------FIREBASE STUFF------------
 
     // checks if username is in db
     // using query means cant return anything (e.g. boolean if usename already exists)
@@ -153,7 +200,7 @@ public class RegisterActivity extends AppCompatActivity {
                 fbMethods.addNewUser(email, mUsername, "", "", "");
                 Log.d(TAG, "onDataChange: email: " + email + ", username = " + mUsername );
 
-                Toast.makeText(mContext, "Successfully Signed Up, Email Verification Sent", Toast.LENGTH_SHORT).show();
+                Toasty.success(mContext, "Successfully Signed Up, Please Log In", Toast.LENGTH_SHORT).show();
 
                 mAuth.signOut();
             }

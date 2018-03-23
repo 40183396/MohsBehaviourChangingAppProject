@@ -50,7 +50,7 @@ public class ShareActivity extends AppCompatActivity{
             permissionsVerify(Permissions.PERMISSIONS);
         }
 
-        //setupBottomNavigationView();
+        setupBottomNavigationView();
     }
 
     // returns the number of the current tab
@@ -66,8 +66,6 @@ public class ShareActivity extends AppCompatActivity{
         adapter.addFragment(new PhotoFragment());
 
         mViewPager.setAdapter(adapter);
-
-        setupBottomNavigationView();
 
 //        TabLayout tabLayout = (TabLayout) findViewById(R.id.bottomTabs);
 //        tabLayout.setupWithViewPager(mViewPager);

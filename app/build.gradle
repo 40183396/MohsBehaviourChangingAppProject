@@ -31,7 +31,7 @@ dependencies {
 
     //BottomNavigationViewEx lib
     compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
-    compile "com.android.support:design:26.+"
+
 
     // Circle ImageView
     compile 'de.hdodenhof:circleimageview:2.2.0'
@@ -48,6 +48,12 @@ dependencies {
     // Butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //StyleableToast
+    implementation 'com.muddzdev:styleabletoast:2.0.2'
+
+    //Toasty
+    compile 'com.github.GrenderG:Toasty:1.2.8'
 }
 
 apply plugin: 'com.google.gms.google-services'
