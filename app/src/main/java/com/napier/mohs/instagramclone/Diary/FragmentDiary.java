@@ -117,7 +117,6 @@ public class FragmentDiary extends Fragment {
                 Log.d(TAG, "onClick: clicked send button");
                 Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
                 mFirebaseMethods.exerciseAddToDatabase("pushup", "reps");
-
             }
         });
     }
@@ -166,26 +165,29 @@ public class FragmentDiary extends Fragment {
                         Query query = myDBRefFirebase
                                 .child(db_exercises) // looks in exercises node
                                 .child(FirebaseAuth.getInstance()
-                                        .getCurrentUser().getUid())
-                                .orderByChild(exercise_id_field); // looks in photo_id field
+                                        .getCurrentUser().getUid());
+                               // .orderByChild(exercise_id_field); // looks in photo_id field
                         query.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Log.d(TAG, "onDataChange: ");
-                                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
-                                    Exercise exercise = new Exercise();
-                                    mExerciseArrayList.clear(); // makes sure we have fresh list every time
+                                for (DataSnapshot singleDataSnapshot : dataSnapshot.child("2018-03-23").getChildren()) {
 
+                                    //mExerciseArrayList.clear(); // makes sure we have fresh list every time
+                                    Log.d(TAG, "onDataChange: looping");
+
+                                    Exercise exercise = new Exercise();
                                     exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id());
                                     exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name());
                                     exercise.setUnit(singleDataSnapshot.getValue(Exercise.class).getUnit());
-
                                     mExerciseArrayList.add(exercise);
 
-                                    Log.d(TAG, "onDataChange: for loop: " + mExerciseArrayList);
-
-
                                     setupWidgets();
+
+                                    Log.d(TAG, "onDataChange: for loop: " + mExerciseArrayList.size());
+
+
+
 
                                 }
 

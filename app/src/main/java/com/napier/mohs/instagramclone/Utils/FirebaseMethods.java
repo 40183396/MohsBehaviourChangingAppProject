@@ -280,8 +280,9 @@ public class FirebaseMethods {
         myDBRefFirebase.child(mContext.getString(R.string.db_name_exercises))
                 .child(FirebaseAuth.getInstance()
                         .getCurrentUser().getUid())
-                //.child(dateGet())
-                .child(exerciseNewKey).setValue(exercise);
+                .child(dateGet())
+                .child(exerciseNewKey)
+                .setValue(exercise);
     }
 
     // gets a time stamp in YYYY/MM/DD
