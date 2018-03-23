@@ -58,6 +58,13 @@ public class FragmentProfile extends Fragment {
 
     private static final String TAG = "FragmentProfile";
 
+    // Firebase Stuff
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myDBRefFirebase;
+    private FirebaseMethods mFirebaseMethods;
+
     // building interface
     public interface OnImageGridSelectedListener {
         void onImageGridSelected(Photo photo, int activityNumber); // need activity number as we are accessing this view post fragment from lots of different places
@@ -85,13 +92,6 @@ public class FragmentProfile extends Fragment {
     @BindView(R.id.bottomNavViewBar) BottomNavigationViewEx bottomNavigationView;
 
     private Context mContext;
-
-    // Firebase Stuff
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
 
     private int mCountFollowers;
     private int mCountFollowing;
@@ -361,7 +361,7 @@ public class FragmentProfile extends Fragment {
 
     }
 
-    //------------------------FIRESBASE STUFF------------
+    //------------------------FIREBASE STUFF------------
     // Method to check if a user is signed in app
 
     private void setupFirebaseAuth() {

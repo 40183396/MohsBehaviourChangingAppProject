@@ -23,6 +23,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.napier.mohs.instagramclone.Home.ActivityHome;
+import com.napier.mohs.instagramclone.Models.Exercise;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
@@ -256,12 +257,38 @@ public class FirebaseMethods {
         photo.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
         photo.setPhoto_id(photoNewKey);
 
-        // database insertiion
+        // database insertion
         myDBRefFirebase.child(mContext.getString(R.string.db_name_user_photos))
                 .child(FirebaseAuth.getInstance()
                         .getCurrentUser().getUid())
                 .child(photoNewKey).setValue(photo);
         myDBRefFirebase.child(mContext.getString(R.string.db_name_photos)).child(photoNewKey).setValue(photo);
+    }
+
+    // adds exercise to firebase db
+    public void exerciseAddToDatabase(String name, String unit) {
+        Log.d(TAG, "exerciseAddToDatabase: exercise being added to database");
+
+        // each exercise has unique id
+        String exerciseNewKey = myDBRefFirebase.child(mContext.getString(R.string.db_name_exercises)).push().getKey(); // random string
+        Exercise exercise = new Exercise();
+        exercise.setExercise_name(name);
+        exercise.setUnit(unit);
+        exercise.setExercise_id(exerciseNewKey);
+
+         //database insertion
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_exercises))
+                .child(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid())
+                .child(dateGet())
+                .child(exerciseNewKey).setValue(exercise);
+    }
+
+    // gets a time stamp in YYYY/MM/DD
+    private String dateGet() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Log.d(TAG, "timeStampGet: " + simpleDateFormat.format(new Date()));
+        return simpleDateFormat.format(new Date());  // returns formatted date in London timezone
     }
 
     // registers the given email and pasword to firebase db
@@ -317,7 +344,6 @@ public class FirebaseMethods {
     // this will add a user to the firebase db
     // it will include things such as website and profile pic
     // and user setting
-
     public void addNewUser(String email, String username, String description, String website, String profile_photo) {
 
         // Creates new user and adds to db
@@ -377,7 +403,7 @@ public class FirebaseMethods {
                 .setValue(email);
     }
 
-    // updates other settings apaart from email and username
+    // updates other settings apart from email and username
     // These do not haave to be unique
     public void usersettingsUpdate(String displayname, String web, String description, long phone) {
         Log.d(TAG, "usernameUpdate: updating the users settings, displayname: " + displayname + " web: " + web

@@ -61,9 +61,12 @@ public class ActivityLogin extends AppCompatActivity {
     private String email, password, username;
 
     // Strings
-    @BindString(R.string.error_invalid_password) String invalid_password;
-    @BindString(R.string.error_invalid_email) String invalid_email;
-    @BindString(R.string.error_field_required) String field_required;
+    @BindString(R.string.error_invalid_password)
+    String invalid_password;
+    @BindString(R.string.error_invalid_email)
+    String invalid_email;
+    @BindString(R.string.error_field_required)
+    String field_required;
 
 
     @Override
@@ -88,7 +91,7 @@ public class ActivityLogin extends AppCompatActivity {
         initialiseLoggingIn();
     }
 
-    private void rotatingText(){
+    private void rotatingText() {
         RotatingTextWrapper rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Reckoner_Bold.ttf");
         rotatingTextWrapper.setSize(35);

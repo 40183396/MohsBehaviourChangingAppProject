@@ -36,6 +36,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -53,7 +54,7 @@ public class FragmentViewComments extends Fragment {
     private DatabaseReference myDBRefFirebase;
 
     // this constructor prevents NullPointerException when receiving a bundle from a interface
-    public FragmentViewComments(){
+    public FragmentViewComments() {
         super();
         setArguments(new Bundle());
     }
@@ -62,10 +63,48 @@ public class FragmentViewComments extends Fragment {
     private Context mContext;
 
     // widgets
-    @BindView(R.id.imageCommentPost) ImageView  mSend;
-    @BindView(R.id.edittextCommentsComment) EditText mComment;
-    @BindView(R.id.listviewComments) ListView mListView;
-    @BindView(R.id.imageCommentsBackArrow) ImageView mBackArrow;
+    @BindView(R.id.imageCommentPost)
+    ImageView mSend;
+    @BindView(R.id.edittextCommentsComment)
+    EditText mComment;
+    @BindView(R.id.listviewComments)
+    ListView mListView;
+    @BindView(R.id.imageCommentsBackArrow)
+    ImageView mBackArrow;
+
+    // database queries
+    @BindString(R.string.db_name_following)
+    String db_following;
+    @BindString(R.string.db_name_followers)
+    String db_followers;
+    @BindString(R.string.db_name_user_photos)
+    String db_user_photos;
+    @BindString(R.string.db_name_user_account_settings)
+    String db_user_account_settings;
+    @BindString(R.string.user_id_field)
+    String userID_field;
+    @BindString(R.string.caption_field)
+    String caption_field;
+    @BindString(R.string.comments_field)
+    String comments_field;
+    @BindString(R.string.likes_field)
+    String likes_field;
+    @BindString(R.string.photo_id_field)
+    String photoID_field;
+    @BindString(R.string.tags_field)
+    String tags_field;
+    @BindString(R.string.date_created_field)
+    String date_created_field;
+    @BindString(R.string.image_path_field)
+    String image_path_field;
+
+    // Strings
+    @BindString(R.string.calling_activity)
+    String calling_activity;
+    @BindString(R.string.profile_activity)
+    String profile_activity;
+    @BindString(R.string.user_extra)
+    String user_extra;
 
     private ArrayList<Comment> mCommentArrayList; // contains list of all comments in thread
 
@@ -80,12 +119,12 @@ public class FragmentViewComments extends Fragment {
         mContext = getActivity(); // keeps context constant
 
         // bundle could potentially be null so need a try catch
-        try{
+        try {
             mPhoto = getFromBundlePhoto(); // photo retrieved from bundle
             getFromBundleCallingActivity();
 
-        } catch (NullPointerException e){
-            Log.e(TAG, "onCreateView: NullPointerException: " + e.getMessage() );
+        } catch (NullPointerException e) {
+            Log.e(TAG, "onCreateView: NullPointerException: " + e.getMessage());
         }
 
         setupFirebaseAuth();
@@ -96,17 +135,17 @@ public class FragmentViewComments extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating back to previous activity");
-                try{
-                    if(getFromBundleCallingActivity().equals(getString(R.string.home_activity))){ // means from home activity
+                try {
+                    if (getFromBundleCallingActivity().equals(getString(R.string.home_activity))) { // means from home activity
 
                         getActivity().getSupportFragmentManager().popBackStack();
-                        ((ActivityHome)getActivity()).layoutShow(); // fix so when you press back after view photo on main feed you return to home activity
+                        ((ActivityHome) getActivity()).layoutShow(); // fix so when you press back after view photo on main feed you return to home activity
 
                     } else {
                         getActivity().getSupportFragmentManager().popBackStack();
                     }
-                } catch(NullPointerException e){
-                    Log.e(TAG, "onClick: NullPointerException" + e.getMessage() );
+                } catch (NullPointerException e) {
+                    Log.e(TAG, "onClick: NullPointerException" + e.getMessage());
                 }
             }
         });
@@ -115,7 +154,7 @@ public class FragmentViewComments extends Fragment {
     }
 
     // sets up widgets
-    private void setupWidgets(){
+    private void setupWidgets() {
         Log.d(TAG, "setupWidgets: setting up widgets");
         AdapterCommentsList adapter = new AdapterCommentsList(mContext, R.layout.listitem_comments, mCommentArrayList); // adapter with comments
         mListView.setAdapter(adapter); //list view receives data from adapter
@@ -126,7 +165,7 @@ public class FragmentViewComments extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked send button");
                 // only sends if comment field isn't blank
-                if(!mComment.getText().toString().equals("")){
+                if (!mComment.getText().toString().equals("")) {
                     Log.d(TAG, "onClick: attempting send comment");
                     newCommentAdd(mComment.getText().toString()); // gets text from edit text field and posts a comment on photo
 
@@ -140,23 +179,23 @@ public class FragmentViewComments extends Fragment {
     }
 
     // closes keyboard method
-    private void keyboardClose(){
+    private void keyboardClose() {
         Log.d(TAG, "keyboardClose: keyboard being closed");
 
         View view = getActivity().getCurrentFocus();
-        if(view!= null){
+        if (view != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromInputMethod(view.getWindowToken(), 0); // hides keyboard
         }
     }
 
     // gets from the bundle the photo from the profile activity interface
-    private String getFromBundleCallingActivity(){
+    private String getFromBundleCallingActivity() {
         Log.d(TAG, "getFromBundleCallingActivity: " + getArguments());
 
         Bundle bundle = this.getArguments();
         // if bundle is not null we actually have received something
-        if(bundle != null){
+        if (bundle != null) {
             Log.d(TAG, "getFromBundleCallingActivity: recieved from calling activity" + bundle.getString(getString(R.string.home_activity)));
             return bundle.getString(getString(R.string.home_activity));
         } else {
@@ -166,12 +205,12 @@ public class FragmentViewComments extends Fragment {
     }
 
     // gets from the bundle the photo from the profile activity interface
-    private Photo getFromBundlePhoto(){
+    private Photo getFromBundlePhoto() {
         Log.d(TAG, "getFromBundlePhoto: " + getArguments());
 
         Bundle bundle = this.getArguments();
         // if bundle is not null we actually have recieved somethin
-        if(bundle != null){
+        if (bundle != null) {
             return bundle.getParcelable(getString(R.string.photo));
         } else {
             Log.d(TAG, "getActivityNumberFromBundle: No Photo received");
@@ -180,7 +219,7 @@ public class FragmentViewComments extends Fragment {
     }
 
 
-    private void newCommentAdd(String newComment){
+    private void newCommentAdd(String newComment) {
         Log.d(TAG, "newCommentAdd: adding comment to thread: " + newComment);
 
         String commentID = myDBRefFirebase.push().getKey(); // to get comment id need to generate a key
@@ -210,7 +249,7 @@ public class FragmentViewComments extends Fragment {
     private String timeStampGet() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK);
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Europe/London"));
-        Log.d(TAG, "timeStampGet: " +  simpleDateFormat.format(new Date()));
+        Log.d(TAG, "timeStampGet: " + simpleDateFormat.format(new Date()));
         return simpleDateFormat.format(new Date());  // returns formatted date in London timezone
     }
 
@@ -218,7 +257,7 @@ public class FragmentViewComments extends Fragment {
 //------------------------FIREBASE STUFF------------
     // Method to check if a user is signed in app
 
-    private void setupFirebaseAuth(){
+    private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -229,7 +268,7 @@ public class FragmentViewComments extends Fragment {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
-                if(user != null){
+                if (user != null) {
                     Log.d(TAG, "onAuthStateChanged: user signed in " + user);
                 } else {
                     Log.d(TAG, "onAuthStateChanged: user signed out");
@@ -239,7 +278,7 @@ public class FragmentViewComments extends Fragment {
 
 
         // if no comments on photo this is called to instantiate comments thread
-        if(mPhoto.getComments().size() == 0){
+        if (mPhoto.getComments().size() == 0) {
             mCommentArrayList.clear(); // makes sure we have fresh list every time
             Comment commentFirst = new Comment();
             commentFirst.setComment(mPhoto.getCaption());
@@ -267,7 +306,7 @@ public class FragmentViewComments extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Log.d(TAG, "onDataChange: ");
-                                for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
+                                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
                                     //photos.add(singleDataSnapshot.getValue(Photo.class)); // gets all photos user has
                                     // type casting snapshot to hashmap and then adding fields manually to field object
                                     // there is issue where datasnapshot is trying to read hashmap instead of list
@@ -294,8 +333,8 @@ public class FragmentViewComments extends Fragment {
                                     mCommentArrayList.add(commentFirst); // adds first comment to list for testing
                                     Log.d(TAG, "onDataChange: first comment added to array: " + mCommentArrayList);
                                     // loop checks for any more comments
-                                    for(DataSnapshot dataSnapshot1 : singleDataSnapshot
-                                            .child(mContext.getString(R.string.comments_field)).getChildren()){ // loop[ through all comments
+                                    for (DataSnapshot dataSnapshot1 : singleDataSnapshot
+                                            .child(mContext.getString(R.string.comments_field)).getChildren()) { // loop[ through all comments
                                         Comment comment = new Comment();
                                         comment.setUser_id(dataSnapshot1.getValue(Comment.class).getUser_id());
                                         comment.setComment(dataSnapshot1.getValue(Comment.class).getComment());
@@ -352,7 +391,7 @@ public class FragmentViewComments extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if(mAuthListener != null){
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }

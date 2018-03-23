@@ -49,17 +49,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Mohs on 17/03/2018.
- *
+ * <p>
  * Fragment to view other peoples profiles
  */
 
 
-public class FragmentViewProfile extends Fragment{
+public class FragmentViewProfile extends Fragment {
 
     private static final String TAG = "FragmentProfile";
 
     // buildin g interface
-    public interface OnImageGridSelectedListener{
+    public interface OnImageGridSelectedListener {
         void onImageGridSelected(Photo photo, int activityNumber); // need activity number as we are accessing this view post fragment from lots of different places
     }
 
@@ -69,40 +69,70 @@ public class FragmentViewProfile extends Fragment{
     private static final int NUM_COLS_GRID = 3;
 
 
-    @BindView(R.id.textviewViewProfilePostsNumber) TextView mPosts;
-    @BindView(R.id.textviewViewProfileFollowersNumber) TextView mFollowers;
-    @BindView(R.id.textviewViewProfileFollowingNumber) TextView mFollowing;
-    @BindView(R.id.textviewViewProfileDisplayName) TextView mDisplayName;
-    @BindView(R.id.textviewViewProfileUsername) TextView mUsername;
-    @BindView(R.id.textviewViewProfileWebsite) TextView mWebsite;
-    @BindView(R.id.textviewViewProfileDescription) TextView mDescription;
-    @BindView(R.id.textviewViewProfileEditYourProfile) TextView mEditProfile;
-    @BindView(R.id.textviewViewProfileUnfollowUser) TextView mUnfollow;
-    @BindView(R.id.textviewViewProfileFollowUser) TextView mFollow;
-    @BindView(R.id.progressbarViewProfile) ProgressBar mProgressBar;
-    @BindView(R.id.imageViewProfile) CircleImageView mProfilePhoto;
-    @BindView(R.id.gridviewViewProfile) GridView gridView;
-    @BindView(R.id.bottomNavViewBar) BottomNavigationViewEx bottomNavigationView;
-    @BindView(R.id.imageViewProfileBackArrow) ImageView backArrow;
+    @BindView(R.id.textviewViewProfilePostsNumber)
+    TextView mPosts;
+    @BindView(R.id.textviewViewProfileFollowersNumber)
+    TextView mFollowers;
+    @BindView(R.id.textviewViewProfileFollowingNumber)
+    TextView mFollowing;
+    @BindView(R.id.textviewViewProfileDisplayName)
+    TextView mDisplayName;
+    @BindView(R.id.textviewViewProfileUsername)
+    TextView mUsername;
+    @BindView(R.id.textviewViewProfileWebsite)
+    TextView mWebsite;
+    @BindView(R.id.textviewViewProfileDescription)
+    TextView mDescription;
+    @BindView(R.id.textviewViewProfileEditYourProfile)
+    TextView mEditProfile;
+    @BindView(R.id.textviewViewProfileUnfollowUser)
+    TextView mUnfollow;
+    @BindView(R.id.textviewViewProfileFollowUser)
+    TextView mFollow;
+    @BindView(R.id.progressbarViewProfile)
+    ProgressBar mProgressBar;
+    @BindView(R.id.imageViewProfile)
+    CircleImageView mProfilePhoto;
+    @BindView(R.id.gridviewViewProfile)
+    GridView gridView;
+    @BindView(R.id.bottomNavViewBar)
+    BottomNavigationViewEx bottomNavigationView;
+    @BindView(R.id.imageViewProfileBackArrow)
+    ImageView backArrow;
 
     // database queries
-    @BindString(R.string.db_name_following) String db_following;
-    @BindString(R.string.db_name_followers) String db_followers;
-    @BindString(R.string.db_name_user_photos) String db_user_photos;
-    @BindString(R.string.db_name_user_account_settings) String db_user_account_settings;
-    @BindString(R.string.user_id_field) String userID_field;
-    @BindString(R.string.caption_field) String caption_field;
-    @BindString(R.string.comments_field) String comments_field;
-    @BindString(R.string.likes_field) String likes_field;
-    @BindString(R.string.photo_id_field) String photoID_field;
-    @BindString(R.string.tags_field) String tags_field;
-    @BindString(R.string.date_created_field) String date_created_field;
-    @BindString(R.string.image_path_field) String image_path_field;
+    @BindString(R.string.db_name_following)
+    String db_following;
+    @BindString(R.string.db_name_followers)
+    String db_followers;
+    @BindString(R.string.db_name_user_photos)
+    String db_user_photos;
+    @BindString(R.string.db_name_user_account_settings)
+    String db_user_account_settings;
+    @BindString(R.string.user_id_field)
+    String userID_field;
+    @BindString(R.string.caption_field)
+    String caption_field;
+    @BindString(R.string.comments_field)
+    String comments_field;
+    @BindString(R.string.likes_field)
+    String likes_field;
+    @BindString(R.string.photo_id_field)
+    String photoID_field;
+    @BindString(R.string.tags_field)
+    String tags_field;
+    @BindString(R.string.date_created_field)
+    String date_created_field;
+    @BindString(R.string.image_path_field)
+    String image_path_field;
 
     // Strings
-    @BindString(R.string.calling_activity) String calling_activity;
-    @BindString(R.string.profile_activity) String profile_activity;
-    @BindString(R.string.user_extra) String user_extra;
+    @BindString(R.string.calling_activity)
+    String calling_activity;
+    @BindString(R.string.profile_activity)
+    String profile_activity;
+    @BindString(R.string.user_extra)
+    String user_extra;
 
     private Context mContext;
 
@@ -128,11 +158,11 @@ public class FragmentViewProfile extends Fragment{
         Log.d(TAG, "onCreateView: started view profile fragment");
 
         // try catch in case bundle returns null
-        try{
+        try {
             mUser = retrieveUserBundle(); // retrieves user from bundle and set it as mUser
             initialiseUserDetails(); // sets up user details with user that was sent in bundle
-        } catch (NullPointerException e){
-            Log.e(TAG, "onCreateView: NullPointerException: " + e.getMessage() );
+        } catch (NullPointerException e) {
+            Log.e(TAG, "onCreateView: NullPointerException: " + e.getMessage());
             // in case something goes wrong we display toast and pop back stack
             Toast.makeText(mContext, "oops something went wrong", Toast.LENGTH_SHORT).show();
             getActivity().getSupportFragmentManager().popBackStack(); // navigates back to whatever we were doing previously
@@ -217,7 +247,7 @@ public class FragmentViewProfile extends Fragment{
         return view;
     }
 
-    private void initialiseUserDetails(){
+    private void initialiseUserDetails() {
         // sets the profile widgets
         DatabaseReference widgetsReference = FirebaseDatabase.getInstance().getReference();
         Query widgetsQuery = widgetsReference.child(db_user_account_settings) // look in user_account_settings node
@@ -226,7 +256,7 @@ public class FragmentViewProfile extends Fragment{
         widgetsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()){
+                for (DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()) {
                     Log.d(TAG, "onDataChange: search has found user " + singleDataSnapShot.getValue(UserAccountSettings.class).toString());
 
                     UserSettings userSettings = new UserSettings(); // UserSettings is User Object and UserAccountSettings Object combined into one
@@ -253,7 +283,7 @@ public class FragmentViewProfile extends Fragment{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Photo> photos = new ArrayList<Photo>();
-                for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
                     //photos.add(singleDataSnapshot.getValue(Photo.class)); // gets all photos user has
                     // type casting snapshot to hashmap and then adding fields manually to field object
                     // there is issue where datasnapshot is trying to read hashmap instead of list
@@ -269,8 +299,8 @@ public class FragmentViewProfile extends Fragment{
                     photo.setImage_path(objectMap.get(image_path_field).toString());
 
                     ArrayList<Comment> commentsArrayList = new ArrayList<Comment>();
-                    for(DataSnapshot dataSnapshot1 : singleDataSnapshot
-                            .child(comments_field).getChildren()){ // loop[ through all comments
+                    for (DataSnapshot dataSnapshot1 : singleDataSnapshot
+                            .child(comments_field).getChildren()) { // loop[ through all comments
                         Comment comment = new Comment();
                         comment.setUser_id(dataSnapshot1.getValue(Comment.class).getUser_id());
                         comment.setComment(dataSnapshot1.getValue(Comment.class).getComment());
@@ -282,8 +312,8 @@ public class FragmentViewProfile extends Fragment{
 
                     // list for all the photo likes
                     List<Like> likeList = new ArrayList<Like>();
-                    for(DataSnapshot dataSnapshot1 : singleDataSnapshot
-                            .child(likes_field).getChildren()){ // loop[ through all likes
+                    for (DataSnapshot dataSnapshot1 : singleDataSnapshot
+                            .child(likes_field).getChildren()) { // loop[ through all likes
                         Like like = new Like();
                         like.setUser_id(dataSnapshot1.getValue(Like.class).getUser_id());
                         likeList.add(like);
@@ -304,7 +334,7 @@ public class FragmentViewProfile extends Fragment{
     }
 
     // check if user is being followed
-    private void checkFollowing(){
+    private void checkFollowing() {
         Log.d(TAG, "checkFollowing: checking if you are following this user");
         setUnfollowingUser();
 
@@ -317,7 +347,7 @@ public class FragmentViewProfile extends Fragment{
         checkQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()){
+                for (DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()) {
                     Log.d(TAG, "onDataChange: search has found user " + singleDataSnapShot.getValue());
 
                     // if something is found we can just set to following
@@ -334,7 +364,7 @@ public class FragmentViewProfile extends Fragment{
     }
 
     // method to count number of followers
-    private void retrieveFollowersCount(){
+    private void retrieveFollowersCount() {
         mCountFollowers = 0;
 
         DatabaseReference followersReference = FirebaseDatabase.getInstance().getReference();
@@ -345,7 +375,7 @@ public class FragmentViewProfile extends Fragment{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // every time we find a match in this query we add one to followers
-                for(DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()){
+                for (DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()) {
                     Log.d(TAG, "onDataChange: follower found" + singleDataSnapShot.getValue());
                     mCountFollowers++;
                 }
@@ -361,7 +391,7 @@ public class FragmentViewProfile extends Fragment{
     }
 
     // method to count number of users following
-    private void retrieveFollowingCount(){
+    private void retrieveFollowingCount() {
         mCountFollowing = 0;
 
         DatabaseReference followingReference = FirebaseDatabase.getInstance().getReference();
@@ -372,7 +402,7 @@ public class FragmentViewProfile extends Fragment{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // every time we find a match in this query we add one to following
-                for(DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()){
+                for (DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()) {
                     Log.d(TAG, "onDataChange: following found" + singleDataSnapShot.getValue());
                     mCountFollowing++;
                 }
@@ -388,7 +418,7 @@ public class FragmentViewProfile extends Fragment{
     }
 
     // method to count number of followers
-    private void retrievePostsCount(){
+    private void retrievePostsCount() {
         mCountPosts = 0;
 
         DatabaseReference postsReference = FirebaseDatabase.getInstance().getReference();
@@ -399,7 +429,7 @@ public class FragmentViewProfile extends Fragment{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // every time we find a match in this query we add one to followers
-                for(DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()){
+                for (DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()) {
                     Log.d(TAG, "onDataChange: number of posts found" + singleDataSnapShot.getValue());
                     mCountPosts++;
                 }
@@ -414,21 +444,21 @@ public class FragmentViewProfile extends Fragment{
 
     }
 
-    private void setFollowingUser(){
+    private void setFollowingUser() {
         Log.d(TAG, "setFollowingUser: user interface is being updated for following this user");
         mFollow.setVisibility(View.GONE);
         mUnfollow.setVisibility(View.VISIBLE);
         mEditProfile.setVisibility(View.GONE);
     }
 
-    private void setUnfollowingUser(){
+    private void setUnfollowingUser() {
         Log.d(TAG, "setFollowingUser: user interface is being updated for unfollowing this user");
         mFollow.setVisibility(View.VISIBLE);
         mUnfollow.setVisibility(View.GONE);
         mEditProfile.setVisibility(View.GONE);
     }
 
-    private void setCurrentProfileUser(){
+    private void setCurrentProfileUser() {
         Log.d(TAG, "setFollowingUser: user interface is being updated to current user own profile");
         mFollow.setVisibility(View.GONE);
         mUnfollow.setVisibility(View.GONE);
@@ -436,11 +466,11 @@ public class FragmentViewProfile extends Fragment{
     }
 
 
-    private User retrieveUserBundle(){
+    private User retrieveUserBundle() {
         Log.d(TAG, "retrieveUserBundle: bundle arguments " + getArguments());
 
         Bundle bundle = this.getArguments();
-        if(bundle != null){
+        if (bundle != null) {
             return bundle.getParcelable(user_extra); // returns username from bundle
         } else {
             // if no bundle return null
@@ -450,17 +480,17 @@ public class FragmentViewProfile extends Fragment{
 
     @Override
     public void onAttach(Context context) {
-        try{
+        try {
             mOnImageGridSelectedListener = (OnImageGridSelectedListener) getActivity();
-        } catch(ClassCastException e){
+        } catch (ClassCastException e) {
             Log.e(TAG, "onAttach: ClassCastException: " + e.getMessage());
         }
         super.onAttach(context);
     }
 
     // sets up the profile page with data from db
-    private void setupWidgets(UserSettings userSettings){
-        Log.d(TAG, "setupWidgets: settings up widget with data from firebase db " );
+    private void setupWidgets(UserSettings userSettings) {
+        Log.d(TAG, "setupWidgets: settings up widget with data from firebase db ");
 
         // User settings not needed here but added here anyway
         User user = userSettings.getUser();
@@ -481,9 +511,8 @@ public class FragmentViewProfile extends Fragment{
     }
 
 
-
     // setup of the bottom navigation
-    private void setupBottomNavigationView(){
+    private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationView);
         BottomNavigationViewHelper.enableNavigation(mContext, getActivity(), bottomNavigationView); //getActivity as we are in fragment
@@ -493,21 +522,21 @@ public class FragmentViewProfile extends Fragment{
     }
 
     // method that sets up grid view with images from db
-    private void setupGridView(final ArrayList<Photo> photos){
+    private void setupGridView(final ArrayList<Photo> photos) {
         Log.d(TAG, "setupGridView: image grid is being set up");
 
         // image grid is setup
         int widthGrid = getResources().getDisplayMetrics().widthPixels;
-        int widthImage = widthGrid/NUM_COLS_GRID;
+        int widthImage = widthGrid / NUM_COLS_GRID;
         gridView.setColumnWidth(widthImage); // sets up images so they are all same size in grid
 
         // Array list of img urls
         ArrayList<String> imgURLs = new ArrayList<String>();
-        for(int i = 0; i < photos.size(); i++){
+        for (int i = 0; i < photos.size(); i++) {
             imgURLs.add(photos.get(i).getImage_path());
         }
 
-        // creates an adappter and sets up grid view with adapter
+        // creates an adapter and sets up grid view with adapter
         AdapterGridImage adapter = new AdapterGridImage(getActivity(), R.layout.layout_grid_imageview, imgURLs, "");
         gridView.setAdapter(adapter);
 
@@ -523,11 +552,10 @@ public class FragmentViewProfile extends Fragment{
     }
 
 
-
-    //------------------------FIRESBASE STUFF------------
+    //------------------------FIREBASE STUFF------------
     // Method to check if a user is signed in app
 
-    private void setupFirebaseAuth(){
+    private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -536,7 +564,7 @@ public class FragmentViewProfile extends Fragment{
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
-                if(user != null){
+                if (user != null) {
                     Log.d(TAG, "onAuthStateChanged: user signed in " + user);
                 } else {
                     Log.d(TAG, "onAuthStateChanged: user signed out");
@@ -557,7 +585,7 @@ public class FragmentViewProfile extends Fragment{
     @Override
     public void onStop() {
         super.onStop();
-        if(mAuthListener != null){
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }

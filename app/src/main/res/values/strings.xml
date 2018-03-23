@@ -20,6 +20,8 @@
     <string name="db_name_user_photos">user_photos</string>
     <string name="db_name_following">following</string>
     <string name="db_name_followers">followers</string>
+    <string name="db_name_exercises">exercises</string>
+
     <string name="username_field">username</string>
     <string name="email_field">email</string>
     <string name="display_name_field">display_name</string>
@@ -37,6 +39,7 @@
     <string name="tags_field">tags</string>
     <string name="image_path_field">image_path</string>
     <string name="comments_field">comments</string>
+    <string name="exercise_field">exercise</string>
 
     <!-- Intent Extras-->
     <string name="calling_activity">calling_activity</string>
