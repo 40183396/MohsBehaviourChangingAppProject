@@ -165,8 +165,4 @@ public class AdapterCommentsList extends ArrayAdapter<Comment>{
         return difference;
     }
 
-    private void getCommentDetails() {
-
-    }
-
 }
