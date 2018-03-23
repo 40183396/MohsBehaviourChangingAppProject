@@ -9,8 +9,8 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.instagramclone.Diary.DiaryActivity;
 import com.napier.mohs.instagramclone.Home.HomeActivity;
-import com.napier.mohs.instagramclone.Likes.LikesActivity;
 import com.napier.mohs.instagramclone.Profile.ProfileActivity;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Search.SearchActivity;
@@ -55,7 +55,7 @@ public class BottomNavigationViewHelper {
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case R.id.ic_alert:
-                        Intent intent4 = new Intent(context, LikesActivity.class); //ACTIVITY_NUM = 3;
+                        Intent intent4 = new Intent(context, DiaryActivity.class); //ACTIVITY_NUM = 3;
                         context.startActivity(intent4);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;

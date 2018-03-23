@@ -18,7 +18,7 @@
         <activity android:name=".Home.HomeActivity">
 
         </activity>
-        <activity android:name=".Likes.LikesActivity"></activity>
+        <activity android:name=".Diary.DiaryActivity"></activity>
         <activity android:name=".Profile.ProfileActivity"></activity>
         <activity android:name=".Search.SearchActivity"
             android:windowSoftInputMode="adjustNothing"></activity>
