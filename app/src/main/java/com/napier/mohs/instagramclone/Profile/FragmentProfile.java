@@ -35,9 +35,9 @@ import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.Models.UserSettings;
 import com.napier.mohs.instagramclone.R;
+import com.napier.mohs.instagramclone.Utils.AdapterGridImage;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
-import com.napier.mohs.instagramclone.Utils.GridImageAdapter;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
 
 import java.util.ArrayList;
@@ -54,9 +54,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 // Changed Profile Activity to This Fragment, Just Straight Copy And Paste
-public class ProfileFragment extends Fragment {
+public class FragmentProfile extends Fragment {
 
-    private static final String TAG = "ProfileFragment";
+    private static final String TAG = "FragmentProfile";
 
     // building interface
     public interface OnImageGridSelectedListener {
@@ -126,7 +126,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: going to edit profile fragment");
-                Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+                Intent intent = new Intent(getActivity(), ActivityAccountSettings.class);
                 // flag to know that this is just a calling activity
                 intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
                 startActivity(intent);// not finishing as we want to be able to nav back to this activity
@@ -167,13 +167,13 @@ public class ProfileFragment extends Fragment {
 
     private void setupToolbar() {
 
-        ((ProfileActivity) getActivity()).setSupportActionBar(toolbar);
+        ((ActivityProfile) getActivity()).setSupportActionBar(toolbar);
 
         profileMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating to account settings.");
-                Intent intent = new Intent(mContext, AccountSettingsActivity.class);
+                Intent intent = new Intent(mContext, ActivityAccountSettings.class);
                 startActivity(intent);
             }
         });
@@ -260,7 +260,7 @@ public class ProfileFragment extends Fragment {
                 }
 
                 // creates an adappter and sets up grid view with adapter
-                GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, imgURLs, "");
+                AdapterGridImage adapter = new AdapterGridImage(getActivity(), R.layout.layout_grid_imageview, imgURLs, "");
                 gridView.setAdapter(adapter);
 
                 // attaching on click listener to gird view items

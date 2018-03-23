@@ -9,12 +9,12 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-import com.napier.mohs.instagramclone.Diary.DiaryActivity;
-import com.napier.mohs.instagramclone.Home.HomeActivity;
-import com.napier.mohs.instagramclone.Profile.ProfileActivity;
+import com.napier.mohs.instagramclone.Diary.ActivityDiary;
+import com.napier.mohs.instagramclone.Home.ActivityHome;
+import com.napier.mohs.instagramclone.Profile.ActivityProfile;
 import com.napier.mohs.instagramclone.R;
-import com.napier.mohs.instagramclone.Search.SearchActivity;
-import com.napier.mohs.instagramclone.Share.ShareActivity;
+import com.napier.mohs.instagramclone.Search.ActivitySearch;
+import com.napier.mohs.instagramclone.Share.ActivityShare;
 
 /**
  * Created by Mohs on 15/03/2018.
@@ -39,28 +39,28 @@ public class BottomNavigationViewHelper {
                 switch(item.getItemId()){
                     // uses context as we are in an object not activity
                     case R.id.ic_house:
-                        Intent intent1 = new Intent(context, HomeActivity.class);//ACTIVITY_NUM = 0;
+                        Intent intent1 = new Intent(context, ActivityHome.class);//ACTIVITY_NUM = 0;
                         context.startActivity(intent1);
                         //references animations to change page transitions from bottom bar
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case R.id.ic_search:
-                        Intent intent2 = new Intent(context, SearchActivity.class); //ACTIVITY_NUM = 1;
+                        Intent intent2 = new Intent(context, ActivitySearch.class); //ACTIVITY_NUM = 1;
                         context.startActivity(intent2);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case R.id.ic_circle:
-                        Intent intent3 = new Intent(context, ShareActivity.class); //ACTIVITY_NUM = 2;
+                        Intent intent3 = new Intent(context, ActivityShare.class); //ACTIVITY_NUM = 2;
                         context.startActivity(intent3);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case R.id.ic_alert:
-                        Intent intent4 = new Intent(context, DiaryActivity.class); //ACTIVITY_NUM = 3;
+                        Intent intent4 = new Intent(context, ActivityDiary.class); //ACTIVITY_NUM = 3;
                         context.startActivity(intent4);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case R.id.ic_android:
-                        Intent intent5 = new Intent(context, ProfileActivity.class); //ACTIVITY_NUM = 4;
+                        Intent intent5 = new Intent(context, ActivityProfile.class); //ACTIVITY_NUM = 4;
                         context.startActivity(intent5);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;

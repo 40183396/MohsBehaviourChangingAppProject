@@ -37,8 +37,8 @@ import es.dmoral.toasty.Toasty;
  * Created by Mohs on 17/03/2018.
  */
 
-public class RegisterActivity extends AppCompatActivity {
-    private static final String TAG = "RegisterActivity";
+public class ActivityRegister extends AppCompatActivity {
+    private static final String TAG = "ActivityRegister";
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
-        mContext = RegisterActivity.this;
+        mContext = ActivityRegister.this;
 
         fbMethods = new FirebaseMethods(mContext);
         Log.d(TAG, "onCreate: started register");

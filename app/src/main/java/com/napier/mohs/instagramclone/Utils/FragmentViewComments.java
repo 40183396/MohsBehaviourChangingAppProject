@@ -23,7 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.napier.mohs.instagramclone.Home.HomeActivity;
+import com.napier.mohs.instagramclone.Home.ActivityHome;
 import com.napier.mohs.instagramclone.Models.Comment;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.R;
@@ -43,8 +43,8 @@ import butterknife.ButterKnife;
  * Created by Mohs on 19/03/2018.
  */
 
-public class ViewCommentsFragment extends Fragment {
-    private static final String TAG = "ViewCommentsFragment";
+public class FragmentViewComments extends Fragment {
+    private static final String TAG = "FragmentViewComments";
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -53,7 +53,7 @@ public class ViewCommentsFragment extends Fragment {
     private DatabaseReference myDBRefFirebase;
 
     // this constructor prevents NullPointerException when receiving a bundle from a interface
-    public ViewCommentsFragment(){
+    public FragmentViewComments(){
         super();
         setArguments(new Bundle());
     }
@@ -100,7 +100,7 @@ public class ViewCommentsFragment extends Fragment {
                     if(getFromBundleCallingActivity().equals(getString(R.string.home_activity))){ // means from home activity
 
                         getActivity().getSupportFragmentManager().popBackStack();
-                        ((HomeActivity)getActivity()).layoutShow(); // fix so when you press back after view photo on main feed you return to home activity
+                        ((ActivityHome)getActivity()).layoutShow(); // fix so when you press back after view photo on main feed you return to home activity
 
                     } else {
                         getActivity().getSupportFragmentManager().popBackStack();
@@ -117,7 +117,7 @@ public class ViewCommentsFragment extends Fragment {
     // sets up widgets
     private void setupWidgets(){
         Log.d(TAG, "setupWidgets: setting up widgets");
-        CommentsListAdapter adapter = new CommentsListAdapter(mContext, R.layout.listitem_comments, mCommentArrayList); // adapter with comments
+        AdapterCommentsList adapter = new AdapterCommentsList(mContext, R.layout.listitem_comments, mCommentArrayList); // adapter with comments
         mListView.setAdapter(adapter); //list view receives data from adapter
 
         // button for sending a comment

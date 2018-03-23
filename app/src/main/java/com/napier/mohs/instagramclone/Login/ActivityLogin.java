@@ -11,8 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -24,7 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.napier.mohs.instagramclone.Home.HomeActivity;
+import com.napier.mohs.instagramclone.Home.ActivityHome;
 import com.napier.mohs.instagramclone.R;
 import com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper;
 import com.sdsmdg.harjot.rotatingtext.models.Rotatable;
@@ -38,8 +36,8 @@ import es.dmoral.toasty.Toasty;
  * Created by Mohs on 17/03/2018.
  */
 
-public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "LoginActivity";
+public class ActivityLogin extends AppCompatActivity {
+    private static final String TAG = "ActivityLogin";
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -76,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: started login");
 
-        mContext = LoginActivity.this;
+        mContext = ActivityLogin.this;
 
         // quick log in
         mEmail.setText("mohsy@mohsy.com");
@@ -161,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                     mSigningIn.setVisibility(View.VISIBLE);
 
                     mAuth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                            .addOnCompleteListener(ActivityLogin.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
@@ -173,12 +171,12 @@ public class LoginActivity extends AppCompatActivity {
                                     if (!task.isSuccessful()) {
                                         Log.w(TAG, "signInWithEmail:failed", task.getException());
 
-                                        Toasty.error(LoginActivity.this, getString(R.string.failed_auth),
+                                        Toasty.error(ActivityLogin.this, getString(R.string.failed_auth),
                                                 Toast.LENGTH_SHORT).show();
                                         mProgressBar.setVisibility(View.GONE);
                                         mSigningIn.setVisibility(View.GONE);
                                     } else {
-                                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                        Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
                                         startActivity(intent);
 
                                         Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();
@@ -198,13 +196,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: going to register activity");
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(ActivityLogin.this, ActivityRegister.class);
                 startActivity(intent);
             }
         });
         // navigates to home activity if user is logged in
         if (mAuth.getCurrentUser() != null) {
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
             startActivity(intent);
             // closes login activity
             finish();

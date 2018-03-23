@@ -22,15 +22,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.napier.mohs.instagramclone.Home.HomeActivity;
+import com.napier.mohs.instagramclone.Home.ActivityHome;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.Models.UserSettings;
-import com.napier.mohs.instagramclone.Profile.AccountSettingsActivity;
+import com.napier.mohs.instagramclone.Profile.ActivityAccountSettings;
 import com.napier.mohs.instagramclone.R;
 
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -127,7 +126,7 @@ public class FirebaseMethods {
                     photoAddToDatabase(caption, firebaseURL.toString());
 
                     // nav to main feed of app where user can see their photo
-                    Intent intent = new Intent(mContext, HomeActivity.class);
+                    Intent intent = new Intent(mContext, ActivityHome.class);
                     mContext.startActivity(intent);
 
                 }
@@ -190,8 +189,8 @@ public class FirebaseMethods {
 
                     // sets viewpager so returns us back to edit profile fragment
                     // opens up edit profile fragment and skips showing account settings activity
-                    ((AccountSettingsActivity) mContext).setViewPager(
-                            ((AccountSettingsActivity) mContext).pagerAdapter
+                    ((ActivityAccountSettings) mContext).setViewPager(
+                            ((ActivityAccountSettings) mContext).pagerAdapter
                                     .getFragmentNumber(mContext.getString(R.string.fragment_edit_profile))
                     );
 

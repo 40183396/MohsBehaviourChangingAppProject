@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.napier.mohs.instagramclone.Profile.AccountSettingsActivity;
+import com.napier.mohs.instagramclone.Profile.ActivityAccountSettings;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.Permissions;
 
@@ -23,9 +23,9 @@ import butterknife.ButterKnife;
  * Created by Mohs on 18/03/2018.
  */
 
-public class PhotoFragment extends Fragment{
+public class FragmentPhoto extends Fragment{
 
-    private static final String TAG = "PhotoFragment";
+    private static final String TAG = "FragmentPhoto";
     private static final int PHOTOFRAGMENT_NUM = 1;
     private static final int GALLERYFRAGMENT_NUM = 2;
     private static final int REQUEST_CODE_CAMERA = 3; // does not matter what value this is, just added for consistency
@@ -47,16 +47,16 @@ public class PhotoFragment extends Fragment{
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Camera is being launched");
 
-                if(((ShareActivity)getActivity()).getTabCurrentNumber() == PHOTOFRAGMENT_NUM){
+                if(((ActivityShare)getActivity()).getTabCurrentNumber() == PHOTOFRAGMENT_NUM){
 
                     // Check if camera permission is verified
-                    if(((ShareActivity)getActivity()).permissionsCheck(Permissions.PERMISSION_CAMERA[0])){
+                    if(((ActivityShare)getActivity()).permissionsCheck(Permissions.PERMISSION_CAMERA[0])){
                         Log.d(TAG, "onClick: permission verified camera is being started");
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(intent, REQUEST_CODE_CAMERA);
                     } else {
                         // if permission not verified restart share activity
-                        Intent intent = new Intent(getActivity(), ShareActivity.class);
+                        Intent intent = new Intent(getActivity(), ActivityShare.class);
                         // set flags to intent to clear activity  stack
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
@@ -71,7 +71,7 @@ public class PhotoFragment extends Fragment{
     // checks if there is a  root task
     private boolean isTaskRoot() {
         // if flag is 0 this means this is root task
-        if (((ShareActivity) getActivity()).taskGet() == 0) {
+        if (((ActivityShare) getActivity()).taskGet() == 0) {
             return true;
         } else {
             return false; // meaning this is not root task
@@ -94,7 +94,7 @@ public class PhotoFragment extends Fragment{
             if(isTaskRoot()){
                 try{
                     Log.d(TAG, "onActivityResult: bitmap recieved from camera " + bitmap);
-                    Intent intent = new Intent(getActivity(), NextActivity.class);
+                    Intent intent = new Intent(getActivity(), ActivityNext.class);
                     intent.putExtra(getString(R.string.bitmap_selected), bitmap);
                     startActivity(intent);
                 } catch (NullPointerException e){
@@ -103,7 +103,7 @@ public class PhotoFragment extends Fragment{
             } else {
                 try{
                     Log.d(TAG, "onActivityResult: bitmap recieved from camera " + bitmap);
-                    Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+                    Intent intent = new Intent(getActivity(), ActivityAccountSettings.class);
                     intent.putExtra(getString(R.string.bitmap_selected), bitmap);
                     intent.putExtra(getString(R.string.return_to_fragment), getString(R.string.fragment_edit_profile));
                     startActivity(intent);

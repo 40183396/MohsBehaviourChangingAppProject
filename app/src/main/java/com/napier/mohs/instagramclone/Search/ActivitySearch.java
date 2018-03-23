@@ -24,10 +24,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.instagramclone.Models.User;
-import com.napier.mohs.instagramclone.Profile.ProfileActivity;
+import com.napier.mohs.instagramclone.Profile.ActivityProfile;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
-import com.napier.mohs.instagramclone.Utils.UserListAdapter;
+import com.napier.mohs.instagramclone.Utils.AdapterUserList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +42,11 @@ import butterknife.ButterKnife;
  * Activity that searches for other users
  */
 
-public class SearchActivity extends AppCompatActivity{
-    private static final String TAG = "SearchActivity";
+public class ActivitySearch extends AppCompatActivity{
+    private static final String TAG = "ActivitySearch";
     private static final int ACTIVITY_NUM = 1;
 
-    private Context mContext = SearchActivity.this;
+    private Context mContext = ActivitySearch.this;
 
     @BindView(R.id.edittextSearchSearch) EditText mSearch;
     @BindView(R.id.listviewSearch) ListView mListView;
@@ -54,7 +54,7 @@ public class SearchActivity extends AppCompatActivity{
     private List<User> mUsersList;
 
     // global adapter
-    private UserListAdapter mUserListAdapter;
+    private AdapterUserList mUserListAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,7 +135,7 @@ public class SearchActivity extends AppCompatActivity{
         Log.d(TAG, "usersListUpdate: the userlist is being updated");
 
         // sets adapter with users list item layout and user list data
-        mUserListAdapter = new UserListAdapter(SearchActivity.this, R.layout.listitem_users, mUsersList);
+        mUserListAdapter = new AdapterUserList(ActivitySearch.this, R.layout.listitem_users, mUsersList);
 
         // sets adapter on list view
         mListView.setAdapter(mUserListAdapter);
@@ -145,7 +145,7 @@ public class SearchActivity extends AppCompatActivity{
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: user selected " + mUsersList.get(position).toString());
                 // navigating to the users profile
-                Intent intent = new Intent(SearchActivity.this, ProfileActivity.class);
+                Intent intent = new Intent(ActivitySearch.this, ActivityProfile.class);
                 // need extra to differenitate between viewing own profile and other users profiles
                 intent.putExtra(getString(R.string.calling_activity), getString(R.string.search_activity)); // this is where we put activity name we are coming from, here it is search activity
                 intent.putExtra(getString(R.string.user_extra), mUsersList.get(position)); // make sure User class is parcelable

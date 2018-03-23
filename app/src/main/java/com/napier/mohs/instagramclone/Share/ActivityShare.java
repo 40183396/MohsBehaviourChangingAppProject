@@ -1,13 +1,10 @@
 package com.napier.mohs.instagramclone.Share;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,14 +24,14 @@ import butterknife.ButterKnife;
  * Created by Mohs on 15/03/2018.
  */
 
-public class ShareActivity extends AppCompatActivity{
-    private static final String TAG = "ShareActivity";
+public class ActivityShare extends AppCompatActivity{
+    private static final String TAG = "ActivityShare";
     private static final int PERMISSIONS_VERIFY_REQUEST = 1;
     private static final int ACTIVITY_NUM = 2;
 
     @BindView(R.id.viewpagerContainer) ViewPager mViewPager;
 
-    private Context mContext = ShareActivity.this;
+    private Context mContext = ActivityShare.this;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +39,7 @@ public class ShareActivity extends AppCompatActivity{
         setContentView(R.layout.activity_share);
         ButterKnife.bind(this);
 
-        Log.d(TAG, "onCreate: started");
+        Log.d(TAG, "onCreate: started share activity");
 
         if(permissionsCheckArray(Permissions.PERMISSIONS)){
             viewPagerSetup();
@@ -62,8 +59,8 @@ public class ShareActivity extends AppCompatActivity{
 
     private void viewPagerSetup(){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new GalleryFragment());
-        adapter.addFragment(new PhotoFragment());
+        adapter.addFragment(new FragmentGallery());
+        adapter.addFragment(new FragmentPhoto());
 
         mViewPager.setAdapter(adapter);
 
@@ -76,7 +73,7 @@ public class ShareActivity extends AppCompatActivity{
     }
 
     public int taskGet(){
-        Log.d(TAG, "taskGet: task is " + getIntent().getFlags());
+        Log.d(TAG, String.format("taskGet: %d", getIntent().getFlags()));
         return getIntent().getFlags(); // returns int of flag
     }
 
@@ -98,14 +95,14 @@ public class ShareActivity extends AppCompatActivity{
     public boolean permissionsCheck(String permission){
         Log.d(TAG, "permissionsCheck: permission being checked: " + permission);
 
-        int permissionsRequest = ActivityCompat.checkSelfPermission(ShareActivity.this, permission);
+        int permissionsRequest = ActivityCompat.checkSelfPermission(ActivityShare.this, permission);
 
         if(permissionsRequest != PackageManager.PERMISSION_GRANTED){
             Log.d(TAG, "permissionsCheck: permission has not been granted for : " + permission);
             return false;
         }
         else {
-            Log.d(TAG, "permissionsCheck: permssion granted fpor: " + permission);
+            Log.d(TAG, "permissionsCheck: permssion granted for: " + permission);
             return true;
         }
     }
@@ -114,7 +111,7 @@ public class ShareActivity extends AppCompatActivity{
     public void permissionsVerify(String[] permissions){
         Log.d(TAG, "permissionsVerify: permissions being verified");
 
-        ActivityCompat.requestPermissions(ShareActivity.this, permissions, PERMISSIONS_VERIFY_REQUEST);
+        ActivityCompat.requestPermissions(ActivityShare.this, permissions, PERMISSIONS_VERIFY_REQUEST);
     }
 
     /**

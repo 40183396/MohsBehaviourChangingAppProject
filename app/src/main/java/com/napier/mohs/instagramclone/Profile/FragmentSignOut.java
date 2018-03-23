@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.napier.mohs.instagramclone.Login.LoginActivity;
+import com.napier.mohs.instagramclone.Login.ActivityLogin;
 import com.napier.mohs.instagramclone.R;
 
 import butterknife.BindView;
@@ -26,9 +26,9 @@ import butterknife.ButterKnife;
  * Created by User on 6/4/2017.
  */
 
-public class SignOutFragment extends Fragment {
+public class FragmentSignOut extends Fragment {
 
-    private static final String TAG = "SignOutFragment";
+    private static final String TAG = "FragmentSignOut";
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -83,7 +83,7 @@ public class SignOutFragment extends Fragment {
                     Log.d(TAG, "onAuthStateChanged: user signed out");
                     // signs out and goes back to log in activity
                     Log.d(TAG, "onAuthStateChanged: navigating to log in screen");
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getActivity(), ActivityLogin.class);
                     // closes stack so when user logs out the user can no longer access home page
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

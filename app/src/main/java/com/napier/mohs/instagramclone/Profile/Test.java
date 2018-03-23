@@ -31,9 +31,9 @@ public class Test {
 // * Created by Mohs on 16/03/2018.
 // */
 //
-//public class AccountSettingsActivity extends AppCompatActivity{
+//public class ActivityAccountSettings extends AppCompatActivity{
 //
-//    private static final String TAG = "AccountSettingsActivity";
+//    private static final String TAG = "ActivityAccountSettings";
 //
 //    private Context mContext;
 //
@@ -44,7 +44,7 @@ public class Test {
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_accountsettings);
-//        mContext = AccountSettingsActivity.this;
+//        mContext = ActivityAccountSettings.this;
 //        Log.d(TAG, "onCreate: started account settings activity");
 //        mViewPager = (ViewPager) findViewById(R.id.container);
 //        mRelativeLayout = (RelativeLayout) findViewById(R.id.relLayout1);
@@ -65,8 +65,8 @@ public class Test {
 //    private void setUpFragments(){
 //        pagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
 //        // adds fragments to pagerAdapter
-//        pagerAdapter.addFragment(new EditProfileFragment(), getString(R.string.fragment_edit_profile));
-//        pagerAdapter.addFragment(new SignOutFragment(), getString(R.string.fragment_sign_out));
+//        pagerAdapter.addFragment(new FragmentEditProfile(), getString(R.string.fragment_edit_profile));
+//        pagerAdapter.addFragment(new FragmentSignOut(), getString(R.string.fragment_sign_out));
 //    }
 //
 //    private void setupSettingsList(){
@@ -83,9 +83,9 @@ public class Test {
 //}
 
 
-  //  public class EditProfileFragment extends Fragment {
+  //  public class FragmentEditProfile extends Fragment {
 //
-//    private static final String TAG = "EditProfileFragment";
+//    private static final String TAG = "FragmentEditProfile";
 //
 //    @Nullable
 //    @Override
@@ -96,9 +96,9 @@ public class Test {
 //    }
 //}
 
-//    public class EditProfileFragment extends Fragment {
+//    public class FragmentEditProfile extends Fragment {
 //
-//    private static final String TAG = "EditProfileFragment";
+//    private static final String TAG = "FragmentEditProfile";
 //
 //    @Nullable
 //    @Override

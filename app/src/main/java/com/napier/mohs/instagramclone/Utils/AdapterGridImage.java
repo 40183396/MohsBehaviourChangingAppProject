@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  * Custom method for adapting images to grid view
  */
 
-public class GridImageAdapter extends ArrayAdapter{
+public class AdapterGridImage extends ArrayAdapter{
 
     private Context mContext;
     private LayoutInflater mLayoutInflater;
@@ -34,7 +34,7 @@ public class GridImageAdapter extends ArrayAdapter{
     private String mAppend; // using image loader in grid layout, for image loader to work need append
     private ArrayList<String> imgURLs;
 
-    public GridImageAdapter(Context context, int layoutResource, ArrayList<String> imgURLs, String append) { // set append at end to make it similar to static method
+    public AdapterGridImage(Context context, int layoutResource, ArrayList<String> imgURLs, String append) { // set append at end to make it similar to static method
         super(context, layoutResource, imgURLs);
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mContext = context;

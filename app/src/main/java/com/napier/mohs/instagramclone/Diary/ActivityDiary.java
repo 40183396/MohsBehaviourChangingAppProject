@@ -1,6 +1,5 @@
 package com.napier.mohs.instagramclone.Diary;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,14 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.instagramclone.R;
-import com.napier.mohs.instagramclone.Share.GalleryFragment;
-import com.napier.mohs.instagramclone.Share.PhotoFragment;
-import com.napier.mohs.instagramclone.Share.ShareActivity;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.instagramclone.Utils.SectionsPagerAdapter;
 
@@ -27,11 +21,11 @@ import butterknife.ButterKnife;
  * Created by Mohs on 15/03/2018.
  */
 
-public class DiaryActivity extends AppCompatActivity{
-    private static final String TAG = "DiaryActivity";
+public class ActivityDiary extends AppCompatActivity{
+    private static final String TAG = "ActivityDiary";
     private static final int ACTIVITY_NUM = 3;
 
-    private Context mContext = DiaryActivity.this;
+    private Context mContext = ActivityDiary.this;
     @BindView(R.id.viewpagerContainer)
     ViewPager mViewPager;
 
@@ -57,9 +51,7 @@ public class DiaryActivity extends AppCompatActivity{
     // setting up tabs in diary activity
     private void viewPagerSetup(){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new GalleryFragment());
-        adapter.addFragment(new PhotoFragment());
-        adapter.addFragment(new DiaryFragment());
+        adapter.addFragment(new FragmentDiary());
 
         mViewPager.setAdapter(adapter);
 

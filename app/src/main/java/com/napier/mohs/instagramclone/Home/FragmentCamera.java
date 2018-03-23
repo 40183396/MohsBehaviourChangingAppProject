@@ -13,8 +13,8 @@ import com.napier.mohs.instagramclone.R;
  * Created by Mohs on 15/03/2018.
  */
 
-public class CameraFragment extends Fragment {
-    private static final String TAG = "CameraFragment";
+public class FragmentCamera extends Fragment {
+    private static final String TAG = "FragmentCamera";
 
     @Nullable
     @Override

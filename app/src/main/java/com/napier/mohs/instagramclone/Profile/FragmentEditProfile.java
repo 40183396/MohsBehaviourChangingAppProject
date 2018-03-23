@@ -32,7 +32,7 @@ import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.Models.UserSettings;
 import com.napier.mohs.instagramclone.R;
-import com.napier.mohs.instagramclone.Share.ShareActivity;
+import com.napier.mohs.instagramclone.Share.ActivityShare;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
 
@@ -44,9 +44,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by User on 6/4/2017.
  */
 
-public class EditProfileFragment extends Fragment implements PasswordConfirmDialog.OnPasswordConfirmListener{
+public class FragmentEditProfile extends Fragment implements PasswordConfirmDialog.OnPasswordConfirmListener{
 
-    private static final String TAG = "EditProfileFragment";
+    private static final String TAG = "FragmentEditProfile";
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -194,7 +194,7 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
             // then email is changed
             PasswordConfirmDialog dialog = new PasswordConfirmDialog();
             dialog.show(getFragmentManager(), getString(R.string.dialog_password_confirm));
-            dialog.setTargetFragment(EditProfileFragment.this, 1); // sets this as target fragment after dialog is opened
+            dialog.setTargetFragment(FragmentEditProfile.this, 1); // sets this as target fragment after dialog is opened
 
         }
 
@@ -278,7 +278,7 @@ public class EditProfileFragment extends Fragment implements PasswordConfirmDial
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: profile photo is being changed from edit page ");
-                Intent intent = new Intent(getActivity(), ShareActivity.class);
+                Intent intent = new Intent(getActivity(), ActivityShare.class);
                 // setting a flag to differentiate between sharing photos and changing profile picture
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(intent);

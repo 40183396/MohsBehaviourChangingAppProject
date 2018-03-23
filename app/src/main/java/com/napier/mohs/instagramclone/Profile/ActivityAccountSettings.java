@@ -33,9 +33,9 @@ import butterknife.ButterKnife;
  * Created by User on 6/4/2017.
  */
 
-public class AccountSettingsActivity extends AppCompatActivity {
+public class ActivityAccountSettings extends AppCompatActivity {
 
-    private static final String TAG = "AccountSettingsActivity";
+    private static final String TAG = "ActivityAccountSettings";
     private static final int ACTIVITY_NUM = 4;
 
     private Context mContext;
@@ -53,7 +53,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_accountsettings);
         ButterKnife.bind(this);
 
-        mContext = AccountSettingsActivity.this;
+        mContext = ActivityAccountSettings.this;
         Log.d(TAG, "onCreate: started.");
 
         setupSettingsList();
@@ -61,11 +61,11 @@ public class AccountSettingsActivity extends AppCompatActivity {
         setupFragments();
         getIntentIncoming();
 
-        //setup the backarrow for navigating back to "ProfileActivity"
+        //setup the backarrow for navigating back to "ActivityProfile"
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: navigating back to 'ProfileActivity'");
+                Log.d(TAG, "onClick: navigating back to 'ActivityProfile'");
                 finish();
             }
         });
@@ -83,7 +83,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
                 if(intent.hasExtra(getString(R.string.image_selected))){
                     // new profile picture is set
-                    FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingsActivity.this);
+                    FirebaseMethods firebaseMethods = new FirebaseMethods(ActivityAccountSettings.this);
                     // as profile photo caption is null
                     // uploads profile photo to firebase storage
                     firebaseMethods.newPhotoUpload(getString(R.string.profile_photo), null,
@@ -91,7 +91,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
                 }
                 else if(intent.hasExtra(getString(R.string.bitmap_selected))) {
                     // new profile picture is set
-                    FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingsActivity.this);
+                    FirebaseMethods firebaseMethods = new FirebaseMethods(ActivityAccountSettings.this);
                     // as profile photo caption is null
                     // uploads profile photo to firebase storage
                     firebaseMethods.newPhotoUpload(getString(R.string.profile_photo), null,
@@ -110,8 +110,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     private void setupFragments() {
         pagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addFragment(new EditProfileFragment(), getString(R.string.fragment_edit_profile)); //fragment 0
-        pagerAdapter.addFragment(new SignOutFragment(), getString(R.string.fragment_sign_out)); //fragment 1
+        pagerAdapter.addFragment(new FragmentEditProfile(), getString(R.string.fragment_edit_profile)); //fragment 0
+        pagerAdapter.addFragment(new FragmentSignOut(), getString(R.string.fragment_sign_out)); //fragment 1
     }
 
     // method responsible for actually navigating to fragment

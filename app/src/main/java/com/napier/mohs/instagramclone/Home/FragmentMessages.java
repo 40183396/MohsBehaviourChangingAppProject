@@ -13,8 +13,8 @@ import com.napier.mohs.instagramclone.R;
  * Created by Mohs on 15/03/2018.
  */
 
-public class MessagesFragment extends Fragment {
-    private static final String TAG = "MessagesFragment";
+public class FragmentMessages extends Fragment {
+    private static final String TAG = "FragmentMessages";
 
     @Nullable
     @Override

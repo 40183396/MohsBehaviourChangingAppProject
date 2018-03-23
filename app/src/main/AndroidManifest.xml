@@ -15,24 +15,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Home.HomeActivity">
+        <activity android:name=".Home.ActivityHome">
 
         </activity>
-        <activity android:name=".Diary.DiaryActivity"></activity>
-        <activity android:name=".Profile.ProfileActivity"></activity>
-        <activity android:name=".Search.SearchActivity"
+        <activity android:name=".Diary.ActivityDiary"></activity>
+        <activity android:name=".Profile.ActivityProfile"></activity>
+        <activity android:name=".Search.ActivitySearch"
             android:windowSoftInputMode="adjustNothing"></activity>
-        <activity android:name=".Share.ShareActivity"></activity>
-        <activity android:name=".Profile.AccountSettingsActivity"></activity>
-        <activity android:name=".Login.LoginActivity">
+        <activity android:name=".Share.ActivityShare"></activity>
+        <activity android:name=".Profile.ActivityAccountSettings"></activity>
+        <activity android:name=".Login.ActivityLogin">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-        <activity android:name=".Login.RegisterActivity" />
-        <activity android:name=".Share.NextActivity" />
+        <activity android:name=".Login.ActivityRegister" />
+        <activity android:name=".Share.ActivityNext" />
     </application>
 
 </manifest>

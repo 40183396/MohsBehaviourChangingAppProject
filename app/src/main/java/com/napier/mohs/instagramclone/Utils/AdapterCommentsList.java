@@ -38,14 +38,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Mohs on 20/03/2018.
  */
 
-public class CommentsListAdapter extends ArrayAdapter<Comment>{
-    private static final String TAG = "CommentsListAdapter";
+public class AdapterCommentsList extends ArrayAdapter<Comment>{
+    private static final String TAG = "AdapterCommentsList";
 
     private LayoutInflater mLayoutInflater;
     private int mLayoutResource;
     private Context mContext;
 
-    public CommentsListAdapter(@NonNull Context context, int resource, @NonNull List<Comment> objects) {
+    public AdapterCommentsList(@NonNull Context context, int resource, @NonNull List<Comment> objects) {
         super(context, resource, objects);
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mContext = context;

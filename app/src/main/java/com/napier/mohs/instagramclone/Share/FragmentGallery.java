@@ -17,16 +17,15 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.napier.mohs.instagramclone.Profile.AccountSettingsActivity;
+import com.napier.mohs.instagramclone.Profile.ActivityAccountSettings;
 import com.napier.mohs.instagramclone.R;
+import com.napier.mohs.instagramclone.Utils.AdapterGridImage;
 import com.napier.mohs.instagramclone.Utils.FilePaths;
 import com.napier.mohs.instagramclone.Utils.FileSearch;
-import com.napier.mohs.instagramclone.Utils.GridImageAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -36,8 +35,8 @@ import butterknife.ButterKnife;
  * Created by Mohs on 18/03/2018.
  */
 
-public class GalleryFragment extends Fragment{
-    private static final String TAG = "GalleryFragment";
+public class FragmentGallery extends Fragment{
+    private static final String TAG = "FragmentGallery";
     private static final int NUM_COLS_GRID = 3;
 
 
@@ -82,12 +81,12 @@ public class GalleryFragment extends Fragment{
                 // checks if task was root
                 if(isTaskRoot()){
                     // Intent to go to Shared Activity
-                    Intent intent = new Intent(getActivity(), NextActivity.class);
+                    Intent intent = new Intent(getActivity(), ActivityNext.class);
                     intent.putExtra(getString(R.string.image_selected), mImageSelected);
                     startActivity(intent);
                 } else {
                     // goes to account settings activity
-                    Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+                    Intent intent = new Intent(getActivity(), ActivityAccountSettings.class);
                     intent.putExtra(getString(R.string.image_selected), mImageSelected);
                     intent.putExtra(getString(R.string.return_to_fragment), getString(R.string.fragment_edit_profile));
                     startActivity(intent);
@@ -104,7 +103,7 @@ public class GalleryFragment extends Fragment{
     // checks if there is a  root task
     private boolean isTaskRoot(){
         // if flag is 0 this means this is root task
-    if(((ShareActivity)getActivity()).taskGet() == 0){
+    if(((ActivityShare)getActivity()).taskGet() == 0){
         return true;
     } else {
         return false; // meaning this is not root task
@@ -166,7 +165,7 @@ public class GalleryFragment extends Fragment{
 
         // grid adapter is used to adapt images to grid view
         // append is //file:
-       GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, imgURLs, mAppend);
+       AdapterGridImage adapter = new AdapterGridImage(getActivity(), R.layout.layout_grid_imageview, imgURLs, mAppend);
        mGridView.setAdapter(adapter);
 
        // sets that is first displayed when fragment is inflated

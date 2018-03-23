@@ -31,15 +31,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Mohs on 20/03/2018.
  */
 
-public class UserListAdapter extends ArrayAdapter<User>{
-    private static final String TAG = "UserListAdapter";
+public class AdapterUserList extends ArrayAdapter<User>{
+    private static final String TAG = "AdapterUserList";
 
     private LayoutInflater mLayoutInflater;
     private List<User> mUsers;
     private int mLayoutResource;
     private Context mContext;
 
-    public UserListAdapter(@NonNull Context context, int resource, @NonNull List<User> objects) {
+    public AdapterUserList(@NonNull Context context, int resource, @NonNull List<User> objects) {
         super(context, resource, objects);
         mContext = context;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

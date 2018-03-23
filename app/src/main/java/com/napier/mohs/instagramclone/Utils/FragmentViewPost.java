@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,22 +30,13 @@ import com.napier.mohs.instagramclone.Models.Like;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
-import com.napier.mohs.instagramclone.Models.UserSettings;
 import com.napier.mohs.instagramclone.R;
-import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
-import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
-import com.napier.mohs.instagramclone.Utils.GridImageAdapter;
-import com.napier.mohs.instagramclone.Utils.ImagesSquaredView;
-import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
 import butterknife.BindView;
@@ -57,8 +47,8 @@ import butterknife.OnClick;
  * Created by Mohs on 19/03/2018.
  */
 
-public class ViewPostFragment extends Fragment {
-    private static final String TAG = "ViewPostFragment";
+public class FragmentViewPost extends Fragment {
+    private static final String TAG = "FragmentViewPost";
 
     public interface OnThreadCommentSelectedListener{
         void onThreadCommentSelectedListener(Photo photo);
@@ -104,7 +94,7 @@ public class ViewPostFragment extends Fragment {
 
 
     // Bundle constructor so we don't have an empty bundle (can cause Null Pointer if we dont do this)
-    public ViewPostFragment(){
+    public FragmentViewPost(){
         super();
         setArguments(new Bundle()); // Always do this when passing info with a bundle
     }
@@ -131,7 +121,7 @@ public class ViewPostFragment extends Fragment {
 
 
 
-        //setup the backarrow for navigating back to "ProfileActivity"
+        //setup the backarrow for navigating back to "ActivityProfile"
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

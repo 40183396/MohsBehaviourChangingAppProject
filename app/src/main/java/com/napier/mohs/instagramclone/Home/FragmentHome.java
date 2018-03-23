@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.instagramclone.Models.Comment;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.R;
-import com.napier.mohs.instagramclone.Utils.MainFeedListAdapter;
+import com.napier.mohs.instagramclone.Utils.AdapterMainFeedList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,14 +35,14 @@ import butterknife.ButterKnife;
  * Created by Mohs on 15/03/2018.
  */
 
-public class HomeFragment extends Fragment {
-    private static final String TAG = "HomeFragment";
+public class FragmentHome extends Fragment {
+    private static final String TAG = "FragmentHome";
 
     private ArrayList<String> mFollowingArrayList;
     private ArrayList<Photo> mPhotoArrayList; // holds all photos of people you are following
     private ArrayList<Photo> mPhotosPaginatedArrayList; // Photos that are added incrementally as you scroll through feed
 
-    private MainFeedListAdapter mAdapter;
+    private AdapterMainFeedList mAdapter;
     private int mResult;
 
     // widgets
@@ -197,7 +197,7 @@ public class HomeFragment extends Fragment {
                     mPhotosPaginatedArrayList.add(mPhotoArrayList.get(i));
                 }
                 // set up adapter with layout amd photo array list in paginated way (10 posts)
-                mAdapter = new MainFeedListAdapter(getActivity(), R.layout.listitem_mainfeed, mPhotosPaginatedArrayList);
+                mAdapter = new AdapterMainFeedList(getActivity(), R.layout.listitem_mainfeed, mPhotosPaginatedArrayList);
                 mListView.setAdapter(mAdapter); // sets list view with adapter
             }
 

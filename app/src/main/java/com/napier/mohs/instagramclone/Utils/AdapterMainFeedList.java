@@ -3,7 +3,6 @@ package com.napier.mohs.instagramclone.Utils;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -24,13 +23,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.napier.mohs.instagramclone.Home.HomeActivity;
+import com.napier.mohs.instagramclone.Home.ActivityHome;
 import com.napier.mohs.instagramclone.Models.Comment;
 import com.napier.mohs.instagramclone.Models.Like;
 import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
-import com.napier.mohs.instagramclone.Profile.ProfileActivity;
+import com.napier.mohs.instagramclone.Profile.ActivityProfile;
 import com.napier.mohs.instagramclone.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -52,8 +51,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Mohs on 21/03/2018.
  */
 
-public class MainFeedListAdapter extends ArrayAdapter<Photo> {
-    private static final String TAG = "MainFeedListAdapter";
+public class AdapterMainFeedList extends ArrayAdapter<Photo> {
+    private static final String TAG = "AdapterMainFeedList";
 
     private LayoutInflater mLayoutInflater;
     private int mLayoutResource;
@@ -61,7 +60,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
     private DatabaseReference mDatabaseReference;
     private String currentUsername = "";
 
-    public MainFeedListAdapter(@NonNull Context context, int resource, @NonNull List<Photo> objects) {
+    public AdapterMainFeedList(@NonNull Context context, int resource, @NonNull List<Photo> objects) {
         super(context, resource, objects);
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mLayoutResource = resource;
@@ -139,11 +138,11 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: opening comment thread for photo: " + getItem(position).getPhoto_id());
                 // begins wrapping bundle with photo at position and user account settings particular to that view
-                ((HomeActivity)mContext).onSelectedCommentThread(getItem(position),
+                ((ActivityHome)mContext).onSelectedCommentThread(getItem(position),
                         mContext.getString(R.string.calling_activity));
 
                 // hide the layout when we go to comments thread so view pager is hidden want to display frame layout of comments
-                ((HomeActivity)mContext).layoutHide();
+                ((ActivityHome)mContext).layoutHide();
             }
         });
 
@@ -218,7 +217,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
                         @Override
                         public void onClick(View view) {
                             Log.d(TAG, "onClick: going to the profile of user: " + viewHolder.username);
-                            Intent intent = new Intent(mContext, ProfileActivity.class); // intent to nav to profile activity
+                            Intent intent = new Intent(mContext, ActivityProfile.class); // intent to nav to profile activity
                             intent.putExtra(mContext.getString(R.string.calling_activity),
                                     mContext.getString(R.string.home_activity));
                             intent.putExtra(mContext.getString(R.string.user_extra), viewHolder.mUser); // another extra for passing user object
@@ -235,7 +234,7 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
                         @Override
                         public void onClick(View view) {
                             Log.d(TAG, "onClick: going to the profile of user: " + viewHolder.username);
-                            Intent intent = new Intent(mContext, ProfileActivity.class); // intent to nav to profile activity
+                            Intent intent = new Intent(mContext, ActivityProfile.class); // intent to nav to profile activity
                             intent.putExtra(mContext.getString(R.string.calling_activity),
                                     mContext.getString(R.string.home_activity));
                             intent.putExtra(mContext.getString(R.string.user_extra), viewHolder.mUser); // another extra for passing user object
@@ -248,22 +247,22 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
                     viewHolder.comments.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            ((HomeActivity)mContext).onSelectedCommentThread(getItem(position),
+                            ((ActivityHome)mContext).onSelectedCommentThread(getItem(position),
                                     mContext.getString(R.string.calling_activity));
 
                             // hide the layout when we go to comments thread so view pager is hidden want to display frame layout of comments
-                            ((HomeActivity)mContext).layoutHide();
+                            ((ActivityHome)mContext).layoutHide();
                         }
                     });
 
                     viewHolder.speechBubble.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            ((HomeActivity)mContext).onSelectedCommentThread(getItem(position),
+                            ((ActivityHome)mContext).onSelectedCommentThread(getItem(position),
                                     mContext.getString(R.string.calling_activity));
 
                             // hide the layout when we go to comments thread so view pager is hidden want to display frame layout of comments
-                            ((HomeActivity)mContext).layoutHide();
+                            ((ActivityHome)mContext).layoutHide();
                         }
                     });
 

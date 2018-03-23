@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.napier.mohs.instagramclone.Profile.ProfileActivity;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
@@ -36,8 +35,8 @@ import butterknife.ButterKnife;
  * Created by Mohs on 18/03/2018.
  */
 
-public class NextActivity extends AppCompatActivity{
-    private static final String TAG = "NextActivity";
+public class ActivityNext extends AppCompatActivity{
+    private static final String TAG = "ActivityNext";
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -58,7 +57,7 @@ public class NextActivity extends AppCompatActivity{
     private Intent mIntent;
     private Bitmap mBitmap;
 
-    private Context mContext = NextActivity.this;
+    private Context mContext = ActivityNext.this;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

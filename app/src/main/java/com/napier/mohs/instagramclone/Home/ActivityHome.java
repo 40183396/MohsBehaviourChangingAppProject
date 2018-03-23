@@ -21,33 +21,29 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-import com.napier.mohs.instagramclone.Login.LoginActivity;
+import com.napier.mohs.instagramclone.Login.ActivityLogin;
 import com.napier.mohs.instagramclone.Models.Photo;
-import com.napier.mohs.instagramclone.Models.User;
-import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
-import com.napier.mohs.instagramclone.Utils.MainFeedListAdapter;
+import com.napier.mohs.instagramclone.Utils.AdapterMainFeedList;
 import com.napier.mohs.instagramclone.Utils.SectionsPagerAdapter;
 import com.napier.mohs.instagramclone.Utils.UniversalImageLoader;
-import com.napier.mohs.instagramclone.Utils.ViewCommentsFragment;
+import com.napier.mohs.instagramclone.Utils.FragmentViewComments;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends AppCompatActivity implements MainFeedListAdapter.OnItemsLoadMoreListener{
+public class ActivityHome extends AppCompatActivity implements AdapterMainFeedList.OnItemsLoadMoreListener{
 
 
     // interface methods
     @Override
     public void onItemsLoadMore() {
         Log.d(TAG, "onItemsLoadMore: more photos being displayed");
-        // HomeFragment is set up through view pager there is a different way to assign tag
-        HomeFragment homeFragment = (HomeFragment)getSupportFragmentManager()
+        // FragmentHome is set up through view pager there is a different way to assign tag
+        FragmentHome homeFragment = (FragmentHome)getSupportFragmentManager()
                 .findFragmentByTag("android:switcher:" + R.id.viewpagerContainer
                         + ":" + mViewPager.getCurrentItem()); // references its tag
         if(homeFragment != null){
@@ -55,10 +51,10 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
         }
     }
 
-    private static final String TAG = "HomeActivity";
+    private static final String TAG = "ActivityHome";
     private static final int ACTIVITY_NUM = 0;
     private static final int FRAGMENT_HOME = 1; // 1 because it is middle tab
-    private Context mContext = HomeActivity.this;
+    private Context mContext = ActivityHome.this;
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -125,7 +121,7 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
         Log.d(TAG, "onSelectedCommentThread: comment thread was selected");
 
         // bundles the user account settings and photo
-        ViewCommentsFragment viewCommentsFragment = new ViewCommentsFragment();
+        FragmentViewComments viewCommentsFragment = new FragmentViewComments();
         Bundle bundle = new Bundle();
         bundle.putParcelable(photo_extra, photo);
         bundle.putString(home_activity, home_activity);
@@ -149,9 +145,9 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
     * */
     private void setupViewPager(){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new CameraFragment()); // index 0
-        adapter.addFragment(new HomeFragment()); // index 1
-        adapter.addFragment(new MessagesFragment()); // index 2
+        adapter.addFragment(new FragmentCamera()); // index 0
+        adapter.addFragment(new FragmentHome()); // index 1
+        adapter.addFragment(new FragmentMessages()); // index 2
         mViewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -186,7 +182,7 @@ public class HomeActivity extends AppCompatActivity implements MainFeedListAdapt
         Log.d(TAG, "currentUserCheck:  check if a user has signed in");
 
         if(user == null){
-            Intent intent = new Intent(mContext, LoginActivity.class);
+            Intent intent = new Intent(mContext, ActivityLogin.class);
             startActivity(intent);
         }
     }

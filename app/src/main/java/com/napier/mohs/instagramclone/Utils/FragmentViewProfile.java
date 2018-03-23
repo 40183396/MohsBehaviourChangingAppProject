@@ -34,7 +34,7 @@ import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Models.UserAccountSettings;
 import com.napier.mohs.instagramclone.Models.UserSettings;
-import com.napier.mohs.instagramclone.Profile.AccountSettingsActivity;
+import com.napier.mohs.instagramclone.Profile.ActivityAccountSettings;
 import com.napier.mohs.instagramclone.R;
 
 import java.util.ArrayList;
@@ -54,9 +54,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 
-public class ViewProfileFragment extends Fragment{
+public class FragmentViewProfile extends Fragment{
 
-    private static final String TAG = "ProfileFragment";
+    private static final String TAG = "FragmentProfile";
 
     // buildin g interface
     public interface OnImageGridSelectedListener{
@@ -196,7 +196,7 @@ public class ViewProfileFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: going to edit profile fragment");
-                Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+                Intent intent = new Intent(getActivity(), ActivityAccountSettings.class);
                 // flag to know that this is just a calling activity
                 intent.putExtra(calling_activity, profile_activity);
                 startActivity(intent);// not finishing as we want to be able to nav back to this activity
@@ -508,7 +508,7 @@ public class ViewProfileFragment extends Fragment{
         }
 
         // creates an adappter and sets up grid view with adapter
-        GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, imgURLs, "");
+        AdapterGridImage adapter = new AdapterGridImage(getActivity(), R.layout.layout_grid_imageview, imgURLs, "");
         gridView.setAdapter(adapter);
 
         // attaching on click listener to grid view items
