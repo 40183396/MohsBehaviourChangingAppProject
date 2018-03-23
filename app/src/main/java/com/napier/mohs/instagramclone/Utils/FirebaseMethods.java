@@ -280,7 +280,7 @@ public class FirebaseMethods {
         myDBRefFirebase.child(mContext.getString(R.string.db_name_exercises))
                 .child(FirebaseAuth.getInstance()
                         .getCurrentUser().getUid())
-                .child(dateGet())
+                //.child(dateGet())
                 .child(exerciseNewKey).setValue(exercise);
     }
 

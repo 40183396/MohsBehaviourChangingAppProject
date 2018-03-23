@@ -297,7 +297,7 @@ public class FragmentViewComments extends Fragment {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Log.d(TAG, "onChildAdded: ");
-                        // query that reqeuries photo so we can get updated comments
+                        // query that queries photo so we can get updated comments
                         Query query = myDBRefFirebase
                                 .child(mContext.getString(R.string.db_name_photos)) // looks in photos node
                                 .orderByChild(mContext.getString(R.string.photo_id_field)) // looks in photo_id field
@@ -322,7 +322,7 @@ public class FragmentViewComments extends Fragment {
                                     photo.setImage_path(objectMap.get(mContext.getString(R.string.image_path_field)).toString());
 
 
-                                    // make sure to call all these things after recieveing photo data from bundle otherwise wont't work
+                                    // make sure to call all these things after receiving photo data from bundle otherwise wont't work
                                     // first comment will have the user who posted the picture with their caption
                                     mCommentArrayList.clear(); // makes sure we have fresh list every time
                                     Comment commentFirst = new Comment();

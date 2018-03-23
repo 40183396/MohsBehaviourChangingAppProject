@@ -66,30 +66,15 @@ public class FragmentDiary extends Fragment {
     ImageView mSend;
 
     // database queries
-    @BindString(R.string.db_name_following)
-    String db_following;
-    @BindString(R.string.db_name_followers)
-    String db_followers;
-    @BindString(R.string.db_name_user_photos)
-    String db_user_photos;
     @BindString(R.string.db_name_exercises)
     String db_exercises;
-    @BindString(R.string.user_id_field)
-    String userID_field;
-    @BindString(R.string.caption_field)
-    String caption_field;
-    @BindString(R.string.comments_field)
-    String comments_field;
-    @BindString(R.string.likes_field)
-    String likes_field;
-    @BindString(R.string.photo_id_field)
-    String photoID_field;
-    @BindString(R.string.tags_field)
-    String tags_field;
-    @BindString(R.string.date_created_field)
-    String date_created_field;
-    @BindString(R.string.image_path_field)
-    String image_path_field;
+
+    @BindString(R.string.exercise_name_field)
+    String exercise_name_field;
+    @BindString(R.string.exercise_id_field)
+    String exercise_id_field;
+    @BindString(R.string.exercise_unit_field)
+    String unit;
 
     // Strings
     @BindString(R.string.calling_activity)
@@ -114,7 +99,7 @@ public class FragmentDiary extends Fragment {
 
         setupFirebaseAuth();
 
-        setupWidgets();
+        // setupWidgets();
 
         return view;
     }
@@ -141,7 +126,7 @@ public class FragmentDiary extends Fragment {
     //------------------------FIREBASE STUFF------------
     // Method to check if a user is signed in app
 
-    private void setupFirebaseAuth(){
+    private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -153,7 +138,7 @@ public class FragmentDiary extends Fragment {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
-                if(user != null){
+                if (user != null) {
                     Log.d(TAG, "onAuthStateChanged: user signed in " + user);
                 } else {
                     Log.d(TAG, "onAuthStateChanged: user signed out");
@@ -161,18 +146,78 @@ public class FragmentDiary extends Fragment {
             }
         };
 
-        // allows to get datasnapshot and allows to read or write to db
-        myDBRefFirebase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // returns number of images for user
-            }
+        // if no comments on photo this is called to instantiate comments thread
+        if (mExerciseArrayList.size() == 0) {
+            mExerciseArrayList.clear(); // makes sure we have fresh list every time
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            setupWidgets(); // widgets still get set up even with no comments
+        }
 
-            }
-        });
+        // gets called imediately when fragment is activated and also when their is any change to the node
+        myDBRefFirebase.child(db_exercises)
+                .child(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid())
+                //.child(exercise_id_field)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Log.d(TAG, "onChildAdded: ");
+                        // query that queries photo so we can get updated comments
+                        Query query = myDBRefFirebase
+                                .child(db_exercises) // looks in exercises node
+                                .child(FirebaseAuth.getInstance()
+                                        .getCurrentUser().getUid())
+                                .orderByChild(exercise_id_field); // looks in photo_id field
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Log.d(TAG, "onDataChange: ");
+                                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
+                                    Exercise exercise = new Exercise();
+                                    mExerciseArrayList.clear(); // makes sure we have fresh list every time
+
+                                    exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id());
+                                    exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name());
+                                    exercise.setUnit(singleDataSnapshot.getValue(Exercise.class).getUnit());
+
+                                    mExerciseArrayList.add(exercise);
+
+                                    Log.d(TAG, "onDataChange: for loop: " + mExerciseArrayList);
+
+
+                                    setupWidgets();
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.d(TAG, "onCancelled: query has been cancelled");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     @Override
@@ -185,7 +230,7 @@ public class FragmentDiary extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if(mAuthListener != null){
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
