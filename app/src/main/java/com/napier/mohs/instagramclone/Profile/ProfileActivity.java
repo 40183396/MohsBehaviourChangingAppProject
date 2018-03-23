@@ -32,14 +32,6 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         ViewProfileFragment.OnImageGridSelectedListener,
         ViewPostFragment.OnThreadCommentSelectedListener {
     private static final String TAG = "ProfileActivity";
-    private static final int ACTIVITY_NUM = 4;
-    private static final int NUM_COLS_GRID = 3;
-
-
-    private Context mContext = ProfileActivity.this;
-    private ProgressBar mProgressBar;
-
-    private ImageView mProfilePhoto;
 
     // Intent Strings
     @BindString(R.string.calling_activity) String calling_activity;

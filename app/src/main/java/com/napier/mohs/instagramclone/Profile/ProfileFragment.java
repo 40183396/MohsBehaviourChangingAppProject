@@ -53,7 +53,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Mohs on 17/03/2018.
  */
 
-// Changed Profile Activty to This Fragment, Just Straight Copy And Paste
+// Changed Profile Activity to This Fragment, Just Straight Copy And Paste
 public class ProfileFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
