@@ -156,81 +156,48 @@ public class FragmentDiary extends Fragment {
             setupWidgets(); // widgets still get set up even with no comments
         }
 
-        // gets called imediately when fragment is activated and also when there is any change to the node
-        myDBRefFirebase.child(db_exercises)
+        Log.d(TAG, "onChildAdded: ");
+        // query that queries photo so we can get updated comments
+        Query query = myDBRefFirebase
+                .child(db_exercises) // looks in exercises node
                 .child(FirebaseAuth.getInstance()
-                        .getCurrentUser().getUid())
-                //.child(exercise_id_field)
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Log.d(TAG, "onChildAdded: ");
-                        // query that queries photo so we can get updated comments
-                        Query query = myDBRefFirebase
-                                .child(db_exercises) // looks in exercises node
-                                .child(FirebaseAuth.getInstance()
-                                        .getCurrentUser().getUid()).child("2018-03-24");
-                               // .orderByChild(exercise_id_field); // looks in photo_id field
-                        query.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                Log.d(TAG, "onDataChange: ");
-                                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
+                        .getCurrentUser().getUid()).child("2018-03-24");
+        // .orderByChild(exercise_id_field); // looks in photo_id field
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: ");
+                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
 
-                                    //mExerciseArrayList.clear(); // makes sure we have fresh list every time
-                                    Log.d(TAG, "onDataChange: looping");
+                    //mExerciseArrayList.clear(); // makes sure we have fresh list every time
+                    Log.d(TAG, "onDataChange: looping");
 
-                                    if (!mExerciseArrayList.contains(singleDataSnapshot.getValue(Exercise.class).getExercise_id())) {
-                                        Exercise exercise = new Exercise();
-                                        exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id());
-                                        exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name());
-                                        exercise.setUnit(singleDataSnapshot.getValue(Exercise.class).getUnit());
-                                        mExerciseArrayList.add(exercise);
+                    if (!mExerciseArrayList.contains(singleDataSnapshot.getValue(Exercise.class).getExercise_id())) {
+                        Exercise exercise = new Exercise();
+                        exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id());
+                        exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name());
+                        exercise.setUnit(singleDataSnapshot.getValue(Exercise.class).getUnit());
+                        mExerciseArrayList.add(exercise);
 
-                                    } else {
-                                        Toasty.warning(mContext, "fml.", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    setupWidgets();
-
-
-
-                                    Log.d(TAG, "onDataChange: for loop: " + mExerciseArrayList.size());
-
-
-
-
-                                }
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.d(TAG, "onCancelled: query has been cancelled");
-                            }
-                        });
+                    } else {
+                        Toasty.warning(mContext, "fml.", Toast.LENGTH_SHORT).show();
                     }
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    setupWidgets();
 
-                    }
+                    Log.d(TAG, "onDataChange: for loop: " + mExerciseArrayList.size());
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                }
 
-                    }
+            }
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: query has been cancelled");
+            }
+        });
 
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
     }
 
     @Override
