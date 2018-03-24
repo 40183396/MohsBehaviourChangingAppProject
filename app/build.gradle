@@ -29,6 +29,8 @@ dependencies {
     // Design library for Coordinator and toolbars
     implementation 'com.android.support:design:27.1.0'
 
+    compile 'com.android.support:support-v13:27.1.0'
+
     //BottomNavigationViewEx lib
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
 
@@ -69,7 +71,10 @@ dependencies {
 
     // datepicker-timeline
     implementation 'com.github.badoualy:datepicker-timeline:c6dcd05737'
-    compile 'com.android.support:support-v13:27.1.0'
+
+
+    // Boom Menu
+    implementation 'com.nightonke:boommenu:2.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

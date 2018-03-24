@@ -33,6 +33,9 @@ import com.napier.mohs.instagramclone.Profile.ActivityAccountSettings;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.AdapterExerciseList;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
+import com.nightonke.boommenu.BoomButtons.HamButton;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
+import com.nightonke.boommenu.BoomMenuButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +69,8 @@ public class FragmentDiary extends Fragment {
     ListView mListView;
     @BindView(R.id.imageDiaryPost)
     ImageView mSend;
+    @BindView(R.id.bmb)
+    BoomMenuButton bmb;
 
     // database queries
     @BindString(R.string.db_name_exercises)
@@ -101,8 +106,17 @@ public class FragmentDiary extends Fragment {
         mFirebaseMethods = new FirebaseMethods(getActivity());
 
 
-
         mContext = getActivity(); // keeps context constant
+
+        bmb.addBuilder(new HamButton.Builder().normalText("Add To Diary!").listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        // When the boom-button corresponding this builder is clicked.
+                        Toast.makeText(mContext, "Clicked ", Toast.LENGTH_SHORT).show();
+                    }
+                }));
+        bmb.addBuilder(new HamButton.Builder().normalText("Goals!"));
+
 
         setupFirebaseAuth();
         // setting up date here first so page auto loads with diary entries
@@ -112,10 +126,10 @@ public class FragmentDiary extends Fragment {
             @Override
             public void onDateSelected(int year, int month, int day, int index) {
                 // changed format so if month is less than 9 it appends a zero before it
-                if(month > 10){
-                    date = String.valueOf(year) + "-" + String.valueOf(month+1) + "-" + String.valueOf(day);
+                if (month > 10) {
+                    date = String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + String.valueOf(day);
                 } else {
-                    date = String.valueOf(year) + "-0" + String.valueOf(month+1) + "-" + String.valueOf(day);
+                    date = String.valueOf(year) + "-0" + String.valueOf(month + 1) + "-" + String.valueOf(day);
                 }
 
                 Toasty.info(mContext, date, Toast.LENGTH_SHORT).show();
@@ -155,7 +169,7 @@ public class FragmentDiary extends Fragment {
 
     }
 
-    private void queryDB(){
+    private void queryDB() {
 
         final ArrayList<Exercise> exerciseArrayList = new ArrayList<Exercise>();
         final ArrayList<String> keyList = new ArrayList<>();
@@ -193,7 +207,7 @@ public class FragmentDiary extends Fragment {
                                 .child(db_exercises) // looks in exercises node
                                 .child(FirebaseAuth.getInstance()
                                         .getCurrentUser().getUid()).child(date)
-                        .child(keyList.get(position)).removeValue();
+                                .child(keyList.get(position)).removeValue();
                         keyList.remove(position);
                     }
                 });

@@ -33,6 +33,7 @@
     <string name="db_name_following">following</string>
     <string name="db_name_followers">followers</string>
     <string name="db_name_exercises">exercises</string>
+    <string name="db_name_exercise_current_best">exercise_current_best</string>
 
     <string name="username_field">username</string>
     <string name="email_field">email</string>
@@ -75,6 +76,9 @@
     <string name="profile_activity">Profile Activity</string>
     <string name="search_activity">Search Activity</string>
     <string name="home_activity">Home Activity</string>
+    <string name="goals_activity">Goals Activity</string>
+    <string name="diary_activity">Diary Activity</string>
+    <string name="add_diary_activity">Add Diary Activity</string>
 
     <!--Dialog Strings-->
     <string name="dialog_password_confirm">PasswordConfirmDialog</string>

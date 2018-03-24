@@ -16,8 +16,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -284,6 +287,32 @@ public class FirebaseMethods {
                 .child(date)
                 .child(exerciseNewKey)
                 .setValue(exercise);
+
+    }
+
+    // checks highest record so far for exercise
+    public void exerciseCurrentBest(String name, String weight){
+        DatabaseReference mDatabasePlayers = FirebaseDatabase.getInstance().getReference().child("Players");
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_exercise_current_best))
+                .child(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid())
+                .child(name)
+                .setValue(weight);
+
+        Query mDatabaseHighestPlayer = mDatabasePlayers.child("Scores").orderByChild("rank").limitToLast(1);
+        mDatabaseHighestPlayer.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot){
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    String Key = childSnapshot.getKey();
+                    Toasty.normal(mContext,Key,Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException(); // don't swallow errors
+            }
+        });
     }
 
     // gets a time stamp in YYYY/MM/DD
