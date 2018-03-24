@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.instagramclone.Models.Exercise;
+import com.napier.mohs.instagramclone.Models.User;
 import com.napier.mohs.instagramclone.Profile.ActivityAccountSettings;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.AdapterExerciseList;
@@ -168,24 +169,30 @@ public class FragmentDiary extends Fragment {
                         Query query = myDBRefFirebase
                                 .child(db_exercises) // looks in exercises node
                                 .child(FirebaseAuth.getInstance()
-                                        .getCurrentUser().getUid());
+                                        .getCurrentUser().getUid()).child("2018-03-24");
                                // .orderByChild(exercise_id_field); // looks in photo_id field
                         query.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Log.d(TAG, "onDataChange: ");
-                                for (DataSnapshot singleDataSnapshot : dataSnapshot.child("2018-03-23").getChildren()) {
+                                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
 
                                     //mExerciseArrayList.clear(); // makes sure we have fresh list every time
                                     Log.d(TAG, "onDataChange: looping");
 
-                                    Exercise exercise = new Exercise();
-                                    exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id());
-                                    exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name());
-                                    exercise.setUnit(singleDataSnapshot.getValue(Exercise.class).getUnit());
-                                    mExerciseArrayList.add(exercise);
+                                    if (!mExerciseArrayList.contains(singleDataSnapshot.getValue(Exercise.class).getExercise_id())) {
+                                        Exercise exercise = new Exercise();
+                                        exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id());
+                                        exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name());
+                                        exercise.setUnit(singleDataSnapshot.getValue(Exercise.class).getUnit());
+                                        mExerciseArrayList.add(exercise);
+
+                                    } else {
+                                        Toasty.warning(mContext, "fml.", Toast.LENGTH_SHORT).show();
+                                    }
 
                                     setupWidgets();
+
 
 
                                     Log.d(TAG, "onDataChange: for loop: " + mExerciseArrayList.size());
