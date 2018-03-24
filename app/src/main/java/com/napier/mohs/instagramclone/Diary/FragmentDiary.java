@@ -105,36 +105,11 @@ public class FragmentDiary extends Fragment {
 
         mFirebaseMethods = new FirebaseMethods(getActivity());
 
-
         mContext = getActivity(); // keeps context constant
 
-        bmb.addBuilder(new HamButton.Builder().normalText("Add To Diary!").listener(new OnBMClickListener() {
-                    @Override
-                    public void onBoomButtonClick(int index) {
-                        // When the boom-button corresponding this builder is clicked.
-                        Log.d(TAG, "onClick: clicked diary button");
-                        Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "onClick: navigating to add diary");
-                        Intent intent = new Intent(mContext, ActivityAddDiary.class);
-                        intent.putExtra("date", date);
-                        startActivity(intent);
-                    }
-                }));
-        bmb.addBuilder(new HamButton.Builder().normalText("Goals!").listener(new OnBMClickListener() {
-            @Override
-            public void onBoomButtonClick(int index) {
-                // When the boom-button corresponding this builder is clicked.
-                Log.d(TAG, "onClick: clicked goals button");
-                Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onClick: navigating to add diary");
-                Intent intent = new Intent(mContext, ActivityAddGoals.class);
-                intent.putExtra("date", date);
-                startActivity(intent);
-            }
-        }));
-
-
         setupFirebaseAuth();
+        setupWidgets();
+
         // setting up date here first so page auto loads with diary entries
         date = dateGet();
 
@@ -168,22 +143,32 @@ public class FragmentDiary extends Fragment {
 
     // sets up widgets
     private void setupWidgets() {
-
-        // button for sending a comment
-        mSend.setOnClickListener(new View.OnClickListener() {
+        bmb.addBuilder(new HamButton.Builder().normalText("Add To Diary!").listener(new OnBMClickListener() {
             @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked send button");
+            public void onBoomButtonClick(int index) {
+                // When the boom-button corresponding this builder is clicked.
+                Log.d(TAG, "onClick: clicked diary button");
                 Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onClick: navigating to add diary");
                 Intent intent = new Intent(mContext, ActivityAddDiary.class);
                 intent.putExtra("date", date);
                 startActivity(intent);
             }
-        });
-
-
+        }));
+        bmb.addBuilder(new HamButton.Builder().normalText("Goals!").listener(new OnBMClickListener() {
+            @Override
+            public void onBoomButtonClick(int index) {
+                // When the boom-button corresponding this builder is clicked.
+                Log.d(TAG, "onClick: clicked goals button");
+                Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onClick: navigating to add diary");
+                Intent intent = new Intent(mContext, ActivityAddGoals.class);
+                intent.putExtra("date", date);
+                startActivity(intent);
+            }
+        }));
     }
+
 
     private void queryDB() {
 
@@ -265,8 +250,6 @@ public class FragmentDiary extends Fragment {
         // if no in diary this is called to instantiate diary
         if (mExerciseArrayList.size() == 0) {
             mExerciseArrayList.clear(); // makes sure we have fresh list every time
-
-            setupWidgets(); // widgets still get set up even with no comments
         }
 
     }
