@@ -105,19 +105,25 @@ public class FragmentDiary extends Fragment {
         mContext = getActivity(); // keeps context constant
 
         setupFirebaseAuth();
-
+        // setting up date here first so page auto loads with diary entries
         date = dateGet();
 
         timeline.setOnDateSelectedListener(new DatePickerTimeline.OnDateSelectedListener() {
             @Override
             public void onDateSelected(int year, int month, int day, int index) {
-                date = String.valueOf(year) + "-0" + String.valueOf(month+1) + "-" + String.valueOf(day);
+                // changed format so if month is less than 9 it appends a zero before it
+                if(month > 10){
+                    date = String.valueOf(year) + "-" + String.valueOf(month+1) + "-" + String.valueOf(day);
+                } else {
+                    date = String.valueOf(year) + "-0" + String.valueOf(month+1) + "-" + String.valueOf(day);
+                }
+
                 Toasty.info(mContext, date, Toast.LENGTH_SHORT).show();
                 queryDB();
             }
         });
+        //sets up the query
         queryDB();
-        // setupWidgets();
 
         return view;
     }
@@ -154,28 +160,45 @@ public class FragmentDiary extends Fragment {
 
     private void queryDB(){
 
-        //final ListView listView = (ListView) findViewById(R.id.listviewDiary);
-        final ArrayList<Exercise> friends = new ArrayList<Exercise>();
-
+        final ArrayList<Exercise> exerciseArrayList = new ArrayList<Exercise>();
+        final ArrayList<String> keyList = new ArrayList<>();
         Query query = myDBRefFirebase
                 .child(db_exercises) // looks in exercises node
-                .child(FirebaseAuth.getInstance()
-                        .getCurrentUser().getUid()).child(date);
-        // .orderByChild(exercise_id_field); // looks in photo_id field
+                .child(FirebaseAuth.getInstance() // looks in current user node
+                        .getCurrentUser().getUid()).child(date); // looks in date chosen in calendar
+
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
+                    keyList.add(singleDataSnapshot.getKey()); // keylist is for deleting from firebase database
                     Exercise exercise = new Exercise();
                     exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id().toString());
                     exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name().toString());
                     exercise.setUnit(singleDataSnapshot.getValue(Exercise.class).getUnit().toString());
-                    friends.add(exercise);
+                    exerciseArrayList.add(exercise); //adds the data to this array list
                     Log.d(TAG, "onDataChange: looping");
                 }
-                Log.d(TAG, "onDataChange: number of loops " + friends.size());
-                AdapterExerciseList adapter = new AdapterExerciseList(mContext, R.layout.listitem_exercises, friends);
-                mListView.setAdapter(adapter);
+                Log.d(TAG, "onDataChange: number of loops " + exerciseArrayList.size());
+                final AdapterExerciseList adapter = new AdapterExerciseList(mContext, R.layout.listitem_exercises, exerciseArrayList);
+                mListView.setAdapter(adapter); // arraylist is adapted to the list view
+
+                // TODO: Change this to long click and context menu
+                // deletes an item from the database and listview
+                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        exerciseArrayList.remove(position);
+                        adapter.notifyDataSetChanged();
+                        //new code below
+                        myDBRefFirebase
+                                .child(db_exercises) // looks in exercises node
+                                .child(FirebaseAuth.getInstance()
+                                        .getCurrentUser().getUid()).child(date)
+                        .child(keyList.get(position)).removeValue();
+                        keyList.remove(position);
+                    }
+                });
             }
 
             @Override
@@ -217,76 +240,6 @@ public class FragmentDiary extends Fragment {
 
             setupWidgets(); // widgets still get set up even with no comments
         }
-
-
-
-
-//        Log.d(TAG, "onChildAdded: ");
-//        // query that queries photo so we can get updated comments
-//        Query query = myDBRefFirebase
-//                .child(db_exercises) // looks in exercises node
-//                .child(FirebaseAuth.getInstance()
-//                        .getCurrentUser().getUid()).child(date);
-//        // .orderByChild(exercise_id_field); // looks in photo_id field
-//        query.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.d(TAG, "onDataChange: ");
-//                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
-//
-//                    //mExerciseArrayList.clear(); // makes sure we have fresh list every time
-//                    Log.d(TAG, "onDataChange: looping");
-//
-//                    if (!mExerciseArrayList.contains(singleDataSnapshot.getValue(Exercise.class).getExercise_id())) {
-//
-//                        Exercise exercise = new Exercise();
-//                        exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id());
-//                        exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name());
-//                        exercise.setUnit(singleDataSnapshot.getValue(Exercise.class).getUnit());
-//                        mExerciseArrayList.add(exercise);
-//
-//                    } else {
-//                        Toasty.warning(mContext, "fml.", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    Log.d(TAG, "setupWidgets: setting up widgets");
-//                    final AdapterExerciseList adapter = new AdapterExerciseList(mContext, R.layout.listitem_exercises, mExerciseArrayList); // adapter with exercises
-//                    mListView.setAdapter(adapter); //list view receives data from adapter
-//
-//                    mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                            try{
-//                                adapter.remove(adapter.getItem(position));
-//                                adapter.notifyDataSetChanged();
-//                                myDBRefFirebase
-//                                        .child(db_exercises) // looks in exercises node
-//                                        .child(FirebaseAuth.getInstance()
-//                                                .getCurrentUser()
-//                                                .getUid()).child(date)
-//                                        .child(adapter.getItem(position)
-//                                                .getExercise_id()).removeValue();
-//                            } catch (IndexOutOfBoundsException e){
-//                                Log.e(TAG, "onItemClick: IndexOutOfBoundsException" + e.getMessage() );
-//                                Toasty.warning(mContext, "oops couldn't delete sorry about that", Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                        }
-//                    });
-//                    setupWidgets();
-//
-//                    Log.d(TAG, "onDataChange: for loop: " + mExerciseArrayList.size());
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.d(TAG, "onCancelled: query has been cancelled");
-//            }
-//        });
-
 
     }
 
