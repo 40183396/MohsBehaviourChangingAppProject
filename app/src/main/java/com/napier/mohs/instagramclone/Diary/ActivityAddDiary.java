@@ -9,15 +9,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,20 +23,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-import com.napier.mohs.instagramclone.Home.FragmentCamera;
 import com.napier.mohs.instagramclone.Home.FragmentHome;
 import com.napier.mohs.instagramclone.Home.FragmentMessages;
-import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
-import com.napier.mohs.instagramclone.Utils.FragmentViewComments;
 import com.napier.mohs.instagramclone.Utils.SectionsPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import es.dmoral.toasty.Toasty;
 
 /**
  * Created by Mohs on 24/03/2018.
@@ -58,7 +49,7 @@ public class ActivityAddDiary extends AppCompatActivity {
     private FirebaseMethods mFirebaseMethods;
 
     private static final int FRAGMENT_ADD = 1;
-    private static final int ACTIVITY_NUM = 4;
+    private static final int ACTIVITY_NUM = 3;
 
     // widgets
     @BindView(R.id.viewpagerContainer)
@@ -69,11 +60,11 @@ public class ActivityAddDiary extends AppCompatActivity {
     RelativeLayout mRelativeLayout;
 
     String dateIntent;
-    FragmentAddDiary fragment = new FragmentAddDiary();
+    FragmentAddWeights fragment = new FragmentAddWeights();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adddiary);
+        setContentView(R.layout.activity_add_diary);
         ButterKnife.bind(this);
         Log.d(TAG, "onCreate: started diary activity");
 
@@ -110,7 +101,7 @@ public class ActivityAddDiary extends AppCompatActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
        // transaction.replace(R.id.containerAddDiary, fragment); // replace home container with this fragment
-        transaction.addToBackStack("fragment_adddiary");
+        transaction.addToBackStack("fragment_add_weightsdiary");
         transaction.commit();
     }
 
@@ -121,16 +112,16 @@ public class ActivityAddDiary extends AppCompatActivity {
         passDateintent(dateIntent);
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(fragment); // index 0
-        adapter.addFragment(new FragmentHome()); // index 1
-        adapter.addFragment(new FragmentMessages()); // index 2
+        adapter.addFragment(new FragmentAddCardio()); // index 1
+        adapter.addFragment(new FragmentAddGoals()); // index 2
         mViewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_instagram);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_arrow);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_weights);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_cardio);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_goals);
     }
 
     /**

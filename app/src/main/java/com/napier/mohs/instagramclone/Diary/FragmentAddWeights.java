@@ -12,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,7 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.napier.mohs.instagramclone.Home.ActivityHome;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 
@@ -38,8 +36,8 @@ import es.dmoral.toasty.Toasty;
  * Created by Mohs on 24/03/2018.
  */
 
-public class FragmentAddDiary extends Fragment{
-    private static final String TAG = "FragmentAddDiary";
+public class FragmentAddWeights extends Fragment{
+    private static final String TAG = "FragmentAddWeights";
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -56,7 +54,7 @@ public class FragmentAddDiary extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_adddiary, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_weightsdiary, container, false);
         ButterKnife.bind(this,view);
         Log.d(TAG, "onCreateView: Starting add diary fragment");
 

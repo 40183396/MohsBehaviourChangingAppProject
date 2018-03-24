@@ -43,8 +43,11 @@ public class AdapterExerciseList extends ArrayAdapter<Exercise>{
         @BindView(R.id.textviewExercisesName)
         TextView name;
 
-        @BindView(R.id.textviewExercisesNumber)
-        TextView number;
+        @BindView(R.id.textviewExercisesWeight)
+        TextView weight;
+
+        @BindView(R.id.textviewExercisesReps)
+        TextView reps;
 
         @BindView(R.id.imageExercises)
         CircleImageView picture;
@@ -72,8 +75,8 @@ public class AdapterExerciseList extends ArrayAdapter<Exercise>{
 
         // set name and number
         viewHolder.name.setText((getItem(position).getExercise_name()));
-        viewHolder.number.setText(getItem(position).getExercise_weight());
-        viewHolder.number.setText(getItem(position).getExercise_reps());
+        viewHolder.weight.setText(getItem(position).getExercise_weight() + " kgs");
+        viewHolder.reps.setText(getItem(position).getExercise_reps() + " reps");
 
 
 
