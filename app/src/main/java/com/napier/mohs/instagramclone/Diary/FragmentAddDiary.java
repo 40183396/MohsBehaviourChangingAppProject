@@ -128,23 +128,34 @@ public class FragmentAddDiary extends Fragment{
     public void increaseWeight(){
         numberWeight += 2.5;
         String stringWeight = Double.toString(numberWeight);
-        //textview1.setText(REAL_FORMATTER.format(result));
         diaryWeight.setText(stringWeight);
     }
 
     @OnClick(R.id.btnDecreaseWeightAddDiary)
     public void decreaseWeight(){
-
+        numberWeight -= 2.5;
+        if(numberWeight<0){
+            numberWeight=0;
+        }
+        String stringReps = Double.toString(numberWeight);
+        diaryWeight.setText(stringReps);
     }
 
     @OnClick(R.id.btnIncreaseRepsAddDiary)
     public void increaseReps(){
-
+        numberReps += 2.5;
+        String stringReps = Double.toString(numberReps);
+        diaryReps.setText(stringReps);
     }
 
     @OnClick(R.id.btnDecreaseRepsAddDiary)
     public void decreaseReps(){
-
+        numberReps -= 2.5;
+        if(numberReps<0){
+            numberReps=0;
+        }
+        String stringReps = Double.toString(numberReps);
+        diaryReps.setText(stringReps);
     }
 
     // saves the entered details to the firebase database
@@ -152,10 +163,8 @@ public class FragmentAddDiary extends Fragment{
     public void addEntryToDB() {
         numberWeight = Double.parseDouble(diaryWeight.getText().toString());
         numberReps = Double.parseDouble(diaryReps.getText().toString());
-        // format these to two decimal places
-        REAL_FORMATTER.format(numberWeight);
-        REAL_FORMATTER.format(numberReps);
 
+        // format these to two decimal places
         // set double sto string TODO change this to doubles or longs for firebase
         String weight = String.valueOf(REAL_FORMATTER.format(numberWeight));
         String reps = String.valueOf(REAL_FORMATTER.format(numberReps));
