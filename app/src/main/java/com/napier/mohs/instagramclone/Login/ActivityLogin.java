@@ -1,5 +1,6 @@
 package com.napier.mohs.instagramclone.Login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -86,23 +87,11 @@ public class ActivityLogin extends AppCompatActivity {
         // This is invisible till user signs in
         mProgressBar.setVisibility(View.GONE);
         mSigningIn.setVisibility(View.GONE);
-        rotatingText();
         setupFirebaseAuth();
         initialiseLoggingIn();
     }
 
-    private void rotatingText() {
-        RotatingTextWrapper rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Reckoner_Bold.ttf");
-        rotatingTextWrapper.setSize(35);
 
-        Rotatable rotatable = new Rotatable(Color.parseColor("#FFA036"), 1000, "Awesome", "Better", "Your Best");
-        rotatable.setTypeface(typeface);
-        rotatable.setSize(35);
-        rotatable.setAnimationDuration(500);
-        signUpLink.setTypeface(typeface);
-        rotatingTextWrapper.setContent("Be \n?", rotatable);
-    }
 
 
     private boolean isPasswordValid(String password) {
@@ -180,8 +169,9 @@ public class ActivityLogin extends AppCompatActivity {
                                         mSigningIn.setVisibility(View.GONE);
                                     } else {
                                         Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
-
+                                        finish(); // ending the stack so can't go back to login from home
                                         Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();
                                         mProgressBar.setVisibility(View.GONE);
                                         mSigningIn.setVisibility(View.GONE);

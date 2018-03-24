@@ -106,19 +106,8 @@ public class ActivityNext extends AppCompatActivity{
             }
         });
 
-        rotatingText();
     }
 
-    private void rotatingText(){
-        RotatingTextWrapper rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
-        rotatingTextWrapper.setSize(35);
-
-        Rotatable rotatable = new Rotatable(Color.parseColor("#FFA036"), 1000, "Word", "Word01", "Word02");
-        rotatable.setSize(35);
-        rotatable.setAnimationDuration(500);
-
-        rotatingTextWrapper.setContent("This is ?", rotatable);
-    }
 
 
     // when activity starts automatically sets image incoming image url of intent

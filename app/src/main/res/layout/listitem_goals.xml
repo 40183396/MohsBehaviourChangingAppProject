@@ -34,7 +34,8 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:id="@+id/relLayout2"android:layout_below="@id/relLayout1">
+            android:id="@+id/relLayout2"
+            android:layout_below="@id/relLayout1">
 
 
             <com.daimajia.numberprogressbar.NumberProgressBar
