@@ -145,13 +145,10 @@ public class FragmentDiary extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked send button");
                 Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
-                // mFirebaseMethods.exerciseAddToDatabase("pushup", "reps");
-                //adapter.notifyDataSetChanged();
-                // mListView.setAdapter(adapter); //list view receives data from adapter
                 Log.d(TAG, "onClick: navigating to add diary");
                 Intent intent = new Intent(mContext, ActivityAddDiary.class);
+                intent.putExtra("date", date);
                 startActivity(intent);
-                //getActivity().finish();
             }
         });
 

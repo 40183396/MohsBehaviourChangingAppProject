@@ -51,6 +51,8 @@ public class ActivityAddDiary extends AppCompatActivity {
     @BindView(R.id.buttonAddEntry)
     Button addEntry1;
 
+    String dateIntent;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,16 +67,27 @@ public class ActivityAddDiary extends AppCompatActivity {
         ///addEntryToDB();
         setupFirebaseAuth();
 
+        // receiving date intent from FragmentDiary
+        try {
+            Intent intent = getIntent();
+            dateIntent = intent.getStringExtra("date");
+        } catch (Exception e) {
+            Log.e(TAG, "onCreate: Exception " + e.getMessage() );
+        }
+
     }
     @OnClick(R.id.buttonAddEntry)
     public void addEntryToDB() {
         String name = addName.getText().toString();
         String unit = addUnit.getText().toString();
+        String date = dateIntent;
+
+        Log.d(TAG, "addEntryToDB: Adding Entry " + name + ", " + ", " + unit + ", " + date);
         if(TextUtils.isEmpty(name) || TextUtils.isEmpty(unit)){
             Toasty.error(mContext, "Please Fill Out All Fields", Toast.LENGTH_SHORT).show();
         } else {
 
-            mFirebaseMethods.exerciseAddToDatabase(name, unit);
+            mFirebaseMethods.exerciseAddToDatabase(date, name, unit);
             addName.getText().clear();
             addUnit.getText().clear();
             Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();
@@ -84,9 +97,6 @@ public class ActivityAddDiary extends AppCompatActivity {
         }
     }
 
-    private void addToDiary(){
-
-    }
 
 
     //------------------------FIREBASE STUFF------------
