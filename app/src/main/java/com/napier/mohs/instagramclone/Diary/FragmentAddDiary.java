@@ -155,9 +155,10 @@ public class FragmentAddDiary extends Fragment{
         // format these to two decimal places
         REAL_FORMATTER.format(numberWeight);
         REAL_FORMATTER.format(numberReps);
+
         // set double sto string TODO change this to doubles or longs for firebase
-        String weight = String.valueOf(numberWeight);
-        String reps = String.valueOf(numberReps);
+        String weight = String.valueOf(REAL_FORMATTER.format(numberWeight));
+        String reps = String.valueOf(REAL_FORMATTER.format(numberReps));
         String date = dateIntent;
 
         Log.d(TAG, "addEntryToDB: Attempting add Entry " + weight + ", " + ", " + reps + ", " + date);
