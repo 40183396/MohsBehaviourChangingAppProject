@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -90,7 +91,7 @@ public class FragmentDiary extends Fragment {
 
         mFirebaseMethods = new FirebaseMethods(getActivity());
 
-        mExerciseArrayList = new ArrayList<>();
+
 
         mContext = getActivity(); // keeps context constant
 
@@ -101,11 +102,9 @@ public class FragmentDiary extends Fragment {
         return view;
     }
 
+
     // sets up widgets
     private void setupWidgets() {
-        Log.d(TAG, "setupWidgets: setting up widgets");
-        final AdapterExerciseList adapter = new AdapterExerciseList(mContext, R.layout.listitem_exercises, mExerciseArrayList); // adapter with exercises
-        mListView.setAdapter(adapter); //list view receives data from adapter
 
         // button for sending a comment
         mSend.setOnClickListener(new View.OnClickListener() {
@@ -113,9 +112,9 @@ public class FragmentDiary extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked send button");
                 Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
-               // mFirebaseMethods.exerciseAddToDatabase("pushup", "reps");
+                // mFirebaseMethods.exerciseAddToDatabase("pushup", "reps");
                 //adapter.notifyDataSetChanged();
-               // mListView.setAdapter(adapter); //list view receives data from adapter
+                // mListView.setAdapter(adapter); //list view receives data from adapter
                 Log.d(TAG, "onClick: navigating to add diary");
                 Intent intent = new Intent(mContext, ActivityAddDiary.class);
                 startActivity(intent);
@@ -134,7 +133,7 @@ public class FragmentDiary extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
-
+        mExerciseArrayList = new ArrayList<>();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -173,6 +172,7 @@ public class FragmentDiary extends Fragment {
                     Log.d(TAG, "onDataChange: looping");
 
                     if (!mExerciseArrayList.contains(singleDataSnapshot.getValue(Exercise.class).getExercise_id())) {
+
                         Exercise exercise = new Exercise();
                         exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id());
                         exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name());
@@ -183,6 +183,30 @@ public class FragmentDiary extends Fragment {
                         Toasty.warning(mContext, "fml.", Toast.LENGTH_SHORT).show();
                     }
 
+                    Log.d(TAG, "setupWidgets: setting up widgets");
+                    final AdapterExerciseList adapter = new AdapterExerciseList(mContext, R.layout.listitem_exercises, mExerciseArrayList); // adapter with exercises
+                    mListView.setAdapter(adapter); //list view receives data from adapter
+
+                    mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            try{
+                                adapter.remove(adapter.getItem(position));
+                                adapter.notifyDataSetChanged();
+                                myDBRefFirebase
+                                        .child(db_exercises) // looks in exercises node
+                                        .child(FirebaseAuth.getInstance()
+                                                .getCurrentUser()
+                                                .getUid()).child("2018-03-24")
+                                        .child(adapter.getItem(position)
+                                                .getExercise_id()).removeValue();
+                            } catch (IndexOutOfBoundsException e){
+                                Log.e(TAG, "onItemClick: IndexOutOfBoundsException" + e.getMessage() );
+                                Toasty.warning(mContext, "oops couldn't delete sorry about that", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
                     setupWidgets();
 
                     Log.d(TAG, "onDataChange: for loop: " + mExerciseArrayList.size());
