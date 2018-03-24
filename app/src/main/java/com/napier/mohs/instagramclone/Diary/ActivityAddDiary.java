@@ -5,11 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,8 +26,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.instagramclone.Home.FragmentCamera;
+import com.napier.mohs.instagramclone.Home.FragmentHome;
+import com.napier.mohs.instagramclone.Home.FragmentMessages;
+import com.napier.mohs.instagramclone.Models.Photo;
 import com.napier.mohs.instagramclone.R;
+import com.napier.mohs.instagramclone.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
+import com.napier.mohs.instagramclone.Utils.FragmentViewComments;
+import com.napier.mohs.instagramclone.Utils.SectionsPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,17 +57,19 @@ public class ActivityAddDiary extends AppCompatActivity {
     private DatabaseReference myDBRefFirebase;
     private FirebaseMethods mFirebaseMethods;
 
-    @BindView(R.id.edittextAddDiaryName)
-    EditText addName;
+    private static final int FRAGMENT_ADD = 1;
+    private static final int ACTIVITY_NUM = 4;
 
-    @BindView(R.id.edittextAddUnit)
-    EditText addUnit;
-
-    @BindView(R.id.buttonAddEntry)
-    Button addEntry1;
+    // widgets
+    @BindView(R.id.viewpagerContainer)
+    ViewPager mViewPager;
+    @BindView(R.id.containerAddDiary)
+    FrameLayout mFrameLayout;
+    @BindView(R.id.relLayoutParentAddDiary)
+    RelativeLayout mRelativeLayout;
 
     String dateIntent;
-
+    FragmentAddDiary fragment = new FragmentAddDiary();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,31 +88,65 @@ public class ActivityAddDiary extends AppCompatActivity {
         try {
             Intent intent = getIntent();
             dateIntent = intent.getStringExtra("date");
+            Log.d(TAG, "onCreate: dateIntent " + dateIntent);
         } catch (Exception e) {
             Log.e(TAG, "onCreate: Exception " + e.getMessage() );
         }
 
-    }
-    @OnClick(R.id.buttonAddEntry)
-    public void addEntryToDB() {
-        String name = addName.getText().toString();
-        String unit = addUnit.getText().toString();
-        String date = dateIntent;
 
-        Log.d(TAG, "addEntryToDB: Adding Entry " + name + ", " + ", " + unit + ", " + date);
-        if(TextUtils.isEmpty(name) || TextUtils.isEmpty(unit)){
-            Toasty.error(mContext, "Please Fill Out All Fields", Toast.LENGTH_SHORT).show();
-        } else {
-
-            mFirebaseMethods.exerciseAddToDatabase(date, name, unit);
-            addName.getText().clear();
-            addUnit.getText().clear();
-            Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, ActivityDiary.class);
-            startActivity(intent);
-            finish();
-        }
+        setupBottomNavigationView();
+        setupViewPager();
     }
+
+    // method to take home activity to comment thread
+    public void passDateintent(String passDate){
+        Log.d(TAG, "passDateintent: date passed " + passDate);
+
+        // bundles the user account settings and photo
+
+        Bundle bundle = new Bundle();
+        bundle.putString("date", dateIntent);
+        fragment.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+       // transaction.replace(R.id.containerAddDiary, fragment); // replace home container with this fragment
+        transaction.addToBackStack("fragment_adddiary");
+        transaction.commit();
+    }
+
+    /*
+    * Responsible for adding 3 tabs: Camera, Home, Messages
+    * */
+    private void setupViewPager(){
+        passDateintent(dateIntent);
+        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(fragment); // index 0
+        adapter.addFragment(new FragmentHome()); // index 1
+        adapter.addFragment(new FragmentMessages()); // index 2
+        mViewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_instagram);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_arrow);
+    }
+
+    /**
+     * BottomNavigationView setup
+     */
+    private void setupBottomNavigationView(){
+        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
+        menuItem.setChecked(true);
+    }
+
+
 
 
 

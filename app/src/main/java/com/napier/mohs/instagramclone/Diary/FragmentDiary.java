@@ -231,7 +231,7 @@ public class FragmentDiary extends Fragment {
             }
         };
 
-        // if no comments on photo this is called to instantiate comments thread
+        // if no in diary this is called to instantiate diary
         if (mExerciseArrayList.size() == 0) {
             mExerciseArrayList.clear(); // makes sure we have fresh list every time
 

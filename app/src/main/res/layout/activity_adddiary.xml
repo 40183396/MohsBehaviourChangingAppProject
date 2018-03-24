@@ -1,111 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="false">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.napier.mohs.instagramclone.Diary.ActivityAddDiary">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/containerAddDiary"></FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="15dp">
-
-        <LinearLayout
-            android:id="@+id/top_lin_add_diary"
+        android:id="@+id/relLayoutParentAddDiary">
+        <!-- top toolbar -->
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:id="@+id/relLayout1">
 
-            <TextView
-                android:id="@+id/textViewAddDiaryEntry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="Add An Entry"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <!--includes toolbar-->
+            <include layout="@layout/layout_top_tabs"/>
+        </RelativeLayout>
 
-
-        </LinearLayout>
-
+        <!-- middle section (Body) -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/top_lin_add_diary">
+            android:id="@+id/relLayout2"
+            android:layout_below="@id/relLayout1">
 
-            <TextView
-                android:id="@+id/textviewAddDiaryName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:text="Add name"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/edittextAddDiaryName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/textviewAddDiaryName"
-                android:layout_marginBottom="20dp"
-                android:layout_toRightOf="@+id/textviewAddDiaryName"
-                android:singleLine="true" />
-
-            <TextView
-                android:id="@+id/textviewAddUnit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/textviewAddDiaryName"
-                android:layout_alignStart="@+id/textviewAddDiaryName"
-                android:layout_below="@+id/edittextAddDiaryName"
-                android:text="Add Unit"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/edittextAddUnit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/edittextAddDiaryName"
-                android:layout_alignRight="@+id/edittextAddDiaryName"
-                android:layout_alignTop="@+id/textviewAddUnit"
-                android:layout_marginBottom="20dp"
-                android:layout_toRightOf="@+id/textviewAddDiaryName" />
-
-            <TextView
-                android:id="@+id/tvAddNote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/edittextAddUnit"
-                android:text="Add"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/editNote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/edittextAddUnit"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignStart="@+id/edittextAddUnit"
-                android:layout_alignTop="@+id/tvAddNote"
-                android:singleLine="true" />
-
-            <Button
-                android:id="@+id/buttonAddEntry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/editNote"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="65dp"
-                android:text="Add Entry" />
+            <!--includes container-->
+            <include layout="@layout/layout_centre_viewpager"/>
         </RelativeLayout>
 
+        <!-- bottom navigation -->
+        <!--includes bottom navigation view-->
+        <include layout="@layout/bottom_navigationview"/>
 
     </RelativeLayout>
-</ScrollView>
+
+
+
+</android.support.design.widget.CoordinatorLayout>

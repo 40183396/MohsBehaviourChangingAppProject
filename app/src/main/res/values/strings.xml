@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">InstagramClone</string>
 
+    <!--TODO Change this array-->
+
+        <string-array name="vegetable_array">
+            <item>Cucumber</item>
+            <item>Potato</item>
+            <item>Tomato</item>
+            <item>Onion</item>
+            <item>Squash</item>
+        </string-array>
+
+
+
     <!-- Fragment Strings-->
     <string name="fragment_edit_profile">Edit Profile</string>
     <string name="fragment_sign_out">Sign Out</string>

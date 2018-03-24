@@ -82,6 +82,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
         Log.d(TAG, "onCreate: starting.");
         setupFirebaseAuth();
 
+        // TODO Remove this
         /*DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.push().setValue(1);
 
