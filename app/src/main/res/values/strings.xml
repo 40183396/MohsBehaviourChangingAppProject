@@ -51,9 +51,12 @@
     <string name="tags_field">tags</string>
     <string name="image_path_field">image_path</string>
     <string name="comments_field">comments</string>
+
+
     <string name="exercise_name_field">exercise_name</string>
     <string name="exercise_id_field">exercise_id</string>
     <string name="exercise_unit_field">unit</string>
+    <string name="exercises_field">exercises</string>
 
     <!-- Intent Extras-->
     <string name="calling_activity">calling_activity</string>

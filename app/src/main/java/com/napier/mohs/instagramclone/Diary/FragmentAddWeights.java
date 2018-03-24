@@ -141,14 +141,14 @@ public class FragmentAddWeights extends Fragment{
 
     @OnClick(R.id.btnIncreaseRepsAddDiary)
     public void increaseReps(){
-        numberReps += 2.5;
+        numberReps += 1;
         String stringReps = Double.toString(numberReps);
         diaryReps.setText(stringReps);
     }
 
     @OnClick(R.id.btnDecreaseRepsAddDiary)
     public void decreaseReps(){
-        numberReps -= 2.5;
+        numberReps -= 1;
         if(numberReps<0){
             numberReps=0;
         }
