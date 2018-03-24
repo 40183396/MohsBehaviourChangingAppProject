@@ -167,16 +167,15 @@ public class FragmentDiary extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
                     Exercise exercise = new Exercise();
-                    exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id());
-                    exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name());
-                    exercise.setUnit(singleDataSnapshot.getValue(Exercise.class).getUnit());
+                    exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id().toString());
+                    exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name().toString());
+                    exercise.setUnit(singleDataSnapshot.getValue(Exercise.class).getUnit().toString());
                     friends.add(exercise);
                     Log.d(TAG, "onDataChange: looping");
                 }
                 Log.d(TAG, "onDataChange: number of loops " + friends.size());
-                ArrayAdapter arrayAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1,
-                        friends);
-                mListView.setAdapter(arrayAdapter);
+                AdapterExerciseList adapter = new AdapterExerciseList(mContext, R.layout.listitem_exercises, friends);
+                mListView.setAdapter(adapter);
             }
 
             @Override
