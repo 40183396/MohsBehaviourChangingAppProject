@@ -27,6 +27,8 @@ import com.napier.mohs.instagramclone.Home.ActivityHome;
 import com.napier.mohs.instagramclone.R;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -49,16 +51,6 @@ public class FragmentAddDiary extends Fragment{
 
     private Context mContext;
 
-
-    @BindView(R.id.edittextAddDiaryName)
-    EditText addName;
-
-    @BindView(R.id.edittextAddUnit)
-    EditText addUnit;
-
-    @BindView(R.id.buttonAddEntry)
-    Button addEntry1;
-
     String dateIntent;
 
     @Nullable
@@ -74,6 +66,11 @@ public class FragmentAddDiary extends Fragment{
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
         mFirebaseMethods = new FirebaseMethods(mContext);
+
+        // starts with fields blank
+        diaryWeight.getText().clear();
+        diaryReps.getText().clear();
+
         ///addEntryToDB();
         setupFirebaseAuth();
         getFromBundleDate();
@@ -101,7 +98,7 @@ public class FragmentAddDiary extends Fragment{
     }
 
     // TODO Replace hard coded strings in bundle
-    // gets from the bundle the photo from the profile activity interface
+    // gets from the bundle the date from the diary activity
     private String getFromBundleDate() {
         Log.d(TAG, "getFromBundleDate: " + getArguments());
 
@@ -120,29 +117,73 @@ public class FragmentAddDiary extends Fragment{
         }
 
     }
+    // formats number two decimal places
+    private static DecimalFormat REAL_FORMATTER = new DecimalFormat("0.##");
 
+    private double numberWeight, numberReps;
+    @BindView(R.id.edittextAddDiaryReps) EditText diaryReps;
+    @BindView(R.id.edittextAddDiaryWeight) EditText diaryWeight;
 
-    @OnClick(R.id.buttonAddEntry)
+    @OnClick(R.id.btnIncreaseWeightAddDiary)
+    public void increaseWeight(){
+        numberWeight += 2.5;
+        String stringWeight = Double.toString(numberWeight);
+        //textview1.setText(REAL_FORMATTER.format(result));
+        diaryWeight.setText(stringWeight);
+    }
+
+    @OnClick(R.id.btnDecreaseWeightAddDiary)
+    public void decreaseWeight(){
+
+    }
+
+    @OnClick(R.id.btnIncreaseRepsAddDiary)
+    public void increaseReps(){
+
+    }
+
+    @OnClick(R.id.btnDecreaseRepsAddDiary)
+    public void decreaseReps(){
+
+    }
+
+    // saves the entered details to the firebase database
+    @OnClick(R.id.btnSaveAddDiary)
     public void addEntryToDB() {
-        String name = addName.getText().toString();
-        String unit = addUnit.getText().toString();
+        numberWeight = Double.parseDouble(diaryWeight.getText().toString());
+        numberReps = Double.parseDouble(diaryReps.getText().toString());
+        // format these to two decimal places
+        REAL_FORMATTER.format(numberWeight);
+        REAL_FORMATTER.format(numberReps);
+        // set double sto string TODO change this to doubles or longs for firebase
+        String weight = String.valueOf(numberWeight);
+        String reps = String.valueOf(numberReps);
         String date = dateIntent;
 
-        Log.d(TAG, "addEntryToDB: Attempting add Entry " + name + ", " + ", " + unit + ", " + date);
-        if(TextUtils.isEmpty(name) || TextUtils.isEmpty(unit)){
+        Log.d(TAG, "addEntryToDB: Attempting add Entry " + weight + ", " + ", " + reps + ", " + date);
+        if(TextUtils.isEmpty(weight) || TextUtils.isEmpty(reps)){
             Toasty.error(mContext, "Please Fill Out All Fields", Toast.LENGTH_SHORT).show();
         } else {
 
             Log.d(TAG, "onClick: navigating back to previous activity");
 
-            mFirebaseMethods.exerciseAddToDatabase(date, name, unit);
-            addName.getText().clear();
-            addUnit.getText().clear();
+            mFirebaseMethods.exerciseAddToDatabase(date, weight, reps);
+            diaryWeight.getText().clear();
+            diaryReps.getText().clear();
             Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(mContext, ActivityDiary.class);
             startActivity(intent);
             getActivity().getFragmentManager().popBackStack();
         }
+    }
+
+    // clears the edit text fields
+    @OnClick(R.id.btnClearAddDiary)
+    public void clearTextFields(){
+        diaryWeight.getText().clear();
+        diaryReps.getText().clear();
+        numberWeight = 0;
+        numberReps = 0;
     }
 
 

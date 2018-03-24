@@ -31,117 +31,112 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/relLayout1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/top_lin_add_diary"
-            android:id="@+id/relLayout1">
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textviewAddDiaryName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:text="Add name"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:text="WEIGHT (kgs)" />
 
-            <EditText
-                android:id="@+id/edittextAddDiaryName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/textviewAddDiaryName"
-                android:layout_marginBottom="20dp"
-                android:layout_toRightOf="@+id/textviewAddDiaryName"
-                android:singleLine="true" />
-
-            <TextView
-                android:id="@+id/textviewAddUnit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/textviewAddDiaryName"
-                android:layout_alignStart="@+id/textviewAddDiaryName"
-                android:layout_below="@+id/edittextAddDiaryName"
-                android:text="Add Unit"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/edittextAddUnit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/edittextAddDiaryName"
-                android:layout_alignRight="@+id/edittextAddDiaryName"
-                android:layout_alignTop="@+id/textviewAddUnit"
-                android:layout_marginBottom="20dp"
-                android:layout_toRightOf="@+id/textviewAddDiaryName" />
-
-            <TextView
-                android:id="@+id/tvAddNote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/edittextAddUnit"
-                android:text="Add"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/editNote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/edittextAddUnit"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignStart="@+id/edittextAddUnit"
-                android:layout_alignTop="@+id/tvAddNote"
-                android:singleLine="true" />
 
             <Button
-                android:id="@+id/buttonAddEntry"
+                android:id="@+id/btnDecreaseWeightAddDiary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editNote"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="65dp"
-                android:text="Add Entry" />
-            <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:text="-" />
+
+            <EditText
+                android:id="@+id/edittextAddDiaryWeight"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:inputType="numberDecimal"
+                android:text="0"
+                android:textSize="70sp"
+                android:textStyle="bold" />
 
-                android:orientation="horizontal"
-                android:layout_below="@+id/buttonAddEntry">
-
-                <Button
-                    android:id="@+id/decrease"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="decreaseInteger"
-                    android:text="-" />
-
-                <TextView
-                    android:id="@+id/integer_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="40dp"
-                    android:layout_marginTop="16dp"
-                    android:text="0"
-                    android:textStyle="bold"
-                    android:textSize="70sp" />
-
-                <Button
-                    android:id="@+id/increase"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="increaseInteger"
-                    android:text="+" />
-            </LinearLayout>
+            <Button
+                android:id="@+id/btnIncreaseWeightAddDiary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:text="+" />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/relLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relLayout1"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="REPS" />
 
 
+            <Button
+                android:id="@+id/btnDecreaseRepsAddDiary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:text="-" />
+
+            <EditText
+                android:id="@+id/edittextAddDiaryReps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="0"
+                android:inputType="numberDecimal"
+                android:textSize="70sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnIncreaseRepsAddDiary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:text="+" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relLayout2"
+            android:layout_marginTop="30dp">
+
+            <Button
+                android:id="@+id/btnSaveAddDiary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:text="save"
+                android:layout_marginLeft="60dp"/>
+
+            <Button
+                android:id="@+id/btnClearAddDiary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:text="Clear"
+                android:layout_marginRight="60dp"/>
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
 </ScrollView>
