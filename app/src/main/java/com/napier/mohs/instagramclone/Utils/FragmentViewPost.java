@@ -179,7 +179,7 @@ public class FragmentViewPost extends Fragment {
     }
 
     // responsible for getting likes
-    // gets string of all peopple who liked photo
+    // gets string of all people who liked photo
     private void getStringLikes(){
         Log.d(TAG, "getStringLikes: getting likes");
 

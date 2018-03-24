@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,18 +24,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.napier.mohs.instagramclone.Models.Comment;
 import com.napier.mohs.instagramclone.Models.Exercise;
-import com.napier.mohs.instagramclone.Models.Photo;
-import com.napier.mohs.instagramclone.Models.Workout;
+import com.napier.mohs.instagramclone.Profile.ActivityAccountSettings;
 import com.napier.mohs.instagramclone.R;
-import com.napier.mohs.instagramclone.Utils.AdapterCommentsList;
 import com.napier.mohs.instagramclone.Utils.AdapterExerciseList;
 import com.napier.mohs.instagramclone.Utils.FirebaseMethods;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -107,7 +103,7 @@ public class FragmentDiary extends Fragment {
     // sets up widgets
     private void setupWidgets() {
         Log.d(TAG, "setupWidgets: setting up widgets");
-        AdapterExerciseList adapter = new AdapterExerciseList(mContext, R.layout.listitem_exercises, mExerciseArrayList); // adapter with exercises
+        final AdapterExerciseList adapter = new AdapterExerciseList(mContext, R.layout.listitem_exercises, mExerciseArrayList); // adapter with exercises
         mListView.setAdapter(adapter); //list view receives data from adapter
 
         // button for sending a comment
@@ -116,9 +112,16 @@ public class FragmentDiary extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked send button");
                 Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
-                mFirebaseMethods.exerciseAddToDatabase("pushup", "reps");
+               // mFirebaseMethods.exerciseAddToDatabase("pushup", "reps");
+                //adapter.notifyDataSetChanged();
+               // mListView.setAdapter(adapter); //list view receives data from adapter
+                Log.d(TAG, "onClick: navigating to add diary");
+                Intent intent = new Intent(mContext, ActivityAddDiary.class);
+                startActivity(intent);
             }
         });
+
+
     }
 
 
@@ -152,7 +155,7 @@ public class FragmentDiary extends Fragment {
             setupWidgets(); // widgets still get set up even with no comments
         }
 
-        // gets called imediately when fragment is activated and also when their is any change to the node
+        // gets called imediately when fragment is activated and also when there is any change to the node
         myDBRefFirebase.child(db_exercises)
                 .child(FirebaseAuth.getInstance()
                         .getCurrentUser().getUid())
@@ -183,6 +186,7 @@ public class FragmentDiary extends Fragment {
                                     mExerciseArrayList.add(exercise);
 
                                     setupWidgets();
+
 
                                     Log.d(TAG, "onDataChange: for loop: " + mExerciseArrayList.size());
 

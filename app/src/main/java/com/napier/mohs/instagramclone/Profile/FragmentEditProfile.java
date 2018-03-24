@@ -293,7 +293,7 @@ public class FragmentEditProfile extends Fragment implements PasswordConfirmDial
     // Method to check if a user is signed in app
 
     private void setupFirebaseAuth() {
-        Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
+        Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
