@@ -112,10 +112,26 @@ public class FragmentDiary extends Fragment {
                     @Override
                     public void onBoomButtonClick(int index) {
                         // When the boom-button corresponding this builder is clicked.
-                        Toast.makeText(mContext, "Clicked ", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onClick: clicked diary button");
+                        Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onClick: navigating to add diary");
+                        Intent intent = new Intent(mContext, ActivityAddDiary.class);
+                        intent.putExtra("date", date);
+                        startActivity(intent);
                     }
                 }));
-        bmb.addBuilder(new HamButton.Builder().normalText("Goals!"));
+        bmb.addBuilder(new HamButton.Builder().normalText("Goals!").listener(new OnBMClickListener() {
+            @Override
+            public void onBoomButtonClick(int index) {
+                // When the boom-button corresponding this builder is clicked.
+                Log.d(TAG, "onClick: clicked goals button");
+                Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onClick: navigating to add diary");
+                Intent intent = new Intent(mContext, ActivityAddGoals.class);
+                intent.putExtra("date", date);
+                startActivity(intent);
+            }
+        }));
 
 
         setupFirebaseAuth();

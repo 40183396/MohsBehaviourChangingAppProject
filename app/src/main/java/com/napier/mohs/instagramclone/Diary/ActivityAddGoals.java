@@ -49,20 +49,14 @@ public class ActivityAddGoals extends AppCompatActivity {
     private static final int FRAGMENT_ADD = 1;
     private static final int ACTIVITY_NUM = 3;
 
-    // widgets
-    @BindView(R.id.viewpagerContainer)
-    ViewPager mViewPager;
-    @BindView(R.id.containerAddDiary)
-    FrameLayout mFrameLayout;
-    @BindView(R.id.relLayoutParentAddDiary)
-    RelativeLayout mRelativeLayout;
+
 
     String dateIntent;
     FragmentAddWeights fragment = new FragmentAddWeights();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_diary);
+        setContentView(R.layout.activity_add_goals);
         ButterKnife.bind(this);
         Log.d(TAG, "onCreate: started diary activity");
 
@@ -84,7 +78,6 @@ public class ActivityAddGoals extends AppCompatActivity {
 
 
         setupBottomNavigationView();
-        setupViewPager();
     }
 
     // method to take home activity to comment thread
@@ -103,24 +96,7 @@ public class ActivityAddGoals extends AppCompatActivity {
         transaction.commit();
     }
 
-    /*
-    * Responsible for adding 3 tabs: Camera, Home, Messages
-    * */
-    private void setupViewPager(){
-        passDateintent(dateIntent);
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(fragment); // index 0
-        adapter.addFragment(new FragmentAddCardio()); // index 1
-        adapter.addFragment(new FragmentAddGoals()); // index 2
-        mViewPager.setAdapter(adapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_weights);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_cardio);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_goals);
-    }
 
     /**
      * BottomNavigationView setup

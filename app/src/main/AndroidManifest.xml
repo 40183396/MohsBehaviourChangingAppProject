@@ -34,6 +34,7 @@
         <activity android:name=".Login.ActivityRegister" />
         <activity android:name=".Share.ActivityNext" />
         <activity android:name=".Diary.ActivityAddDiary" />
+        <activity android:name=".Diary.ActivityAddGoals" />
     </application>
 
 </manifest>
