@@ -266,14 +266,15 @@ public class FirebaseMethods {
     }
 
     // adds exercise to firebase db
-    public void exerciseAddToDatabase(String date, String name, String unit) {
+    public void exerciseAddToDatabase(String date, String name, String weight, String reps) {
         Log.d(TAG, "exerciseAddToDatabase: exercise being added to database");
 
         // each exercise has unique id
         String exerciseNewKey = myDBRefFirebase.child(mContext.getString(R.string.db_name_exercises)).push().getKey(); // random string
         Exercise exercise = new Exercise();
         exercise.setExercise_name(name);
-        exercise.setUnit(unit);
+        exercise.setExercise_weight(weight);
+        exercise.setExercise_reps(reps);
         exercise.setExercise_id(exerciseNewKey);
 
          //database insertion

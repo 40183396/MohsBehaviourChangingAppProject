@@ -172,7 +172,8 @@ public class FragmentDiary extends Fragment {
                     Exercise exercise = new Exercise();
                     exercise.setExercise_id(singleDataSnapshot.getValue(Exercise.class).getExercise_id().toString());
                     exercise.setExercise_name(singleDataSnapshot.getValue(Exercise.class).getExercise_name().toString());
-                    exercise.setUnit(singleDataSnapshot.getValue(Exercise.class).getUnit().toString());
+                    exercise.setExercise_weight(singleDataSnapshot.getValue(Exercise.class).getExercise_weight().toString());
+                    exercise.setExercise_reps(singleDataSnapshot.getValue(Exercise.class).getExercise_reps().toString());
                     exerciseArrayList.add(exercise); //adds the data to this array list
                     Log.d(TAG, "onDataChange: looping");
                 }

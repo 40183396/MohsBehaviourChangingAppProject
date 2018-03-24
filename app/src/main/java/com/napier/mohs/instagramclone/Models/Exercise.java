@@ -5,15 +5,16 @@ package com.napier.mohs.instagramclone.Models;
  */
 
 public class Exercise {
-    private String exercise_id, exercise_name, unit;
-
-    public Exercise(String exercise_id, String exercise_name, String unit) {
-        this.exercise_id = exercise_id;
-        this.exercise_name = exercise_name;
-        this.unit = unit;
-    }
+    private String exercise_id, exercise_name, exercise_weight, exercise_reps;
 
     public Exercise() {
+    }
+
+    public Exercise(String exercise_id, String exercise_name, String exercise_weight, String exercise_reps) {
+        this.exercise_id = exercise_id;
+        this.exercise_name = exercise_name;
+        this.exercise_weight = exercise_weight;
+        this.exercise_reps = exercise_reps;
     }
 
     public String getExercise_id() {
@@ -32,12 +33,20 @@ public class Exercise {
         this.exercise_name = exercise_name;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getExercise_weight() {
+        return exercise_weight;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setExercise_weight(String exercise_weight) {
+        this.exercise_weight = exercise_weight;
+    }
+
+    public String getExercise_reps() {
+        return exercise_reps;
+    }
+
+    public void setExercise_reps(String exercise_reps) {
+        this.exercise_reps = exercise_reps;
     }
 
     @Override
@@ -45,7 +54,8 @@ public class Exercise {
         return "Exercise{" +
                 "exercise_id='" + exercise_id + '\'' +
                 ", exercise_name='" + exercise_name + '\'' +
-                ", unit='" + unit + '\'' +
+                ", exercise_weight='" + exercise_weight + '\'' +
+                ", exercise_reps='" + exercise_reps + '\'' +
                 '}';
     }
 }

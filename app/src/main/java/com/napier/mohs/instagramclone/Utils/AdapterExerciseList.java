@@ -72,7 +72,8 @@ public class AdapterExerciseList extends ArrayAdapter<Exercise>{
 
         // set name and number
         viewHolder.name.setText((getItem(position).getExercise_name()));
-        viewHolder.number.setText(getItem(position).getUnit());
+        viewHolder.number.setText(getItem(position).getExercise_weight());
+        viewHolder.number.setText(getItem(position).getExercise_reps());
 
 
 

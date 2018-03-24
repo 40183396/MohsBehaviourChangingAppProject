@@ -170,6 +170,8 @@ public class FragmentAddDiary extends Fragment{
         String reps = String.valueOf(REAL_FORMATTER.format(numberReps));
         String date = dateIntent;
 
+        String name = "Test Bicep Curl";
+
         Log.d(TAG, "addEntryToDB: Attempting add Entry " + weight + ", " + ", " + reps + ", " + date);
         if(TextUtils.isEmpty(weight) || TextUtils.isEmpty(reps)){
             Toasty.error(mContext, "Please Fill Out All Fields", Toast.LENGTH_SHORT).show();
@@ -177,7 +179,7 @@ public class FragmentAddDiary extends Fragment{
 
             Log.d(TAG, "onClick: navigating back to previous activity");
 
-            mFirebaseMethods.exerciseAddToDatabase(date, weight, reps);
+            mFirebaseMethods.exerciseAddToDatabase(date, name, weight, reps);
             diaryWeight.getText().clear();
             diaryReps.getText().clear();
             Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();
