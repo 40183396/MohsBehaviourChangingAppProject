@@ -63,6 +63,13 @@ dependencies {
 
     // Calligraphy
     //implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
+
+    // Material Calendar
+    implementation 'com.wdullaer:materialdatetimepicker:3.5.1'
+
+    // datepicker-timeline
+    implementation 'com.github.badoualy:datepicker-timeline:c6dcd05737'
+    compile 'com.android.support:support-v13:27.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
