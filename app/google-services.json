@@ -1,35 +1,66 @@
 {
   "project_info": {
-    "project_number": "719976575390",
-    "firebase_url": "https://instagramclone-18bfe.firebaseio.com",
-    "project_id": "instagramclone-18bfe",
-    "storage_bucket": "instagramclone-18bfe.appspot.com"
+    "project_number": "501241415909",
+    "firebase_url": "https://mohshonoursproject.firebaseio.com",
+    "project_id": "mohshonoursproject",
+    "storage_bucket": "mohshonoursproject.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:719976575390:android:0668b05493aeaa32",
+        "mobilesdk_app_id": "1:501241415909:android:5b685c10aa1f6838",
         "android_client_info": {
-          "package_name": "com.napier.mohs.instagramclone"
+          "package_name": "com.napier.mohs.behaviourchangeapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "719976575390-k3bjuhiu2bvlahlr6u7d317aoj4ttl01.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.napier.mohs.instagramclone",
-            "certificate_hash": "c80cf43575f6a6ec195d8ffaa9c0b65d2aef011e"
-          }
-        },
-        {
-          "client_id": "719976575390-cvdcvhvsb1tnskqg9qm38158f2kg93ku.apps.googleusercontent.com",
+          "client_id": "501241415909-r1o5kuqbkvmndp0msbd236s7jldqii4g.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDgrBBkx9ViySw3W0iU3JQJARSSPLyaW9E"
+          "current_key": "AIzaSyAqU-sJeILBZdTW1Bv3LvddGFyMAaEH79s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501241415909:android:d18c494a8965e092",
+        "android_client_info": {
+          "package_name": "com.napier.mohs.honoursproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501241415909-gpbd7gq2ldirfpnhkai2i3tlvl5mm6cm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.napier.mohs.honoursproject",
+            "certificate_hash": "c80cf43575f6a6ec195d8ffaa9c0b65d2aef011e"
+          }
+        },
+        {
+          "client_id": "501241415909-r1o5kuqbkvmndp0msbd236s7jldqii4g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqU-sJeILBZdTW1Bv3LvddGFyMAaEH79s"
         }
       ],
       "services": {
@@ -40,7 +71,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "719976575390-cvdcvhvsb1tnskqg9qm38158f2kg93ku.apps.googleusercontent.com",
+              "client_id": "501241415909-r1o5kuqbkvmndp0msbd236s7jldqii4g.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.napier.mohs.instagramclone">
+    package="com.napier.mohs.behaviourchangeapp">
     <!-- Include following permission if you load images from Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -15,26 +15,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Home.ActivityHome">
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Home.ActivityHome">
 
         </activity>
-        <activity android:name=".Diary.ActivityDiary"></activity>
-        <activity android:name=".Profile.ActivityProfile"></activity>
-        <activity android:name=".Search.ActivitySearch"
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Diary.ActivityDiary"></activity>
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Profile.ActivityProfile"></activity>
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Search.ActivitySearch"
             android:windowSoftInputMode="adjustNothing"></activity>
-        <activity android:name=".Share.ActivityShare"></activity>
-        <activity android:name=".Profile.ActivityAccountSettings"></activity>
-        <activity android:name=".Login.ActivityLogin">
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Share.ActivityShare"></activity>
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Profile.ActivityAccountSettings"></activity>
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Login.ActivityLogin">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-        <activity android:name=".Login.ActivityRegister" />
-        <activity android:name=".Share.ActivityNext" />
-        <activity android:name=".Diary.ActivityAddDiary" />
-        <activity android:name=".Diary.ActivityAddGoals" />
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Login.ActivityRegister" />
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Share.ActivityNext" />
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Diary.ActivityAddDiary" />
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Diary.ActivityAddGoals" />
     </application>
 
 </manifest>

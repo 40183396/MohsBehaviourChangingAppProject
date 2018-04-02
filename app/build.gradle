@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.napier.mohs.instagramclone"
+        applicationId "com.napier.mohs.behaviourchangeapp"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
@@ -78,6 +78,13 @@ dependencies {
 
     // Number Progress Bar
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
+
+    // FirebaseUI for Firebase Realtime Database
+    implementation 'com.firebaseui:firebase-ui-database:3.2.2'
+
+    // Android Animations
+    implementation 'com.daimajia.easing:library:2.0@aar'
+    implementation 'com.daimajia.androidanimations:library:2.3@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'

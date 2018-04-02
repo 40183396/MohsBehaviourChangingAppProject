@@ -49,7 +49,7 @@
 
             </RelativeLayout>
 
-            <com.napier.mohs.instagramclone.Utils.ImagesSquaredView
+            <com.napier.mohs.behaviourchangeapp.Utils.ImagesSquaredView
                 android:id="@+id/imagePostPicture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
