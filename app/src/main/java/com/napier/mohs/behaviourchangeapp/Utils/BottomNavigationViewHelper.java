@@ -10,6 +10,8 @@ import android.view.MenuItem;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Diary.ActivityDiary;
+import com.napier.mohs.behaviourchangeapp.Goals.ActivityAddGoals;
+import com.napier.mohs.behaviourchangeapp.Goals.ActivityGoals;
 import com.napier.mohs.behaviourchangeapp.Home.ActivityHome;
 import com.napier.mohs.behaviourchangeapp.Profile.ActivityProfile;
 import com.napier.mohs.behaviourchangeapp.R;
@@ -45,7 +47,7 @@ public class BottomNavigationViewHelper {
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case R.id.ic_search:
-                        Intent intent2 = new Intent(context, ActivitySearch.class); //ACTIVITY_NUM = 1;
+                        Intent intent2 = new Intent(context, ActivityGoals.class); //ACTIVITY_NUM = 1;
                         context.startActivity(intent2);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;

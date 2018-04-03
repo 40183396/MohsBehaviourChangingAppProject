@@ -45,7 +45,7 @@ public class ActivityGoals extends AppCompatActivity {
     private FirebaseMethods mFirebaseMethods;
 
     private static final int FRAGMENT_ADD = 1;
-    private static final int ACTIVITY_NUM = 3;
+    private static final int ACTIVITY_NUM = 1;
 
     @BindView(R.id.textviewGoalAdd)
     TextView addgoal;

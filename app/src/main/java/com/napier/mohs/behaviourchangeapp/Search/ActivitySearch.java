@@ -44,7 +44,7 @@ import butterknife.ButterKnife;
 
 public class ActivitySearch extends AppCompatActivity{
     private static final String TAG = "ActivitySearch";
-    private static final int ACTIVITY_NUM = 1;
+    //private static final int ACTIVITY_NUM = 1;
 
     private Context mContext = ActivitySearch.this;
 
@@ -65,7 +65,7 @@ public class ActivitySearch extends AppCompatActivity{
         Log.d(TAG, "onCreate: started");
 
         hideKeyboard();
-        setupBottomNavigationView();
+       //setupBottomNavigationView();
         initialiseTextListener();
     }
 
@@ -157,13 +157,13 @@ public class ActivitySearch extends AppCompatActivity{
     /**
      * BottomNavigationView setup
      */
-    private void setupBottomNavigationView(){
+   /* private void setupBottomNavigationView(){
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
-        menuItem.setChecked(true);
-    }
+       // MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
+      //  menuItem.setChecked(true);
+    }*/
 }
