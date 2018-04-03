@@ -24,7 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.napier.mohs.behaviourchangeapp.Goals.ActivityAddGoals;
+import com.napier.mohs.behaviourchangeapp.Goals.ActivityGoals;
 import com.napier.mohs.behaviourchangeapp.Models.Exercise;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterExerciseList;
@@ -158,7 +158,7 @@ public class FragmentDiary extends Fragment {
                 Log.d(TAG, "onClick: clicked goals button");
                 Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onClick: navigating to add diary");
-                Intent intent = new Intent(mContext, ActivityAddGoals.class);
+                Intent intent = new Intent(mContext, ActivityGoals.class);
                 intent.putExtra("date", date);
                 startActivity(intent);
             }

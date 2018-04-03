@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,10 +20,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-import com.napier.mohs.behaviourchangeapp.Diary.FragmentAddWeights;
+import com.napier.mohs.behaviourchangeapp.Diary.ActivityDiary;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
 
 import butterknife.ButterKnife;
@@ -30,10 +30,9 @@ import butterknife.ButterKnife;
  * Created by Mohs on 24/03/2018.
  */
 
-public class ActivityAddGoals extends AppCompatActivity {
+public class ActivityAddGoals extends AppCompatActivity{
     private static final String TAG = "ActivityAddGoals";
 
-    private Context mContext = ActivityAddGoals.this;
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -41,73 +40,29 @@ public class ActivityAddGoals extends AppCompatActivity {
     private DatabaseReference myDBRefFirebase;
     private FirebaseMethods mFirebaseMethods;
 
-    private static final int FRAGMENT_ADD = 1;
-    private static final int ACTIVITY_NUM = 3;
+
+    private Context mContext;
 
 
 
-    String dateIntent;
-    FragmentAddGoals fragment = new FragmentAddGoals();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_goals);
         ButterKnife.bind(this);
-        Log.d(TAG, "onCreate: started diary activity");
+        Log.d(TAG, "onCreateView: Starting add goals");
+
+        mContext = ActivityAddGoals.this; // keeps context constant
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
         mFirebaseMethods = new FirebaseMethods(mContext);
-        ///addEntryToDB();
         setupFirebaseAuth();
 
-        // receiving date intent from FragmentDiary
-        try {
-            Intent intent = getIntent();
-            dateIntent = intent.getStringExtra("date");
-            Log.d(TAG, "onCreate: dateIntent " + dateIntent);
-        } catch (Exception e) {
-            Log.e(TAG, "onCreate: Exception " + e.getMessage() );
-        }
 
-
-        setupBottomNavigationView();
     }
-
-    // method to take home activity to comment thread
-    public void passDateintent(String passDate){
-        Log.d(TAG, "passDateintent: date passed " + passDate);
-
-        // bundles the user account settings and photo
-
-        Bundle bundle = new Bundle();
-        bundle.putString("date", dateIntent);
-        fragment.setArguments(bundle);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        // transaction.replace(R.id.containerAddDiary, fragment); // replace home container with this fragment
-        transaction.addToBackStack("fragment_add_weightsdiary");
-        transaction.commit();
-    }
-
-
-
-    /**
-     * BottomNavigationView setup
-     */
-    private void setupBottomNavigationView(){
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
-        Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
-        menuItem.setChecked(true);
-    }
-
-
-
 
 
     //------------------------FIREBASE STUFF------------

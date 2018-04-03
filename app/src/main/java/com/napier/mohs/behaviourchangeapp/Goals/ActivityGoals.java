@@ -1,19 +1,17 @@
-package com.napier.mohs.behaviourchangeapp.Diary;
+package com.napier.mohs.behaviourchangeapp.Goals;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,10 +21,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.behaviourchangeapp.Diary.ActivityAddDiary;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
-import com.napier.mohs.behaviourchangeapp.Utils.SectionsPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,10 +33,10 @@ import butterknife.ButterKnife;
  * Created by Mohs on 24/03/2018.
  */
 
-public class ActivityAddDiary extends AppCompatActivity {
-    private static final String TAG = "ActivityAddDiary";
+public class ActivityGoals extends AppCompatActivity {
+    private static final String TAG = "ActivityGoals";
 
-    private Context mContext = ActivityAddDiary.this;
+    private Context mContext = ActivityGoals.this;
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -49,20 +47,14 @@ public class ActivityAddDiary extends AppCompatActivity {
     private static final int FRAGMENT_ADD = 1;
     private static final int ACTIVITY_NUM = 3;
 
-    // widgets
-    @BindView(R.id.viewpagerContainer)
-    ViewPager mViewPager;
-    @BindView(R.id.containerAddDiary)
-    FrameLayout mFrameLayout;
-    @BindView(R.id.relLayoutParentAddDiary)
-    RelativeLayout mRelativeLayout;
+    @BindView(R.id.textviewGoalAdd)
+    TextView addgoal;
 
-    String dateIntent;
-    FragmentAddWeights fragment = new FragmentAddWeights();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_diary);
+        setContentView(R.layout.activity_goals);
         ButterKnife.bind(this);
         Log.d(TAG, "onCreate: started diary activity");
 
@@ -73,54 +65,21 @@ public class ActivityAddDiary extends AppCompatActivity {
         ///addEntryToDB();
         setupFirebaseAuth();
 
-        // receiving date intent from FragmentDiary
-        try {
-            Intent intent = getIntent();
-            dateIntent = intent.getStringExtra("date");
-            Log.d(TAG, "onCreate: dateIntent " + dateIntent);
-        } catch (Exception e) {
-            Log.e(TAG, "onCreate: Exception " + e.getMessage() );
-        }
 
+        addgoal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ActivityAddGoals.class);
+                startActivity(intent);
+            }
+        });
 
         setupBottomNavigationView();
-        setupViewPager();
     }
 
-    // method to take home activity to comment thread
-    public void passDateintent(String passDate){
-        Log.d(TAG, "passDateintent: date passed " + passDate);
 
-        // bundles the user account settings and photo
 
-        Bundle bundle = new Bundle();
-        bundle.putString("date", dateIntent);
-        fragment.setArguments(bundle);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-       // transaction.replace(R.id.containerAddDiary, fragment); // replace home container with this fragment
-        transaction.addToBackStack("fragment_add_weightsdiary");
-        transaction.commit();
-    }
-
-    /*
-    * Responsible for adding 3 tabs: Camera, Home, Messages
-    * */
-    private void setupViewPager(){
-        passDateintent(dateIntent);
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(fragment); // index 0
-        adapter.addFragment(new FragmentAddCardio()); // index 1
-        //adapter.addFragment(new ActivityAddGoals()); // index 2
-        mViewPager.setAdapter(adapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_weights);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_cardio);
-       // tabLayout.getTabAt(2).setIcon(R.drawable.ic_goals);
-    }
 
     /**
      * BottomNavigationView setup
