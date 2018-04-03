@@ -112,11 +112,20 @@ public class FragmentDiary extends Fragment {
         timeline.setOnDateSelectedListener(new DatePickerTimeline.OnDateSelectedListener() {
             @Override
             public void onDateSelected(int year, int month, int day, int index) {
+                String dayString;
+                // check if day is less than 10 so it appears in correct format for db retrieval
+                if(day < 10){
+                    dayString = "0"+String.valueOf(day);
+                } else {
+                    dayString = String.valueOf(day);
+                }
                 // changed format so if month is less than 9 it appends a zero before it
                 if (month > 10) {
-                    date = String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + String.valueOf(day);
+                    date = String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + dayString;
+                    Log.d(TAG, "onDateSelected: " + date);
                 } else {
-                    date = String.valueOf(year) + "-0" + String.valueOf(month + 1) + "-" + String.valueOf(day);
+                    date = String.valueOf(year) + "-0" + String.valueOf(month + 1) + "-" + dayString;
+                    Log.d(TAG, "onDateSelected: " + date);
                 }
 
                 Toasty.info(mContext, date, Toast.LENGTH_SHORT).show();
