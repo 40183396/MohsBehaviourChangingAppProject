@@ -33,6 +33,7 @@
     <string name="db_name_following">following</string>
     <string name="db_name_followers">followers</string>
     <string name="db_name_exercises">exercises</string>
+    <string name="db_name_goals">goals</string>
     <string name="db_name_exercise_current_best">exercise_current_best</string>
 
     <string name="username_field">username</string>

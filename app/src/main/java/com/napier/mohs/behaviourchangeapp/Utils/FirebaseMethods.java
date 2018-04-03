@@ -27,6 +27,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.napier.mohs.behaviourchangeapp.Home.ActivityHome;
 import com.napier.mohs.behaviourchangeapp.Models.Exercise;
+import com.napier.mohs.behaviourchangeapp.Models.Goal;
 import com.napier.mohs.behaviourchangeapp.Models.User;
 import com.napier.mohs.behaviourchangeapp.Models.Photo;
 import com.napier.mohs.behaviourchangeapp.Models.UserAccountSettings;
@@ -268,6 +269,26 @@ public class FirebaseMethods {
         myDBRefFirebase.child(mContext.getString(R.string.db_name_photos)).child(photoNewKey).setValue(photo);
     }
 
+    // adds goal to firebase db
+    public void goalAddToDatabase(String name, String weight, String current) {
+        Log.d(TAG, "exerciseAddToDatabase: exercise being added to database");
+
+        // each goal has unique id
+        String goalNewKey = myDBRefFirebase.child(mContext.getString(R.string.db_name_goals)).push().getKey(); // random string
+        Goal goals = new Goal();
+        goals.setGoal_name(name);
+        goals.setGoal_weight(weight);
+        goals.setCurrent_weight(current);
+        goals.setGoal_id(goalNewKey);
+
+        //database insertion
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_goals))
+                .child(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid())
+                .child(goalNewKey)
+                .setValue(goals);
+
+    }
     // adds exercise to firebase db
     public void exerciseAddToDatabase(String date, String name, String weight, String reps) {
         Log.d(TAG, "exerciseAddToDatabase: exercise being added to database");
