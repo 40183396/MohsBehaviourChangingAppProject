@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,13 +21,21 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Diary.ActivityAddDiary;
+import com.napier.mohs.behaviourchangeapp.Models.Exercise;
+import com.napier.mohs.behaviourchangeapp.Models.Goal;
 import com.napier.mohs.behaviourchangeapp.R;
+import com.napier.mohs.behaviourchangeapp.Utils.AdapterExerciseList;
+import com.napier.mohs.behaviourchangeapp.Utils.AdapterGoalList;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
 
+import java.util.ArrayList;
+
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -47,6 +57,13 @@ public class ActivityGoals extends AppCompatActivity {
     private static final int FRAGMENT_ADD = 1;
     private static final int ACTIVITY_NUM = 1;
 
+    // database queries
+    @BindString(R.string.db_name_goals)
+    String db_goals;
+
+    // widgets
+    @BindView(R.id.listviewGoals)
+    ListView mListView;
     @BindView(R.id.textviewGoalAdd)
     TextView addgoal;
 
@@ -73,7 +90,7 @@ public class ActivityGoals extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        queryDB();
         setupBottomNavigationView();
     }
 
@@ -92,6 +109,58 @@ public class ActivityGoals extends AppCompatActivity {
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
         menuItem.setChecked(true);
+    }
+    private void queryDB() {
+
+        final ArrayList<Goal> goalArrayList = new ArrayList<Goal>();
+        final ArrayList<String> keyList = new ArrayList<>();
+        Query query = myDBRefFirebase
+                .child(db_goals) // looks in goals node
+                .child(FirebaseAuth.getInstance() // looks in current user node
+                        .getCurrentUser().getUid()); // looks in date chosen in calendar
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
+                    keyList.add(singleDataSnapshot.getKey()); // keylist is for deleting from firebase database
+                    Goal goal = new Goal();
+                    goal.setGoal_id(singleDataSnapshot.getValue(Goal.class).getGoal_id().toString());
+                    goal.setGoal_name(singleDataSnapshot.getValue(Goal.class).getGoal_name().toString());
+                    goal.setGoal_weight(singleDataSnapshot.getValue(Goal.class).getGoal_weight().toString());
+                    goal.setCurrent_weight(singleDataSnapshot.getValue(Goal.class).getCurrent_weight().toString());
+                    goalArrayList.add(goal); //adds the data to this array list
+                    Log.d(TAG, "onDataChange: looping");
+                }
+                Log.d(TAG, "onDataChange: number of loops " + goalArrayList.size());
+                final AdapterGoalList adapter = new AdapterGoalList(mContext, R.layout.listitem_goals, goalArrayList);
+                mListView.setAdapter(adapter); // arraylist is adapted to the list view
+
+                // TODO: Change this to long click and context menu
+                // deletes an item from the database and listview
+                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        goalArrayList.remove(position);
+                        adapter.notifyDataSetChanged();
+                        //new code below
+                        myDBRefFirebase
+                                .child(db_goals) // looks in exercises node
+                                .child(FirebaseAuth.getInstance()
+                                        .getCurrentUser().getUid())
+                                .child(keyList.get(position)).removeValue();
+                        keyList.remove(position);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
     }
 
 

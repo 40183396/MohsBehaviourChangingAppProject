@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/relLayout1">
             <TextView
-                android:id="@+id/textviewExercisesName"
+                android:id="@+id/textviewGoalsExercisesName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -39,7 +39,7 @@
 
 
             <com.daimajia.numberprogressbar.NumberProgressBar
-                android:id="@+id/number_progress_bar"
+                android:id="@+id/progressbarGoals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
