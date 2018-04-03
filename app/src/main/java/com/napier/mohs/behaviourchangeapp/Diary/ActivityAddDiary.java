@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.behaviourchangeapp.Goals.FragmentAddGoals;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
@@ -111,7 +112,7 @@ public class ActivityAddDiary extends AppCompatActivity {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(fragment); // index 0
         adapter.addFragment(new FragmentAddCardio()); // index 1
-        adapter.addFragment(new FragmentAddGoals()); // index 2
+        //adapter.addFragment(new FragmentAddGoals()); // index 2
         mViewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -119,7 +120,7 @@ public class ActivityAddDiary extends AppCompatActivity {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_weights);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_cardio);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_goals);
+       // tabLayout.getTabAt(2).setIcon(R.drawable.ic_goals);
     }
 
     /**

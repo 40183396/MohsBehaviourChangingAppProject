@@ -42,7 +42,7 @@
                     android:textSize="20sp"
                     android:textColor="@color/link_blue"
                     android:layout_centerVertical="true"
-                    android:id="@+id/textviewGalleryNext"/>
+                    android:id="@+id/textviewGoalAdd"/>
 
 
             </RelativeLayout>

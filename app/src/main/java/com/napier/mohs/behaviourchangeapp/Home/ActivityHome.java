@@ -83,12 +83,12 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
         setupFirebaseAuth();
 
         // TODO Remove this
-        /*DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.push().setValue(1);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        //mDatabase.push().setValue(1);
 
-        mDatabase.child("numbers").push().setValue(1);
-        mDatabase.child("numbers").push().setValue(53);
-        mDatabase.child("numbers").push().setValue(42);*/
+        //mDatabase.child("goals").push().setValue(1);
+        //mDatabase.child("numbers").push().setValue(53);
+        //mDatabase.child("numbers").push().setValue(42);
 
         // make sure to initiliases image loader first
         initImageLoader();

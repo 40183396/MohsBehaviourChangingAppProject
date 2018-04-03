@@ -1,4 +1,4 @@
-package com.napier.mohs.behaviourchangeapp.Diary;
+package com.napier.mohs.behaviourchangeapp.Goals;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.napier.mohs.behaviourchangeapp.Diary.ActivityDiary;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
 
@@ -36,10 +37,12 @@ public class FragmentAddGoals extends Fragment{
 
     private Context mContext;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_goals, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_goals, container, false);
         ButterKnife.bind(this,view);
         Log.d(TAG, "onCreateView: Starting add diary fragment");
 

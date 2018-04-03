@@ -1,4 +1,4 @@
-package com.napier.mohs.behaviourchangeapp.Diary;
+package com.napier.mohs.behaviourchangeapp.Goals;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.behaviourchangeapp.Diary.FragmentAddWeights;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
@@ -46,7 +47,7 @@ public class ActivityAddGoals extends AppCompatActivity {
 
 
     String dateIntent;
-    FragmentAddWeights fragment = new FragmentAddWeights();
+    FragmentAddGoals fragment = new FragmentAddGoals();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

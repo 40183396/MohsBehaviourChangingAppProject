@@ -34,7 +34,7 @@
         <activity android:name="com.napier.mohs.behaviourchangeapp.Login.ActivityRegister" />
         <activity android:name="com.napier.mohs.behaviourchangeapp.Share.ActivityNext" />
         <activity android:name="com.napier.mohs.behaviourchangeapp.Diary.ActivityAddDiary" />
-        <activity android:name="com.napier.mohs.behaviourchangeapp.Diary.ActivityAddGoals" />
+        <activity android:name="com.napier.mohs.behaviourchangeapp.Goals.ActivityAddGoals" />
     </application>
 
 </manifest>
