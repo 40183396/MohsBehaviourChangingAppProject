@@ -126,9 +126,10 @@ public class ActivityEditGoals extends AppCompatActivity {
         numberWeight = Double.parseDouble(goalWeight.getText().toString());
 
         // format these to two decimal places
-        // set double sto string TODO change this to doubles or longs for firebase
+        // set double to string TODO change this to doubles or longs for firebase
         String weight = String.valueOf(REAL_FORMATTER.format(numberWeight));
 
+        // TODO change these
         String name = "Test Bicep Curl";
         String current = "2";
 

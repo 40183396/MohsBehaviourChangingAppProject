@@ -327,6 +327,16 @@ public class FirebaseMethods {
                 .child(exerciseNewKey)
                 .setValue(exercise);
 
+        // adding current best to database
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_exercises))
+                .child(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid())
+                .child("current_best")
+                .child(name)
+                .child(exerciseNewKey)
+                //.child("weight")
+                .setValue(exercise);
+
     }
 
     // updates exercise to firebase db
@@ -350,18 +360,23 @@ public class FirebaseMethods {
     }
 
     // checks highest record so far for exercise
-    public void exerciseCurrentBest(String name, String weight){
+    public void exerciseCurrentBest(String name){
+
         Query query = myDBRefFirebase.child(mContext.getString(R.string.db_name_exercises))
                 .child(FirebaseAuth.getInstance()
                         .getCurrentUser().getUid())
+                .child("current_best")
                 .child(name)
-                .orderByValue().limitToLast(1);
+                .orderByChild("exercise_weight");
+
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot){
                 for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
-                    String Key = childSnapshot.getKey();
-                    Toasty.normal(mContext,Key,Toast.LENGTH_LONG).show();
+                    String Key = childSnapshot.child("exercise_weight").getValue().toString();
+
+                   // Toasty.normal(mContext,"Current Best " + Key,Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "Current Best " + Key);
                 }
             }
             @Override

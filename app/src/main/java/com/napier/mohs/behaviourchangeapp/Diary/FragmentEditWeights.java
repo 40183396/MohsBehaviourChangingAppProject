@@ -69,11 +69,10 @@ public class FragmentEditWeights extends Fragment {
         mFirebaseMethods = new FirebaseMethods(mContext);
 
 
-
-        ///addEntryToDB();
         setupFirebaseAuth();
         getFromBundle();
-        // starts with fields blank
+
+        // starts with fields of previous settings
         diaryEditWeight.setText(weightBundle);
         diaryEditReps.setText(repsBundle);
         numberWeight = Double.parseDouble(weightBundle);

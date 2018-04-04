@@ -49,8 +49,9 @@ public class ActivityEditDiary extends AppCompatActivity {
     @BindView(R.id.relLayoutParentEditDiary)
     RelativeLayout mRelativeLayout;
 
-    String dateIntent;
+
     FragmentEditWeights fragment = new FragmentEditWeights();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +63,7 @@ public class ActivityEditDiary extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
         mFirebaseMethods = new FirebaseMethods(mContext);
-        ///addEntryToDB();
+
         setupFirebaseAuth();
 
 
@@ -70,7 +71,7 @@ public class ActivityEditDiary extends AppCompatActivity {
         setupViewPager();
     }
 
-    // method to recieve bundle from diary
+    // method to receive bundle from diary
     public void retrieveBundle(){
 
         fragment.setArguments(getIntent().getExtras());

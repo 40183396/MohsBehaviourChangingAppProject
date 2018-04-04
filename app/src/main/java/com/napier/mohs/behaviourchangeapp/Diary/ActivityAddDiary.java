@@ -38,6 +38,7 @@ public class ActivityAddDiary extends AppCompatActivity {
     private static final String TAG = "ActivityAddDiary";
 
     private Context mContext = ActivityAddDiary.this;
+
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -56,6 +57,7 @@ public class ActivityAddDiary extends AppCompatActivity {
 
     String dateIntent;
     FragmentAddWeights fragment = new FragmentAddWeights();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

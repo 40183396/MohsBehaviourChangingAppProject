@@ -180,6 +180,7 @@ public class FragmentAddWeights extends Fragment{
             Log.d(TAG, "onClick: navigating back to previous activity");
 
             mFirebaseMethods.exerciseAddToDatabase(date, name, weight, reps);
+            mFirebaseMethods.exerciseCurrentBest(name);
             diaryWeight.getText().clear();
             diaryReps.getText().clear();
             Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();

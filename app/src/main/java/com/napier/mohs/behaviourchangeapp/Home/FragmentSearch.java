@@ -1,16 +1,16 @@
-package com.napier.mohs.behaviourchangeapp.Search;
+package com.napier.mohs.behaviourchangeapp.Home;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -22,11 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Models.User;
 import com.napier.mohs.behaviourchangeapp.Profile.ActivityProfile;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterUserList;
 
 import java.util.ArrayList;
@@ -36,37 +34,37 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 /**
  * Created by Mohs on 15/03/2018.
- *
- * Activity that searches for other users
  */
 
-public class ActivitySearch extends AppCompatActivity{
-    private static final String TAG = "ActivitySearch";
-    //private static final int ACTIVITY_NUM = 1;
+public class FragmentSearch extends Fragment {
+    private static final String TAG = "FragmentSearch";
 
-    private Context mContext = ActivitySearch.this;
-
-    @BindView(R.id.edittextSearchSearch) EditText mSearch;
-    @BindView(R.id.listviewSearch) ListView mListView;
+    @BindView(R.id.edittextSearch)
+    EditText mSearch;
+    @BindView(R.id.listviewSearch)
+    ListView mListView;
 
     private List<User> mUsersList;
+    private Context mContext;
 
     // global adapter
     private AdapterUserList mUserListAdapter;
 
+    @Nullable
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-        ButterKnife.bind(this);
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_homesearch, container, false);
         Log.d(TAG, "onCreate: started");
+        ButterKnife.bind(this, view);
+        mContext = getActivity(); // keeps context constant
 
-        hideKeyboard();
-       //setupBottomNavigationView();
         initialiseTextListener();
+        hideKeyboard();
+        return view;
     }
 
     private void initialiseTextListener(){
@@ -101,7 +99,7 @@ public class ActivitySearch extends AppCompatActivity{
         } else {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
             Query query = databaseReference.child(getString(R.string.db_name_users))
-                            .orderByChild(getString(R.string.username_field)).equalTo(search);
+                    .orderByChild(getString(R.string.username_field)).equalTo(search);
             // listener for search query
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -124,9 +122,9 @@ public class ActivitySearch extends AppCompatActivity{
     }
 
     private void hideKeyboard(){
-        if(getCurrentFocus() != null){
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0); // hides keyboard after user has finished typing
+        if(getActivity().getCurrentFocus() != null){
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0); // hides keyboard after user has finished typing
             Log.d(TAG, "hideKeyboard: keyboard hidden");
         }
     }
@@ -135,7 +133,7 @@ public class ActivitySearch extends AppCompatActivity{
         Log.d(TAG, "usersListUpdate: the userlist is being updated");
 
         // sets adapter with users list item layout and user list data
-        mUserListAdapter = new AdapterUserList(ActivitySearch.this, R.layout.listitem_users, mUsersList);
+        mUserListAdapter = new AdapterUserList(mContext, R.layout.listitem_users, mUsersList);
 
         // sets adapter on list view
         mListView.setAdapter(mUserListAdapter);
@@ -145,7 +143,7 @@ public class ActivitySearch extends AppCompatActivity{
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: user selected " + mUsersList.get(position).toString());
                 // navigating to the users profile
-                Intent intent = new Intent(ActivitySearch.this, ActivityProfile.class);
+                Intent intent = new Intent(mContext, ActivityProfile.class);
                 // need extra to differenitate between viewing own profile and other users profiles
                 intent.putExtra(getString(R.string.calling_activity), getString(R.string.search_activity)); // this is where we put activity name we are coming from, here it is search activity
                 intent.putExtra(getString(R.string.user_extra), mUsersList.get(position)); // make sure User class is parcelable
@@ -153,17 +151,4 @@ public class ActivitySearch extends AppCompatActivity{
             }
         });
     }
-
-    /**
-     * BottomNavigationView setup
-     */
-   /* private void setupBottomNavigationView(){
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
-        Menu menu = bottomNavigationViewEx.getMenu();
-       // MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
-      //  menuItem.setChecked(true);
-    }*/
 }

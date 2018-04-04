@@ -55,9 +55,7 @@ public class ActivityGoals extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
 
-    private static final int FRAGMENT_ADD = 1;
     private static final int ACTIVITY_NUM = 1;
 
     // database queries
@@ -81,8 +79,6 @@ public class ActivityGoals extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
-        mFirebaseMethods = new FirebaseMethods(mContext);
-        ///addEntryToDB();
         setupFirebaseAuth();
 
 
@@ -147,6 +143,8 @@ public class ActivityGoals extends AppCompatActivity {
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
         menuItem.setChecked(true);
     }
+
+    // queries database to see what is in goals node currently
     private void queryDB() {
 
         final ArrayList<Goal> goalArrayList = new ArrayList<Goal>();

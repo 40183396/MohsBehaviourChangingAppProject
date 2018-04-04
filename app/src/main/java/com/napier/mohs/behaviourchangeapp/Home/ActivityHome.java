@@ -35,7 +35,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ActivityHome extends AppCompatActivity implements AdapterMainFeedList.OnItemsLoadMoreListener{
+public class ActivityHome extends AppCompatActivity implements AdapterMainFeedList.OnItemsLoadMoreListener {
 
 
     // interface methods
@@ -43,10 +43,10 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     public void onItemsLoadMore() {
         Log.d(TAG, "onItemsLoadMore: more photos being displayed");
         // FragmentHome is set up through view pager there is a different way to assign tag
-        FragmentHome homeFragment = (FragmentHome)getSupportFragmentManager()
+        FragmentHome homeFragment = (FragmentHome) getSupportFragmentManager()
                 .findFragmentByTag("android:switcher:" + R.id.viewpagerContainer
                         + ":" + mViewPager.getCurrentItem()); // references its tag
-        if(homeFragment != null){
+        if (homeFragment != null) {
             homeFragment.displayMorePhotos(); // fragment will display more photos
         }
     }
@@ -64,14 +64,20 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     private StorageReference mStorageRefFirebase;
 
     // widgets
-    @BindView(R.id.viewpagerContainer) ViewPager mViewPager;
-    @BindView(R.id.container) FrameLayout mFrameLayout;
-    @BindView(R.id.relLayoutParent) RelativeLayout mRelativeLayout;
+    @BindView(R.id.viewpagerContainer)
+    ViewPager mViewPager;
+    @BindView(R.id.container)
+    FrameLayout mFrameLayout;
+    @BindView(R.id.relLayoutParent)
+    RelativeLayout mRelativeLayout;
 
     // Strings
-    @BindString(R.string.home_activity) String home_activity;
-    @BindString(R.string.photo) String photo_extra;
-    @BindString(R.string.fragment_viewcomments) String viewcomments_fragment;
+    @BindString(R.string.home_activity)
+    String home_activity;
+    @BindString(R.string.photo)
+    String photo_extra;
+    @BindString(R.string.fragment_viewcomments)
+    String viewcomments_fragment;
     private String a = "activities";
 
     @Override
@@ -90,19 +96,19 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
         //mDatabase.child("numbers").push().setValue(53);
         //mDatabase.child("numbers").push().setValue(42);
 
-        // make sure to initiliases image loader first
+        // make sure initiliases image loader first
         initImageLoader();
         setupBottomNavigationView();
         setupViewPager();
     }
 
-    public void layoutHide(){
+    public void layoutHide() {
         Log.d(TAG, "layoutHide: hiding relative layout in activity home");
         mRelativeLayout.setVisibility(View.GONE);
         mFrameLayout.setVisibility(View.VISIBLE); // FrameLayout is where comments fragments is going to be inserted into
     }
 
-    public void layoutShow(){
+    public void layoutShow() {
         Log.d(TAG, "layoutShow: hiding frame layout");
         mRelativeLayout.setVisibility(View.VISIBLE);
         mFrameLayout.setVisibility(View.GONE); // FrameLayout is where comments fragments is going to be inserted into
@@ -112,13 +118,13 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(mFrameLayout.getVisibility() == View.VISIBLE){
+        if (mFrameLayout.getVisibility() == View.VISIBLE) {
             layoutShow();
         }
     }
 
     // method to take home activity to comment thread
-    public void onSelectedCommentThread(Photo photo, String callingActivity){
+    public void onSelectedCommentThread(Photo photo, String callingActivity) {
         Log.d(TAG, "onSelectedCommentThread: comment thread was selected");
 
         // bundles the user account settings and photo
@@ -135,7 +141,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     }
 
     // initialises image loader here to be able to use in all other activities
-    private void initImageLoader(){
+    private void initImageLoader() {
         UniversalImageLoader universalImageLoader = new UniversalImageLoader(mContext);
         ImageLoader.getInstance().init(universalImageLoader.getConfig()); // retrieves configuration
     }
@@ -144,51 +150,47 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     /*
     * Responsible for adding 3 tabs: Camera, Home, Messages
     * */
-    private void setupViewPager(){
+    private void setupViewPager() {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FragmentCamera()); // index 0
         adapter.addFragment(new FragmentHome()); // index 1
-        adapter.addFragment(new FragmentMessages()); // index 2
+        adapter.addFragment(new FragmentSearch()); // index 2
         mViewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_instagram);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_arrow);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_house);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_search);
     }
 
     /**
      * BottomNavigationView setup
      */
-    private void setupBottomNavigationView(){
+    private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
 
 
-
-
-
-
     //------------------------FIREBASE STUFF------------
     // Method to check if a user is signed in app
-    private void currentUserCheck(FirebaseUser user){
+    private void currentUserCheck(FirebaseUser user) {
         Log.d(TAG, "currentUserCheck:  check if a user has signed in");
 
-        if(user == null){
+        if (user == null) {
             Intent intent = new Intent(mContext, ActivityLogin.class);
             startActivity(intent);
         }
     }
 
-    private void setupFirebaseAuth(){
+    private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -199,7 +201,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
                 // checks for user signed in
                 currentUserCheck(user);
 
-                if(user != null){
+                if (user != null) {
                     Log.d(TAG, "onAuthStateChanged: user signed in " + user);
                 } else {
                     Log.d(TAG, "onAuthStateChanged: user signed out");
@@ -220,7 +222,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     @Override
     public void onStop() {
         super.onStop();
-        if(mAuthListener != null){
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }

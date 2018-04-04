@@ -15,7 +15,6 @@ import com.napier.mohs.behaviourchangeapp.Goals.ActivityGoals;
 import com.napier.mohs.behaviourchangeapp.Home.ActivityHome;
 import com.napier.mohs.behaviourchangeapp.Profile.ActivityProfile;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Search.ActivitySearch;
 import com.napier.mohs.behaviourchangeapp.Share.ActivityShare;
 
 /**

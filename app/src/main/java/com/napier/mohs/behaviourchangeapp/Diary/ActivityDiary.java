@@ -26,6 +26,7 @@ public class ActivityDiary extends AppCompatActivity{
     private static final int ACTIVITY_NUM = 3;
 
     private Context mContext = ActivityDiary.this;
+
     @BindView(R.id.viewpagerContainer)
     ViewPager mViewPager;
 
@@ -41,26 +42,12 @@ public class ActivityDiary extends AppCompatActivity{
         setupBottomNavigationView();
     }
 
-    // returns the number of the current tab
-    // 0 is gallery fragment
-    // 1 is photo fragment
-    public int getTabCurrentNumber(){
-        return mViewPager.getCurrentItem();
-    }
-
-    // setting up tabs in diary activity
+    // setting up fragment in diary activity
     private void viewPagerSetup(){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FragmentDiary());
 
         mViewPager.setAdapter(adapter);
-
-//        TabLayout tabLayout = (TabLayout) findViewById(R.id.bottomTabs);
-//        tabLayout.setupWithViewPager(mViewPager);
-//
-//        // set text for each of tabs
-//        tabLayout.getTabAt(0).setText(getString(R.string.gallery));
-//        tabLayout.getTabAt(1).setText(getString(R.string.photo));
     }
 
 

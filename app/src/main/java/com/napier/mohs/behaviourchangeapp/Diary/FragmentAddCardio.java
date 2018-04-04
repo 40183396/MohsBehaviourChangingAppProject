@@ -20,7 +20,7 @@ import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
 import butterknife.ButterKnife;
 
 /**
- * Created by Mohs on 24/03/2018.
+ * This was to originally add in cardio but is not used
  */
 
 public class FragmentAddCardio extends Fragment{
