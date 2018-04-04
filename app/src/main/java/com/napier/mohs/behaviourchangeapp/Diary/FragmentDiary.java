@@ -207,7 +207,9 @@ public class FragmentDiary extends Fragment {
                 mListView.setAdapter(adapter); // arraylist is adapted to the list view
                 registerForContextMenu(mListView);
 
-                if(delete == true){exerciseArrayList.remove(position);
+                // if delete is true tthe item from list is deleted
+                if(delete == true){
+                    exerciseArrayList.remove(position);
                     adapter.notifyDataSetChanged();
                     //new code below
                     myDBRefFirebase
@@ -220,37 +222,18 @@ public class FragmentDiary extends Fragment {
 
                 }
 
-                // Long pressing list item brings up dialog to delete item
-               /* mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
-                        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mContext);
+                // if edit is true
+                if(edit == true){
+                    String name = exerciseArrayList.get(position).getExercise_name();
+                    String weight = exerciseArrayList.get(position).getExercise_weight();
+                    String reps = exerciseArrayList.get(position).getExercise_reps();
+                    Log.d(TAG, "onDataChange: " + name);
+                    Log.d(TAG, "onDataChange: " + weight);
+                    Log.d(TAG, "onDataChange: " + reps);
 
-                        dialogBuilder.setTitle("Delete Exercise?");
-                        dialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                exerciseArrayList.remove(position);
-                                adapter.notifyDataSetChanged();
-                                //new code below
-                                myDBRefFirebase
-                                        .child(db_exercises) // looks in exercises node
-                                        .child(FirebaseAuth.getInstance()
-                                                .getCurrentUser().getUid()).child(date)
-                                        .child(keyList.get(position)).removeValue();
-                                keyList.remove(position);
-                            }
-                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
+                    edit = false;
+                }
 
-                        dialogBuilder.show();
-                        return false;
-                    }
-                });*/
 
             }
 
@@ -264,7 +247,11 @@ public class FragmentDiary extends Fragment {
         });
 
     }
-boolean delete, edit;
+
+    // check to see if the edit or delete buttons have been clicked, boolean true means it has
+    boolean delete, edit;
+    int position; // position in arraylist that has been clicked to bring up context menu
+
     @Override
     public void onCreateContextMenu(android.view.ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
@@ -272,7 +259,7 @@ boolean delete, edit;
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.edit_delete_menu, menu);
     }
-int position;
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -280,7 +267,8 @@ int position;
         switch (item.getItemId()) {
             case R.id.edit:
                 Log.d(TAG, "onContextItemSelected: edit pressed");
-
+                edit = true;
+                queryDB();
                 return true;
 
             case R.id.delete:

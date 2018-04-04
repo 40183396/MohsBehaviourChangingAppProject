@@ -50,7 +50,7 @@ public class AdapterGoalList extends ArrayAdapter<Goal>{
         TextView name;
 
         @BindView(R.id.progressbarGoals)
-        NumberProgressBar progress;
+        NumberProgressBar progressbar;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view); // Butterknife For ViewHolder Pattern
@@ -78,6 +78,13 @@ public class AdapterGoalList extends ArrayAdapter<Goal>{
         viewHolder.goal.setText(getItem(position).getGoal_weight() + " kgs");
         viewHolder.current.setText(getItem(position).getCurrent_weight() + " kg");
 
+
+        // to work out math for progressbar
+        double goal =  Double.parseDouble(getItem(position).getGoal_weight());
+        double current =  Double.parseDouble(getItem(position).getCurrent_weight());
+        double percentage = (current/goal) * 100;
+        int progress = (int) percentage;
+        viewHolder.progressbar.setProgress(progress);
 
 
         return convertView;

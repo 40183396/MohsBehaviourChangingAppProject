@@ -313,15 +313,12 @@ public class FirebaseMethods {
 
     // checks highest record so far for exercise
     public void exerciseCurrentBest(String name, String weight){
-        DatabaseReference mDatabasePlayers = FirebaseDatabase.getInstance().getReference().child("Players");
-        myDBRefFirebase.child(mContext.getString(R.string.db_name_exercise_current_best))
+        Query query = myDBRefFirebase.child(mContext.getString(R.string.db_name_exercises))
                 .child(FirebaseAuth.getInstance()
                         .getCurrentUser().getUid())
                 .child(name)
-                .setValue(weight);
-
-        Query mDatabaseHighestPlayer = mDatabasePlayers.child("Scores").orderByChild("rank").limitToLast(1);
-        mDatabaseHighestPlayer.addValueEventListener(new ValueEventListener() {
+                .orderByValue().limitToLast(1);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot){
                 for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
