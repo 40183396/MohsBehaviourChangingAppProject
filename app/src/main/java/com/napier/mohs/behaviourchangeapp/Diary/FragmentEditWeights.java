@@ -51,7 +51,8 @@ public class FragmentEditWeights extends Fragment {
 
     // formats number two decimal places
     private static DecimalFormat REAL_FORMATTER = new DecimalFormat("0.##");
-    private double numberWeight, numberReps;
+    private double numberWeight;
+    private int numberReps;
 
     @Nullable
     @Override
@@ -76,7 +77,7 @@ public class FragmentEditWeights extends Fragment {
         diaryEditWeight.setText(weightBundle);
         diaryEditReps.setText(repsBundle);
         numberWeight = Double.parseDouble(weightBundle);
-        numberReps = Double.parseDouble(repsBundle);
+        numberReps = Integer.parseInt(repsBundle);
 
         //Back pressed Logic for fragment
         view.setFocusableInTouchMode(true);
@@ -154,7 +155,7 @@ public class FragmentEditWeights extends Fragment {
     @OnClick(R.id.btnIncreaseRepsEditDiary)
     public void increaseReps(){
         numberReps += 1;
-        String stringReps = Double.toString(numberReps);
+        String stringReps = String.valueOf(numberReps);
         diaryEditReps.setText(stringReps);
     }
 
@@ -164,7 +165,7 @@ public class FragmentEditWeights extends Fragment {
         if(numberReps<0){
             numberReps=0;
         }
-        String stringReps = Double.toString(numberReps);
+        String stringReps = String.valueOf(numberReps);
         diaryEditReps.setText(stringReps);
     }
 
@@ -172,7 +173,7 @@ public class FragmentEditWeights extends Fragment {
     @OnClick(R.id.btnSaveEditDiary)
     public void addEntryToDB() {
         numberWeight = Double.parseDouble(diaryEditWeight.getText().toString());
-        numberReps = Double.parseDouble(diaryEditReps.getText().toString());
+        numberReps = Integer.parseInt(diaryEditReps.getText().toString());
 
         // format these to two decimal places
         // set double sto string TODO change this to doubles or longs for firebase

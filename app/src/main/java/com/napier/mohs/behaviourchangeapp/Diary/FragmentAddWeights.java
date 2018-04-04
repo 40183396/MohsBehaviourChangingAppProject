@@ -118,7 +118,9 @@ public class FragmentAddWeights extends Fragment{
     // formats number two decimal places
     private static DecimalFormat REAL_FORMATTER = new DecimalFormat("0.##");
 
-    private double numberWeight, numberReps;
+    private double numberWeight;
+    private int numberReps;
+
     @BindView(R.id.edittextAddDiaryReps) EditText diaryReps;
     @BindView(R.id.edittextAddDiaryWeight) EditText diaryWeight;
 
@@ -142,7 +144,7 @@ public class FragmentAddWeights extends Fragment{
     @OnClick(R.id.btnIncreaseRepsAddDiary)
     public void increaseReps(){
         numberReps += 1;
-        String stringReps = Double.toString(numberReps);
+        String stringReps = String.valueOf(numberReps);
         diaryReps.setText(stringReps);
     }
 
@@ -152,7 +154,7 @@ public class FragmentAddWeights extends Fragment{
         if(numberReps<0){
             numberReps=0;
         }
-        String stringReps = Double.toString(numberReps);
+        String stringReps = String.valueOf(numberReps);
         diaryReps.setText(stringReps);
     }
 
@@ -160,7 +162,7 @@ public class FragmentAddWeights extends Fragment{
     @OnClick(R.id.btnSaveAddDiary)
     public void addEntryToDB() {
         numberWeight = Double.parseDouble(diaryWeight.getText().toString());
-        numberReps = Double.parseDouble(diaryReps.getText().toString());
+        numberReps = Integer.parseInt(diaryReps.getText().toString());
 
         // format these to two decimal places
         // set double sto string TODO change this to doubles or longs for firebase
