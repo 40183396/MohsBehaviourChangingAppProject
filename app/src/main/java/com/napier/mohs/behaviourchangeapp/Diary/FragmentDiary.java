@@ -224,18 +224,25 @@ public class FragmentDiary extends Fragment {
 
                 // if edit is true
                 if(edit == true){
+                    String exercise_id  =exerciseArrayList.get(position).getExercise_id();
                     String name = exerciseArrayList.get(position).getExercise_name();
                     String weight = exerciseArrayList.get(position).getExercise_weight();
                     String reps = exerciseArrayList.get(position).getExercise_reps();
-                    Log.d(TAG, "onDataChange: " + name);
+                    Log.d(TAG, "onDataChange: " + exercise_id);
                     Log.d(TAG, "onDataChange: " + weight);
                     Log.d(TAG, "onDataChange: " + reps);
+
                     // When edit is clicked edit diary is opened
                     Log.d(TAG, "onClick: clicked edit diary button");
-                    Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onClick: navigating to add diary");
+
                     Intent intent = new Intent(mContext, ActivityEditDiary.class);
-                    intent.putExtra("date", date);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("exercise_id", exercise_id);
+                    bundle.putString("date", date);
+                    bundle.putString( "name",name);
+                    bundle.putString("weight",weight);
+                    bundle.putString("reps",reps);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                     edit = false;
                 }

@@ -66,31 +66,18 @@ public class ActivityEditDiary extends AppCompatActivity {
         ///addEntryToDB();
         setupFirebaseAuth();
 
-        // receiving date intent from FragmentDiary
-        try {
-            Intent intent = getIntent();
-            dateIntent = intent.getStringExtra("date");
-            Log.d(TAG, "onCreate: dateIntent " + dateIntent);
-        } catch (Exception e) {
-            Log.e(TAG, "onCreate: Exception " + e.getMessage() );
-        }
+
 
         setupViewPager();
     }
 
-    // method to take home activity to comment thread
-    public void passDateintent(String passDate){
-        Log.d(TAG, "passDateintent: date passed " + passDate);
+    // method to recieve bundle from diary
+    public void retrieveBundle(){
 
-        // bundles the user account settings and photo
-
-        Bundle bundle = new Bundle();
-        bundle.putString("date", dateIntent);
-        fragment.setArguments(bundle);
+        fragment.setArguments(getIntent().getExtras());
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        // transaction.replace(R.id.containerAddDiary, fragment); // replace home container with this fragment
-        transaction.addToBackStack("fragment_add_weightsdiary");
+        transaction.addToBackStack("fragment_edit_weightsdiary");
         transaction.commit();
     }
 
@@ -98,7 +85,7 @@ public class ActivityEditDiary extends AppCompatActivity {
     * Responsible for displaying edit weights fragment
     * */
     private void setupViewPager(){
-        passDateintent(dateIntent);
+        retrieveBundle();
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(fragment); // index 0
         mViewPager.setAdapter(adapter);

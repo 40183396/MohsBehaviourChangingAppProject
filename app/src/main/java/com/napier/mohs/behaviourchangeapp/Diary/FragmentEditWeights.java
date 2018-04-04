@@ -49,7 +49,6 @@ public class FragmentEditWeights extends Fragment {
 
     private Context mContext;
 
-    String dateIntent;
 
     @Nullable
     @Override
@@ -65,13 +64,14 @@ public class FragmentEditWeights extends Fragment {
         myDBRefFirebase = mFirebaseDatabase.getReference();
         mFirebaseMethods = new FirebaseMethods(mContext);
 
-        // starts with fields blank
-        diaryEditWeight.getText().clear();
-        diaryEditReps.getText().clear();
+
 
         ///addEntryToDB();
         setupFirebaseAuth();
-        getFromBundleDate();
+        getFromBundle();
+        // starts with fields blank
+        diaryEditWeight.setText(weightBundle);
+        diaryEditReps.setText(repsBundle);
 
         //Back pressed Logic for fragment
         view.setFocusableInTouchMode(true);
@@ -95,22 +95,27 @@ public class FragmentEditWeights extends Fragment {
         return view;
     }
 
+    String dateBundle, idBundle, nameBundle, weightBundle, repsBundle;
+
     // TODO Replace hard coded strings in bundle
     // gets from the bundle the date from the diary activity
-    private String getFromBundleDate() {
-        Log.d(TAG, "getFromBundleDate: " + getArguments());
+    private String getFromBundle() {
+        Log.d(TAG, "getFromBundle: " + getArguments());
 
         Bundle bundle = this.getArguments();
         // if bundle is not null we actually have received something
         if (bundle != null) {
-            Log.d(TAG, "getFromBundleCallingActivity: recieved from calling activity " + bundle.getString("date"));
+            Log.d(TAG, "getFromBundleCallingActivity: recieved from calling activity " + bundle.getString("exercise_id"));
             Bundle b = getActivity().getIntent().getExtras();
-            dateIntent = b.getString("date");
-            Log.d(TAG, "getFromBundleDate: date = " + dateIntent);
+            dateBundle = b.getString("date");
+            idBundle = b.getString("exercise_id");
+            nameBundle = b.getString("name");
+            weightBundle = b.getString("weight");
+            repsBundle = b.getString("reps");
             return bundle.getString("dateIntent");
         } else {
             Log.d(TAG, "getActivityNumberFromBundle: No Calling Activity recieved");
-            Toasty.warning(mContext, "No Date Recieved", Toast.LENGTH_SHORT).show();
+            Toasty.warning(mContext, "No Bundle Recieved", Toast.LENGTH_SHORT).show();
             return null;
         }
 
@@ -167,18 +172,18 @@ public class FragmentEditWeights extends Fragment {
         // set double sto string TODO change this to doubles or longs for firebase
         String weight = String.valueOf(REAL_FORMATTER.format(numberWeight));
         String reps = String.valueOf(REAL_FORMATTER.format(numberReps));
-        String date = dateIntent;
+        String date = dateBundle;
+        String name = nameBundle;
+        String exercise_id = idBundle;
 
-        String name = "Test Bicep Curl";
-
-        Log.d(TAG, "addEntryToDB: Attempting add Entry " + weight + ", " + ", " + reps + ", " + date);
+        Log.d(TAG, "addEntryToDB: Attempting edit Entry " + weight + ", " + ", " + reps + ", " + date);
         if(TextUtils.isEmpty(weight) || TextUtils.isEmpty(reps)){
             Toasty.error(mContext, "Please Fill Out All Fields", Toast.LENGTH_SHORT).show();
         } else {
 
             Log.d(TAG, "onClick: navigating back to previous activity");
 
-            mFirebaseMethods.exerciseAddToDatabase(date, name, weight, reps);
+            mFirebaseMethods.exerciseUpdateDatabase(exercise_id, date, name, weight, reps);
             diaryEditWeight.getText().clear();
             diaryEditReps.getText().clear();
             Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();

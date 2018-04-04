@@ -44,9 +44,7 @@ public class ActivityAddDiary extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
 
-    private static final int FRAGMENT_ADD = 1;
     private static final int ACTIVITY_NUM = 3;
 
     // widgets
@@ -69,8 +67,7 @@ public class ActivityAddDiary extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
-        mFirebaseMethods = new FirebaseMethods(mContext);
-        ///addEntryToDB();
+
         setupFirebaseAuth();
 
         // receiving date intent from FragmentDiary
@@ -87,31 +84,28 @@ public class ActivityAddDiary extends AppCompatActivity {
         setupViewPager();
     }
 
-    // method to take home activity to comment thread
+    // method to pass date to add to diary fragments
     public void passDateintent(String passDate){
         Log.d(TAG, "passDateintent: date passed " + passDate);
 
-        // bundles the user account settings and photo
-
+        // bundles the date
         Bundle bundle = new Bundle();
         bundle.putString("date", dateIntent);
         fragment.setArguments(bundle);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-       // transaction.replace(R.id.containerAddDiary, fragment); // replace home container with this fragment
         transaction.addToBackStack("fragment_add_weightsdiary");
         transaction.commit();
     }
 
     /*
-    * Responsible for adding 3 tabs: Camera, Home, Messages
+    * Responsible for tabs weights and cardio
     * */
     private void setupViewPager(){
         passDateintent(dateIntent);
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(fragment); // index 0
         adapter.addFragment(new FragmentAddCardio()); // index 1
-        //adapter.addFragment(new ActivityAddGoals()); // index 2
         mViewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -119,7 +113,6 @@ public class ActivityAddDiary extends AppCompatActivity {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_weights);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_cardio);
-       // tabLayout.getTabAt(2).setIcon(R.drawable.ic_goals);
     }
 
     /**
