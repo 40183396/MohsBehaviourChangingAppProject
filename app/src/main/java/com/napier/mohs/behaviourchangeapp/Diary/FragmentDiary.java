@@ -230,7 +230,13 @@ public class FragmentDiary extends Fragment {
                     Log.d(TAG, "onDataChange: " + name);
                     Log.d(TAG, "onDataChange: " + weight);
                     Log.d(TAG, "onDataChange: " + reps);
-
+                    // When edit is clicked edit diary is opened
+                    Log.d(TAG, "onClick: clicked edit diary button");
+                    Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onClick: navigating to add diary");
+                    Intent intent = new Intent(mContext, ActivityEditDiary.class);
+                    intent.putExtra("date", date);
+                    startActivity(intent);
                     edit = false;
                 }
 

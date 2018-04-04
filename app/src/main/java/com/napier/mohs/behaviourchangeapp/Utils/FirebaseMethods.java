@@ -311,6 +311,26 @@ public class FirebaseMethods {
 
     }
 
+    // updates exercise to firebase db
+    public void exerciseUpdateDatabase(String exercise_id, String date, String name, String weight, String reps) {
+        Log.d(TAG, "exerciseAddToDatabase: exercise being added to database");
+
+        Exercise exercise = new Exercise();
+        exercise.setExercise_name(name);
+        exercise.setExercise_weight(weight);
+        exercise.setExercise_reps(reps);
+        exercise.setExercise_id(exercise_id);
+
+        //database insertion
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_exercises))
+                .child(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid())
+                .child(date)
+                .child(exercise_id)
+                .setValue(exercise);
+
+    }
+
     // checks highest record so far for exercise
     public void exerciseCurrentBest(String name, String weight){
         Query query = myDBRefFirebase.child(mContext.getString(R.string.db_name_exercises))
