@@ -205,10 +205,23 @@ public class FragmentDiary extends Fragment {
                 Log.d(TAG, "onDataChange: number of loops " + exerciseArrayList.size());
                 final AdapterExerciseList adapter = new AdapterExerciseList(mContext, R.layout.listitem_exercises, exerciseArrayList);
                 mListView.setAdapter(adapter); // arraylist is adapted to the list view
+                registerForContextMenu(mListView);
 
+                if(delete == true){exerciseArrayList.remove(position);
+                    adapter.notifyDataSetChanged();
+                    //new code below
+                    myDBRefFirebase
+                            .child(db_exercises) // looks in exercises node
+                            .child(FirebaseAuth.getInstance()
+                                    .getCurrentUser().getUid()).child(date)
+                            .child(keyList.get(position)).removeValue();
+                    keyList.remove(position);
+                    delete = false;
+
+                }
 
                 // Long pressing list item brings up dialog to delete item
-                mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+               /* mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
                         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mContext);
@@ -237,7 +250,7 @@ public class FragmentDiary extends Fragment {
                         dialogBuilder.show();
                         return false;
                     }
-                });
+                });*/
 
             }
 
@@ -251,8 +264,35 @@ public class FragmentDiary extends Fragment {
         });
 
     }
+boolean delete, edit;
+    @Override
+    public void onCreateContextMenu(android.view.ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.edit_delete_menu, menu);
+    }
+int position;
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        position = info.position;
+        switch (item.getItemId()) {
+            case R.id.edit:
+                Log.d(TAG, "onContextItemSelected: edit pressed");
 
+                return true;
 
+            case R.id.delete:
+                Log.d(TAG, "onContextItemSelected: delete pressed");
+                delete = true;
+                queryDB();
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 
 
     //------------------------FIREBASE STUFF------------
