@@ -289,6 +289,24 @@ public class FirebaseMethods {
                 .setValue(goals);
 
     }
+
+    // adds updates goal to firebase db
+    public void goalUpdateDatabase(String goal_id, String name, String weight, String current) {
+        Log.d(TAG, "goalUpdateDatabase: goal is being updated");
+        Goal goals = new Goal();
+        goals.setGoal_name(name);
+        goals.setGoal_weight(weight);
+        goals.setCurrent_weight(current);
+        goals.setGoal_id(goal_id);
+
+        //database insertion
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_goals))
+                .child(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid())
+                .child(goal_id)
+                .setValue(goals);
+
+    }
     // adds exercise to firebase db
     public void exerciseAddToDatabase(String date, String name, String weight, String reps) {
         Log.d(TAG, "exerciseAddToDatabase: exercise being added to database");

@@ -8,7 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,6 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Diary.ActivityAddDiary;
+import com.napier.mohs.behaviourchangeapp.Diary.ActivityEditDiary;
 import com.napier.mohs.behaviourchangeapp.Models.Exercise;
 import com.napier.mohs.behaviourchangeapp.Models.Goal;
 import com.napier.mohs.behaviourchangeapp.R;
@@ -94,6 +97,40 @@ public class ActivityGoals extends AppCompatActivity {
         setupBottomNavigationView();
     }
 
+    // check to see if the edit or delete buttons have been clicked, boolean true means it has
+    boolean delete, edit;
+    int position; // position in arraylist that has been clicked to bring up context menu
+
+    @Override
+    public void onCreateContextMenu(android.view.ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.edit_delete_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        position = info.position;
+        switch (item.getItemId()) {
+            case R.id.edit:
+                Log.d(TAG, "onContextItemSelected: edit pressed");
+                edit = true;
+                queryDB();
+                return true;
+
+            case R.id.delete:
+                Log.d(TAG, "onContextItemSelected: delete pressed");
+                delete = true;
+                queryDB();
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
 
 
 
@@ -135,23 +172,45 @@ public class ActivityGoals extends AppCompatActivity {
                 Log.d(TAG, "onDataChange: number of loops " + goalArrayList.size());
                 final AdapterGoalList adapter = new AdapterGoalList(mContext, R.layout.listitem_goals, goalArrayList);
                 mListView.setAdapter(adapter); // arraylist is adapted to the list view
+                registerForContextMenu(mListView);
 
-                // TODO: Change this to long click and context menu
-                // deletes an item from the database and listview
-                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        goalArrayList.remove(position);
-                        adapter.notifyDataSetChanged();
-                        //new code below
-                        myDBRefFirebase
-                                .child(db_goals) // looks in exercises node
-                                .child(FirebaseAuth.getInstance()
-                                        .getCurrentUser().getUid())
-                                .child(keyList.get(position)).removeValue();
-                        keyList.remove(position);
-                    }
-                });
+                // if delete is true the item from list is deleted
+                if(delete == true){
+                    goalArrayList.remove(position);
+                    adapter.notifyDataSetChanged();
+                    //new code below
+                    myDBRefFirebase
+                            .child(db_goals) // looks in goals node
+                            .child(FirebaseAuth.getInstance()
+                                    .getCurrentUser().getUid())
+                            .child(keyList.get(position)).removeValue();
+                    keyList.remove(position);
+                    delete = false;
+
+                }
+
+                // if edit is true
+                if(edit == true){
+                    String goal_id  =goalArrayList.get(position).getGoal_id();
+                    String name = goalArrayList.get(position).getGoal_name();
+                    String weight = goalArrayList.get(position).getGoal_weight();
+                    Log.d(TAG, "onDataChange: " + goal_id);
+                    Log.d(TAG, "onDataChange: " + weight);
+                    Log.d(TAG, "onDataChange: " + name);
+
+                    // When edit is clicked edit diary is opened
+                    Log.d(TAG, "onClick: clicked edit diary button");
+
+                    Intent intent = new Intent(mContext, ActivityEditGoals.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("goal_id", goal_id);
+                    bundle.putString( "name",name);
+                    bundle.putString("weight",weight);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    edit = false;
+                }
+
             }
 
             @Override

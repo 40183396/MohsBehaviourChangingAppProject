@@ -68,6 +68,7 @@ public class AdapterGoalList extends ArrayAdapter<Goal>{
 
             // stores view in memory
             convertView.setTag(viewHolder);
+            convertView.setLongClickable(true);
         } else {
             // if view not null retrieve view
             viewHolder = (ViewHolder) convertView.getTag();

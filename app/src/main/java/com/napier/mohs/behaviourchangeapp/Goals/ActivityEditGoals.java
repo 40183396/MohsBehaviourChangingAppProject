@@ -29,11 +29,11 @@ import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
 
 /**
- * Created by Mohs on 24/03/2018.
+ * Created by Mohs on 04/04/2018.
  */
 
-public class ActivityAddGoals extends AppCompatActivity{
-    private static final String TAG = "ActivityAddGoals";
+public class ActivityEditGoals extends AppCompatActivity {
+    private static final String TAG = "ActivityEditGoals";
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -46,41 +46,69 @@ public class ActivityAddGoals extends AppCompatActivity{
     private Context mContext;
 
 
+    // formats number two decimal places
+    private static DecimalFormat REAL_FORMATTER = new DecimalFormat("0.##");
 
+    private double numberWeight;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_goals_add);
+        setContentView(R.layout.activity_goals_edit);
         ButterKnife.bind(this);
         Log.d(TAG, "onCreateView: Starting add goals");
 
-        mContext = ActivityAddGoals.this; // keeps context constant
+        mContext = ActivityEditGoals.this; // keeps context constant
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
         mFirebaseMethods = new FirebaseMethods(mContext);
         setupFirebaseAuth();
-
+        getFromBundle();
+        // starts with fields blank
+        goalWeight.setText(weightBundle);
+        numberWeight = Double.parseDouble(weightBundle);
 
     }
 
-    // formats number two decimal places
-    private static DecimalFormat REAL_FORMATTER = new DecimalFormat("0.##");
+    String idBundle, nameBundle, weightBundle;
 
-    private double numberWeight;
+    // TODO Replace hard coded strings in bundle
+    // gets from the bundle the date from the diary activity
+    private String getFromBundle() {
+        Log.d(TAG, "getFromBundle: ");
 
-    @BindView(R.id.edittextAddGoalWeight) EditText goalWeight;
+        Bundle bundle = new Bundle();
+        // if bundle is not null we actually have received something
+        if (bundle != null) {
+            Log.d(TAG, "getFromBundleCallingActivity: recieved from calling activity " + bundle.getString("exercise_id"));
+            Bundle b = getIntent().getExtras();
+            idBundle = b.getString("goal_id");
+            nameBundle = b.getString("name");
+            weightBundle = b.getString("weight");
+            return bundle.getString("goal_id");
+        } else {
+            Log.d(TAG, "getActivityNumberFromBundle: No Calling Activity recieved");
+            Toasty.warning(mContext, "No Bundle Recieved", Toast.LENGTH_SHORT).show();
+            return null;
+        }
 
-    @OnClick(R.id.btnIncreaseWeightAddGoal)
+    }
+
+
+
+    @BindView(R.id.edittextEditGoalWeight)
+    EditText goalWeight;
+
+    @OnClick(R.id.btnIncreaseWeightEditGoal)
     public void increaseWeight(){
         numberWeight += 2.5;
         String stringWeight = Double.toString(numberWeight);
         goalWeight.setText(stringWeight);
     }
 
-    @OnClick(R.id.btnDecreaseWeightAddGoal)
+    @OnClick(R.id.btnDecreaseWeightEditGoal)
     public void decreaseWeight(){
         numberWeight -= 2.5;
         if(numberWeight<0){
@@ -93,7 +121,7 @@ public class ActivityAddGoals extends AppCompatActivity{
 
 
     // saves the entered details to the firebase database
-    @OnClick(R.id.btnSaveAddGoal)
+    @OnClick(R.id.btnSaveEditGoal)
     public void addEntryToDB() {
         numberWeight = Double.parseDouble(goalWeight.getText().toString());
 
@@ -111,7 +139,7 @@ public class ActivityAddGoals extends AppCompatActivity{
 
             Log.d(TAG, "onClick: navigating back to previous activity");
 
-            mFirebaseMethods.goalAddToDatabase(name, weight, current);
+            mFirebaseMethods.goalUpdateDatabase(idBundle, name, weight, current);
             goalWeight.getText().clear();
             Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(mContext, ActivityGoals.class);
@@ -121,7 +149,7 @@ public class ActivityAddGoals extends AppCompatActivity{
     }
 
     // clears the edit text fields
-    @OnClick(R.id.btnClearAddGoal)
+    @OnClick(R.id.btnClearEditGoal)
     public void clearTextFields(){
         goalWeight.getText().clear();
 
@@ -179,5 +207,3 @@ public class ActivityAddGoals extends AppCompatActivity{
         }
     }
 }
-
-

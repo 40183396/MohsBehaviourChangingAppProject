@@ -25,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
-import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
 import com.napier.mohs.behaviourchangeapp.Utils.SectionsPagerAdapter;
 
 import butterknife.BindView;
@@ -60,7 +59,7 @@ public class ActivityAddDiary extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_diary);
+        setContentView(R.layout.activity_diary_add);
         ButterKnife.bind(this);
         Log.d(TAG, "onCreate: started diary activity");
 
