@@ -1,13 +1,19 @@
 package com.napier.mohs.behaviourchangeapp.Diary;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -175,8 +181,7 @@ public class FragmentDiary extends Fragment {
     }
 
 
-    private void queryDB() {
-
+    public void queryDB() {
         final ArrayList<Exercise> exerciseArrayList = new ArrayList<Exercise>();
         final ArrayList<String> keyList = new ArrayList<>();
         Query query = myDBRefFirebase
@@ -201,23 +206,42 @@ public class FragmentDiary extends Fragment {
                 final AdapterExerciseList adapter = new AdapterExerciseList(mContext, R.layout.listitem_exercises, exerciseArrayList);
                 mListView.setAdapter(adapter); // arraylist is adapted to the list view
 
-                // TODO: Change this to long click and context menu
-                // deletes an item from the database and listview
-                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                // Long pressing list item brings up dialog to delete item
+                mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        exerciseArrayList.remove(position);
-                        adapter.notifyDataSetChanged();
-                        //new code below
-                        myDBRefFirebase
-                                .child(db_exercises) // looks in exercises node
-                                .child(FirebaseAuth.getInstance()
-                                        .getCurrentUser().getUid()).child(date)
-                                .child(keyList.get(position)).removeValue();
-                        keyList.remove(position);
+                    public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mContext);
+
+                        dialogBuilder.setTitle("Delete Exercise?");
+                        dialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                exerciseArrayList.remove(position);
+                                adapter.notifyDataSetChanged();
+                                //new code below
+                                myDBRefFirebase
+                                        .child(db_exercises) // looks in exercises node
+                                        .child(FirebaseAuth.getInstance()
+                                                .getCurrentUser().getUid()).child(date)
+                                        .child(keyList.get(position)).removeValue();
+                                keyList.remove(position);
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        dialogBuilder.show();
+                        return false;
                     }
                 });
+
             }
+
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -227,6 +251,8 @@ public class FragmentDiary extends Fragment {
         });
 
     }
+
+
 
 
     //------------------------FIREBASE STUFF------------

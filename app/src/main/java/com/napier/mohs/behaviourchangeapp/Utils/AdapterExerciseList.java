@@ -67,7 +67,7 @@ public class AdapterExerciseList extends ArrayAdapter<Exercise>{
 
             // stores view in memory
             convertView.setTag(viewHolder);
-           // convertView.setLongClickable(true);
+            convertView.setLongClickable(true);
         } else {
             // if view not null retrieve view
             viewHolder = (ViewHolder) convertView.getTag();
