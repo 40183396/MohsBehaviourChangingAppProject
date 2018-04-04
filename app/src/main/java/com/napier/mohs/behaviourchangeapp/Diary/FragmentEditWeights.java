@@ -49,6 +49,9 @@ public class FragmentEditWeights extends Fragment {
 
     private Context mContext;
 
+    // formats number two decimal places
+    private static DecimalFormat REAL_FORMATTER = new DecimalFormat("0.##");
+    private double numberWeight, numberReps;
 
     @Nullable
     @Override
@@ -72,6 +75,8 @@ public class FragmentEditWeights extends Fragment {
         // starts with fields blank
         diaryEditWeight.setText(weightBundle);
         diaryEditReps.setText(repsBundle);
+        numberWeight = Double.parseDouble(weightBundle);
+        numberReps = Double.parseDouble(repsBundle);
 
         //Back pressed Logic for fragment
         view.setFocusableInTouchMode(true);
@@ -120,10 +125,11 @@ public class FragmentEditWeights extends Fragment {
         }
 
     }
-    // formats number two decimal places
-    private static DecimalFormat REAL_FORMATTER = new DecimalFormat("0.##");
 
-    private double numberWeight, numberReps;
+
+
+
+
     @BindView(R.id.edittextEditDiaryReps)
     EditText diaryEditReps;
     @BindView(R.id.edittextEditDiaryWeight) EditText diaryEditWeight;
