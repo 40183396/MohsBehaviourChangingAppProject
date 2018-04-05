@@ -1,5 +1,7 @@
 package com.napier.mohs.behaviourchangeapp.Utils;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -152,6 +154,7 @@ public class FragmentViewComments extends Fragment {
 
         return view;
     }
+
 
     // sets up widgets
     private void setupWidgets() {

@@ -49,7 +49,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_checkmark"
+            android:src="@drawable/ic_arrow"
             android:id="@+id/imageCommentPost"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
