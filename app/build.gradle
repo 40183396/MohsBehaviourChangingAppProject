@@ -57,24 +57,9 @@ dependencies {
     //Toasty
     implementation 'com.github.GrenderG:Toasty:1.2.8'
 
-    // Lottie
-    implementation 'com.airbnb.android:lottie:2.5.1'
-
-    // Rotating Text
-    implementation 'com.sdsmdg.harjot:rotatingtext:1.0.2'
-
-    // Calligraphy
-    //implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
-
-    // Material Calendar
-    implementation 'com.wdullaer:materialdatetimepicker:3.5.1'
-
     // datepicker-timeline
     implementation 'com.github.badoualy:datepicker-timeline:c6dcd05737'
 
-
-    // Boom Menu
-    implementation 'com.nightonke:boommenu:2.1.1'
 
     // Number Progress Bar
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'

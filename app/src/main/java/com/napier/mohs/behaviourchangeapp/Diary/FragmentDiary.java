@@ -69,10 +69,8 @@ public class FragmentDiary extends Fragment {
     // widgets
     @BindView(R.id.listviewDiary)
     ListView mListView;
-    @BindView(R.id.imageDiaryPost)
-    ImageView mSend;
-    @BindView(R.id.bmb)
-    BoomMenuButton bmb;
+    @BindView(R.id.imageDiaryAdd)
+    ImageView mAdd;
 
     // database queries
     @BindString(R.string.db_name_exercises)
@@ -154,30 +152,18 @@ public class FragmentDiary extends Fragment {
 
     // sets up widgets
     private void setupWidgets() {
-        bmb.addBuilder(new HamButton.Builder().normalText("Add To Diary!").listener(new OnBMClickListener() {
+        mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onBoomButtonClick(int index) {
-                // When the boom-button corresponding this builder is clicked.
+            public void onClick(View v) {
+                // Button which opens add diary
                 Log.d(TAG, "onClick: clicked diary button");
-                Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onClick: navigating to add diary");
                 Intent intent = new Intent(mContext, ActivityAddDiary.class);
                 intent.putExtra("date", date);
                 startActivity(intent);
             }
-        }));
-        bmb.addBuilder(new HamButton.Builder().normalText("Goals!").listener(new OnBMClickListener() {
-            @Override
-            public void onBoomButtonClick(int index) {
-                // When the boom-button corresponding this builder is clicked.
-                Log.d(TAG, "onClick: clicked goals button");
-                Toasty.success(mContext, "button works", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onClick: navigating to add diary");
-                Intent intent = new Intent(mContext, ActivityGoals.class);
-                intent.putExtra("date", date);
-                startActivity(intent);
-            }
-        }));
+        });
+
     }
 
 
