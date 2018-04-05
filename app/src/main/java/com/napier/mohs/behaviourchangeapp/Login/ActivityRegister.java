@@ -1,6 +1,7 @@
 package com.napier.mohs.behaviourchangeapp.Login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -57,6 +58,7 @@ public class  ActivityRegister extends AppCompatActivity {
     @BindView(R.id.edittextRegisterUsername) EditText mUsername;
     @BindView(R.id.progressbarRegister) ProgressBar mProgressBar;
     @BindView(R.id.buttonRegister) Button mRegisterButton;
+    @BindView(R.id.textviewRegisterAlreadyHaveAccount) TextView haveAccount;
 
     // Strings
     @BindString(R.string.error_invalid_password) String invalid_password;
@@ -78,7 +80,17 @@ public class  ActivityRegister extends AppCompatActivity {
 
         setupFirebaseAuth();
         initialiseRegisterUser();
+
+        haveAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: going to register activity");
+                Intent intent = new Intent(ActivityRegister.this, ActivityLogin.class);
+                startActivity(intent);
+            }
+        });
     }
+
 
     // Button which initialises registering
     private void initialiseRegisterUser(){
