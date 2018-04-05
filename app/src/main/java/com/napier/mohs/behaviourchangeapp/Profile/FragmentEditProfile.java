@@ -39,6 +39,7 @@ import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoader;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by User on 6/4/2017.
@@ -159,6 +160,7 @@ public class FragmentEditProfile extends Fragment implements PasswordConfirmDial
             public void onClick(View view) {
                 Log.d(TAG, "onClick: saving changes attempt ");
                 saveEditSettings();
+                Toasty.success(getActivity(),"Successfully Saved!", Toast.LENGTH_SHORT).show();
                 //getActivity().finish(); // Have to use getActivity().finish(); as we are in fragment
             }
         });

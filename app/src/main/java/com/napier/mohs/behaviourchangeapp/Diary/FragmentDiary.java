@@ -138,7 +138,7 @@ public class FragmentDiary extends Fragment {
                 queryDB();
             }
         });
-        
+
         //sets up the query
         queryDB();
 
