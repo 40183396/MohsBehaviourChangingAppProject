@@ -374,13 +374,6 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
         @Override
         public boolean onDown(MotionEvent e) {
             Log.d(TAG, "onDown: ");
-            return true;
-        }
-
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            Log.d(TAG, "onDoubleTap: ");
-
             // Test to see if star was working
             // mStar.likeToggle();
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -440,6 +433,14 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
 
                 }
             });
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            Log.d(TAG, "onDoubleTap: ");
+
+
 
             return true;
         }

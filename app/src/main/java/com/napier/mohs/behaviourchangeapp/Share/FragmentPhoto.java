@@ -90,7 +90,10 @@ public class FragmentPhoto extends Fragment{
             // checks if task was root
             // retrieves a bitmap
             Bitmap bitmap;
-            bitmap = (Bitmap) data.getExtras().get("data"); // data is a keyword argument
+            try{
+                bitmap = (Bitmap) data.getExtras().get("data"); // data is a keyword argument
+
+
             if(isTaskRoot()){
                 try{
                     Log.d(TAG, "onActivityResult: bitmap recieved from camera " + bitmap);
@@ -112,7 +115,9 @@ public class FragmentPhoto extends Fragment{
                     Log.d(TAG, "onActivityResult: NullPointerException " + e.getMessage());
                 }
             }
-
+            }catch (NullPointerException e){
+                Log.d(TAG, "onActivityResult: NullPointerException " + e.getMessage());
+            }
         }
     }
 }
