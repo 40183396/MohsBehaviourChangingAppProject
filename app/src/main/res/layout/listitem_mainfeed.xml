@@ -36,7 +36,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_centerVertical="true"
                 android:id="@+id/textviewMainFeedUsername"
-                android:textColor="@color/black"
+                android:textColor="@color/colorPrimaryDark"
                 />
 
 

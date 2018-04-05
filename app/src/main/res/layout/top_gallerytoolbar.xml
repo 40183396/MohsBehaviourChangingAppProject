@@ -28,7 +28,7 @@
                     android:layout_toRightOf="@+id/imageGalleryClose"
                     android:id="@+id/spinnerGalleryDirectory"
                     android:textSize="20sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:text="Gallery"
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"></Spinner>

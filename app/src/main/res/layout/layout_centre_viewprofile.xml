@@ -21,7 +21,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:id="@+id/linearLayout"
-                android:weightSum="100">
+                android:weightSum="100"
+                android:background="@color/colorPrimary">
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -33,7 +34,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:id="@+id/imageViewProfile"
-                        app:civ_border_color="@color/black"
+                        app:civ_border_color="@color/white"
                         app:civ_border_width="0.5dp"
                         android:layout_centerVertical="true"/>
 
@@ -62,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/textviewViewProfileDisplayName"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:text="Mohs"
                     android:textSize="16dp"/>
@@ -70,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/textviewViewProfileDescription"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:text="I live in Livingston"
                     android:textSize="16dp"
                     android:layout_marginTop="5dp"/>
