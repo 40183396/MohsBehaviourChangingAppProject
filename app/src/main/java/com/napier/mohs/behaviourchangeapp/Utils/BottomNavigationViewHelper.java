@@ -10,7 +10,6 @@ import android.view.MenuItem;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Diary.ActivityDiary;
-import com.napier.mohs.behaviourchangeapp.Goals.ActivityAddGoals;
 import com.napier.mohs.behaviourchangeapp.Goals.ActivityGoals;
 import com.napier.mohs.behaviourchangeapp.Home.ActivityHome;
 import com.napier.mohs.behaviourchangeapp.Profile.ActivityProfile;
@@ -45,7 +44,7 @@ public class BottomNavigationViewHelper {
                         //references animations to change page transitions from bottom bar
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
-                    case R.id.ic_search:
+                    case R.id.ic_goals:
                         Intent intent2 = new Intent(context, ActivityGoals.class); //ACTIVITY_NUM = 1;
                         context.startActivity(intent2);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -55,7 +54,7 @@ public class BottomNavigationViewHelper {
                         context.startActivity(intent3);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
-                    case R.id.ic_alert:
+                    case R.id.ic_weights:
                         Intent intent4 = new Intent(context, ActivityDiary.class); //ACTIVITY_NUM = 3;
                         context.startActivity(intent4);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
