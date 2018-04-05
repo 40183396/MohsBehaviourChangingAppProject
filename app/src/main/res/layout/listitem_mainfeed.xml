@@ -32,11 +32,12 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:text="mohs.akhtar"
+                android:textStyle="bold"
                 android:layout_toRightOf="@+id/imageMainFeedProfile"
                 android:layout_marginLeft="10dp"
                 android:layout_centerVertical="true"
                 android:id="@+id/textviewMainFeedUsername"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 />
 
 

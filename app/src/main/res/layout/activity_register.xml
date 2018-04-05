@@ -2,7 +2,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +18,8 @@
             android:layout_height="wrap_content"
             android:text="REGISTER A NEW ACCOUNT"
             android:textSize="20sp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:gravity="center_horizontal"
             android:layout_marginBottom="40dp"
             />
@@ -33,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:hint="Email"
+                android:textColorHint="@color/white"
                 android:id="@+id/edittextRegisterEmail"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -46,7 +49,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="Full Name"
+                android:hint="Username"
+                android:textColorHint="@color/white"
                 android:id="@+id/edittextRegisterUsername"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -59,6 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:textColorHint="@color/white"
                 android:hint="Password"
                 android:id="@+id/edittextRegisterPassword"/>
 
@@ -94,8 +99,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logging In Please Wait..."
-        android:textColor="@color/black"
+        android:layout_marginTop="40dp"
+        android:text="Registering Please Wait..."
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:id="@+id/textviewRegisterLoggingIn"
         android:layout_below="@+id/progressbarRegister"

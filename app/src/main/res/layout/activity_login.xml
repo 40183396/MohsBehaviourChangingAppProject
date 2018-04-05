@@ -30,6 +30,7 @@
                 android:id="@+id/edittextLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
                 android:hint="Email"
                 android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
@@ -44,6 +45,7 @@
                 android:id="@+id/edittextLoginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
                 android:hint="Password"
                 android:inputType="textPassword" />
 
