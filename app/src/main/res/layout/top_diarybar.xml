@@ -1,6 +1,5 @@
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -8,11 +7,12 @@
         android:background="@drawable/border_bottom_white"
         >
 
-        <com.github.badoualy.datepicker.DatePickerTimeline
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        <devs.mulham.horizontalcalendar.HorizontalCalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:id="@+id/timelineDiary"/>
+            app:textColorSelected="#FFFF"/>
 
 
     </android.support.design.widget.AppBarLayout>

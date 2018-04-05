@@ -30,22 +30,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.napier.mohs.behaviourchangeapp.Goals.ActivityGoals;
 import com.napier.mohs.behaviourchangeapp.Models.Exercise;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterExerciseList;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
-import com.nightonke.boommenu.BoomButtons.HamButton;
-import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
-import com.nightonke.boommenu.BoomMenuButton;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 import es.dmoral.toasty.Toasty;
 
 /**
@@ -60,7 +61,6 @@ public class FragmentDiary extends Fragment {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
 
     private Context mContext;
 
@@ -91,8 +91,7 @@ public class FragmentDiary extends Fragment {
     @BindString(R.string.user_extra)
     String user_extra;
 
-    @BindView(R.id.timelineDiary)
-    DatePickerTimeline timeline;
+
     String date;
 
 
@@ -103,9 +102,10 @@ public class FragmentDiary extends Fragment {
         ButterKnife.bind(this, view);
         Log.d(TAG, "onCreateView: diary fragment started");
 
-        mFirebaseMethods = new FirebaseMethods(getActivity());
+
 
         mContext = getActivity(); // keeps context constant
+
 
         setupFirebaseAuth();
         setupWidgets();
@@ -113,29 +113,32 @@ public class FragmentDiary extends Fragment {
         // setting up date here first so page auto loads with diary entries
         date = dateGet();
 
-        timeline.setOnDateSelectedListener(new DatePickerTimeline.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(int year, int month, int day, int index) {
-                String dayString;
-                // check if day is less than 10 so it appears in correct format for db retrieval
-                if(day < 10){
-                    dayString = "0"+String.valueOf(day);
-                } else {
-                    dayString = String.valueOf(day);
-                }
-                // changed format so if month is less than 9 it appends a zero before it
-                if (month > 10) {
-                    date = String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + dayString;
-                    Log.d(TAG, "onDateSelected: " + date);
-                } else {
-                    date = String.valueOf(year) + "-0" + String.valueOf(month + 1) + "-" + dayString;
-                    Log.d(TAG, "onDateSelected: " + date);
-                }
 
+        Calendar endDate = Calendar.getInstance(); // End date
+        endDate.add(Calendar.DAY_OF_MONTH, 7);
+
+        Calendar startDate = Calendar.getInstance(); // Start date
+        startDate.add(Calendar.DAY_OF_MONTH, -7);
+
+        Calendar defaultDate = Calendar.getInstance();
+        Log.d(TAG, "onCreateView: " + date);
+
+        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarView)
+                .range(startDate, endDate)
+                .datesNumberOnScreen(5).defaultSelectedDate(defaultDate)
+                .build();
+        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Calendar d, int position) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                date = simpleDateFormat.format(d.getTime());
+
+                Log.d(TAG, "onDateSelected: " + date);
                 Toasty.info(mContext, date, Toast.LENGTH_SHORT).show();
                 queryDB();
             }
         });
+        
         //sets up the query
         queryDB();
 
@@ -161,6 +164,7 @@ public class FragmentDiary extends Fragment {
                 Intent intent = new Intent(mContext, ActivityAddDiary.class);
                 intent.putExtra("date", date);
                 startActivity(intent);
+
             }
         });
 
