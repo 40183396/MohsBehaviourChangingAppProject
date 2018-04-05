@@ -36,7 +36,7 @@
                 android:layout_height="50dp"
                 android:layout_below="@+id/textviewEditChangeProfilePhoto"
                 android:layout_marginTop="80dp"
-                android:background="@drawable/grey_border_bottom"
+                android:background="@drawable/border_bottom_grey"
                 android:id="@+id/relLayout1">
 
                 <ImageView
@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/relLayout1"
-                android:background="@drawable/grey_border_bottom"
+                android:background="@drawable/border_bottom_grey"
                 android:id="@+id/relLayout2"
                 android:layout_marginTop="15dp">
 
@@ -89,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/relLayout2"
-                android:background="@drawable/grey_border_bottom"
+                android:background="@drawable/border_bottom_grey"
                 android:id="@+id/relLayout3"
                 android:layout_marginTop="15dp">
 
@@ -114,7 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/relLayout3"
-                android:background="@drawable/grey_border_bottom"
+                android:background="@drawable/border_bottom_grey"
                 android:id="@+id/relLayout4"
                 android:layout_marginTop="15dp">
 
@@ -143,7 +143,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
                 android:textColor="@color/black"
-                android:background="@drawable/grey_border_bottom"
+                android:background="@drawable/border_bottom_grey"
                 android:id="@+id/textviewEditPrivateInfo"/>
 
             <!--email section, using relative layouts-->
@@ -151,7 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/textviewEditPrivateInfo"
-                android:background="@drawable/grey_border_bottom"
+                android:background="@drawable/border_bottom_grey"
                 android:id="@+id/relLayout5"
                 android:layout_marginTop="15dp">
 
@@ -178,7 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/relLayout5"
-                android:background="@drawable/grey_border_bottom"
+                android:background="@drawable/border_bottom_grey"
                 android:id="@+id/relLayout6"
                 android:layout_marginTop="15dp">
 

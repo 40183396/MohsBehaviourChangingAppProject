@@ -31,7 +31,7 @@
         android:layout_height="50dp"
         android:id="@+id/relLayout3"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/white_border_top">
+        android:background="@drawable/border_top_white">
 
         <EditText
             android:layout_width="match_parent"

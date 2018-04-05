@@ -12,7 +12,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tabs"
-                android:background="@drawable/white_border_bottom">
+                android:background="@drawable/border_bottom_white">
 
             </android.support.design.widget.TabLayout>
         </android.support.design.widget.AppBarLayout>

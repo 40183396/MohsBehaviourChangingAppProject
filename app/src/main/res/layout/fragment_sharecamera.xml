@@ -13,7 +13,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"
-        android:background="@drawable/white_rounded_button"
+        android:background="@drawable/button_rounded_white"
         android:id="@+id/buttonPhotoOpenCamera"/>
 
     <RelativeLayout

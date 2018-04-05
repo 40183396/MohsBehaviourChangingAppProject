@@ -14,7 +14,7 @@
             android:text="Account Settings"
             android:textSize="35dp"
             android:textColor="@color/black"
-            android:background="@drawable/grey_border_bottom"/>
+            android:background="@drawable/border_bottom_grey"/>
 
         <ListView
             android:layout_width="match_parent"

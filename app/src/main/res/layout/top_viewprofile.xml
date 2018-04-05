@@ -83,7 +83,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/grey_border"
+            android:background="@drawable/border_grey"
             android:text="Edit Your Profile"
             android:textAlignment="center"
             android:textColor="@color/black"

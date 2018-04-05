@@ -21,7 +21,7 @@
         android:id="@+id/relLayout1"
         android:layout_toRightOf="@id/imageCommentsProfile"
         android:layout_marginTop="15dp"
-        android:background="@drawable/grey_border_bottom">
+        android:background="@drawable/border_bottom_grey">
 
         <RelativeLayout
             android:layout_width="match_parent"
