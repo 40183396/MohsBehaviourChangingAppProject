@@ -61,6 +61,7 @@ public class FirebaseMethods {
     private String userID;
 
     private int IMG_QUALITY = 100;// quality of bitmap image converted to bytes
+    public String IMAGE_FIREBASE_STORAGE = "photos/users/"; // Directory for where images are stored in firebase storage
 
     public FirebaseMethods(Context context) {
         Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
@@ -93,7 +94,7 @@ public class FirebaseMethods {
     public void newPhotoUpload(String typeOfPhoto, final String caption,
                                final int count, final String imgURL, Bitmap bitmap) {
         Log.d(TAG, "newPhotoUpload: uploading new photo attempt");
-        FilePaths filePaths = new FilePaths();
+
 
         // either new photo or profile photo
         // if loop for new photo
@@ -104,7 +105,7 @@ public class FirebaseMethods {
 
             // gets image count and adds '1' to 'photo' and sets as image name
             StorageReference storageReference = mStorageRefFirebase
-                    .child(filePaths.IMAGE_FIREBASE_STORAGE + "/" + user_id + "/photo" + (count + 1));
+                    .child(IMAGE_FIREBASE_STORAGE + "/" + user_id + "/photo" + (count + 1));
 
             // Converts img url to bitmap
             if (bitmap == null) {
@@ -167,7 +168,7 @@ public class FirebaseMethods {
             String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid(); // instead of global using this local
 
             StorageReference storageReference = mStorageRefFirebase
-                    .child(filePaths.IMAGE_FIREBASE_STORAGE + "/" + user_id + "/profile_photo"); // removed count as there is only single photo being uploaded
+                    .child(IMAGE_FIREBASE_STORAGE + "/" + user_id + "/profile_photo"); // removed count as there is only single photo being uploaded
 
             // Converts img url to bitmap
             if (bitmap == null) {

@@ -3,6 +3,7 @@ package com.napier.mohs.behaviourchangeapp.Share;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,12 +21,12 @@ import android.widget.TextView;
 import com.napier.mohs.behaviourchangeapp.Profile.ActivityAccountSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterGridImage;
-import com.napier.mohs.behaviourchangeapp.Utils.FilePaths;
 import com.napier.mohs.behaviourchangeapp.Utils.FileSearch;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -110,14 +111,38 @@ public class FragmentGallery extends Fragment{
     }
 
     }
-
-    private void initialiseFolders(){
-        FilePaths filesPaths = new FilePaths();
-        //checks directory '/storage/emulated/0/pictures' for other folders, this is default directory
-        if(FileSearch.retrieveDirectoryPaths(filesPaths.PICTURES) != null){ // if there is directories inside this search make list of directories
-            directories = FileSearch.retrieveDirectoryPaths(filesPaths.PICTURES); // list of directories in pictures directory
+    // Searches through phone for all images
+    public ArrayList<String> getImageFiles(File dir) {
+        File fileList[] = dir.listFiles();
+        if (fileList != null && fileList.length > 0) {
+            for (File file : fileList) {
+                if (file.isDirectory()) {
+                    getImageFiles(file);
+                }
+                else {
+                    if (file.getName().endsWith(".png")
+                            || file.getName().endsWith(".jpg")
+                            || file.getName().endsWith(".jpeg")
+                            || file.getName().endsWith(".bmp"))
+                    {
+                        String temp = file.getPath().substring(0, file.getPath().lastIndexOf('/'));
+                        String data = "Android/data"; // ignores these folders
+                        String java = "ShowJava/sources"; // ignores these folders
+                        boolean containsData = temp.indexOf(data) >= 0;
+                        boolean containsShowJava = temp.indexOf(java) >= 0;
+                        if (!directories.contains(temp) && !containsData && !containsShowJava)
+                            directories.add(temp); // add to array list of directories
+                    }
+                }
+            }
         }
-
+        return directories;
+    }
+    private void initialiseFolders(){
+        // start search in root directory of phone
+        File root = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+        // search from root directory all images
+        getImageFiles(root);
         // ArrayList of formatted directory names
         ArrayList<String> namesDirectory = new ArrayList<>();
         for(int i = 0; i < directories.size(); i++){
@@ -128,9 +153,7 @@ public class FragmentGallery extends Fragment{
             // substring added to ArrayList
             namesDirectory.add(substringDirectories);
         }
-
-        directories.add(filesPaths.CAMERA); // List of directories for camera added
-
+        // /storage/emulated/0/DCIM/Camera
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, namesDirectory); // displays formatted directory names
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -139,6 +162,7 @@ public class FragmentGallery extends Fragment{
         mDirectorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                Log.d(TAG, "filepaths: " + directories.get(position));
                 Log.d(TAG, "onItemSelected: selected item: " + directories.get(position));
 
                 // grid view is set up with images of selected directory

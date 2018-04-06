@@ -10,17 +10,6 @@ import java.util.ArrayList;
 // class to searching directories and getting list of everything in directories
 public class FileSearch {
 
-    public static ArrayList<String> retrieveDirectoryPaths(String directory){
-        ArrayList<String> pathArray = new ArrayList<>();
-        File file = new File(directory);
-        File[] filelist = file.listFiles(); // gets list of directories from whatever directory we chose
-        for(int i = 0; i < filelist.length; i++){
-            if(filelist[i].isDirectory()){
-                pathArray.add(filelist[i].getAbsolutePath());
-            }
-        }
-        return pathArray; // returns list of directories inside directory
-    }
 
     public static ArrayList<String> retrieveFilePaths(String directory){
         ArrayList<String> pathArray = new ArrayList<>();
