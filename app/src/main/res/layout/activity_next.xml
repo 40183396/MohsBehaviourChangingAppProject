@@ -57,10 +57,6 @@
                 android:layout_below="@id/relLayout2"
                 android:layout_marginTop="50dp">
 
-                <com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper
-                    android:id="@+id/custom_switcher"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
             </RelativeLayout>
 

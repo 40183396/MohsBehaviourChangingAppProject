@@ -75,8 +75,9 @@ public class ActivityLogin extends AppCompatActivity {
 
         mContext = ActivityLogin.this;
 
+        // TODO REMOVE THIS LOGIN STUFF
         // quick log in
-        mEmail.setText("mohsy@mohs.com");
+        mEmail.setText("test1@test.com");
         mPassword.setText("11111111");
 
         //TODO remove this
