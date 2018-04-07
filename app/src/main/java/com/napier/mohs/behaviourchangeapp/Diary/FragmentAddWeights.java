@@ -204,6 +204,7 @@ public class FragmentAddWeights extends Fragment{
 
 
 
+
     //------------------------FIREBASE STUFF------------
     // Method to check if a user is signed in app
 

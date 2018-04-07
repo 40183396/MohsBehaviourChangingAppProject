@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/relLayout1">
 
-        <include layout="@layout/top_goals_listtoolbar"/>
+        <include layout="@layout/top_exercise_list_toolbar"/>
     </RelativeLayout>
     <ExpandableListView
         android:id="@+id/expandableListViewExerciseList"

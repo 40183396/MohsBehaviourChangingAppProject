@@ -103,7 +103,7 @@ public class ActivityGoals extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        
+
         queryDB();
         setupBottomNavigationView();
     }

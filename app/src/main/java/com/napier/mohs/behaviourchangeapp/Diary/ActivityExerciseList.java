@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ActivityExerciseList extends Activity {
 
@@ -93,6 +94,11 @@ public class ActivityExerciseList extends Activity {
                 return false;
             }
         });
+    }
+
+    @OnClick(R.id.imageExercisesListClose)
+    public void closeActivity(){
+        finish();
     }
 
     /*
