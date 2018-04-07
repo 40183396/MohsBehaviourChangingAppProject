@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,6 +73,7 @@ public class FragmentAddWeights extends Fragment{
         ///addEntryToDB();
         setupFirebaseAuth();
         getFromBundle();
+        exerciseName.setText(exerciseIntent);
 
         //Back pressed Logic for fragment
        view.setFocusableInTouchMode(true);
@@ -126,6 +128,8 @@ public class FragmentAddWeights extends Fragment{
 
     @BindView(R.id.edittextAddDiaryReps) EditText diaryReps;
     @BindView(R.id.edittextAddDiaryWeight) EditText diaryWeight;
+    @BindView(R.id.textViewAddDiaryEntry)
+    TextView exerciseName;
 
     @OnClick(R.id.btnIncreaseWeightAddDiary)
     public void increaseWeight(){

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,6 +63,7 @@ public class ActivityAddGoals extends AppCompatActivity{
         setupFirebaseAuth();
 
         getFromBundle();
+        exercise.setText(exerciseIntent);
     }
 
     // TODO Replace hard coded strings in bundle
@@ -92,6 +94,8 @@ public class ActivityAddGoals extends AppCompatActivity{
     private double numberWeight;
 
     @BindView(R.id.edittextAddGoalWeight) EditText goalWeight;
+    @BindView(R.id.textViewAddGoalEntry)
+    TextView exercise;
 
     @OnClick(R.id.btnIncreaseWeightAddGoal)
     public void increaseWeight(){

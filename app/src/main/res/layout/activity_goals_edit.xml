@@ -49,6 +49,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
+                android:background="@drawable/button_rounded_white_minus"
+                android:textStyle="bold"
                 android:text="-" />
 
             <EditText
@@ -67,6 +69,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
+                android:background="@drawable/button_rounded_white_add"
+                android:textStyle="bold"
                 android:text="+" />
         </RelativeLayout>
 
@@ -83,6 +87,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
+                android:textStyle="bold"
+                android:background="@drawable/button_save"
+                android:textColor="@color/white"
                 android:text="save"
                 android:layout_marginLeft="60dp"/>
 
@@ -92,6 +99,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@drawable/button_clear"
                 android:text="Clear"
                 android:layout_marginRight="60dp"/>
 
