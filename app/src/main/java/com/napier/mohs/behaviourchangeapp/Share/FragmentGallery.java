@@ -193,7 +193,7 @@ public class FragmentGallery extends Fragment{
        mGridView.setAdapter(adapter);
 
        // sets that is first displayed when fragment is inflated
-        // try catch was added to stop app crashin if no images occur in the directory
+        // try catch was added to stop app crashing if no images occur in the directory
         try{
             imageSet(imgURLs.get(0), mGalleryImage, mAppend);
 

@@ -131,7 +131,7 @@ public class ActivityNext extends AppCompatActivity{
     // Method to check if a user is signed in app
 
     private void setupFirebaseAuth(){
-        Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
+        Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();

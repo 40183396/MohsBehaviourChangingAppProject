@@ -259,7 +259,7 @@ public class FragmentProfile extends Fragment {
                     imgURLs.add(photos.get(i).getImage_path());
                 }
 
-                // creates an adappter and sets up grid view with adapter
+                // creates an adapter and sets up grid view with adapter
                 AdapterGridImage adapter = new AdapterGridImage(getActivity(), R.layout.layout_grid_imageview, imgURLs, "");
                 gridView.setAdapter(adapter);
 

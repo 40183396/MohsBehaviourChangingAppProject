@@ -77,8 +77,10 @@ public class ActivityGoals extends AppCompatActivity {
         Log.d(TAG, "onCreate: started diary activity");
 
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myDBRefFirebase = mFirebaseDatabase.getReference();
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance(); // sets up database instance
+        myDBRefFirebase = mFirebaseDatabase.getReference(); // sets up a reference to that instance
+
         setupFirebaseAuth();
 
 

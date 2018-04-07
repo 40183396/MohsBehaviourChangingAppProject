@@ -272,10 +272,11 @@ public class FirebaseMethods {
 
     // adds goal to firebase db
     public void goalAddToDatabase(String name, String weight, String current) {
-        Log.d(TAG, "exerciseAddToDatabase: exercise being added to database");
+        Log.d(TAG, "exerciseAddToDatabase: goals being added to database");
 
-        // each goal has unique id
-        String goalNewKey = myDBRefFirebase.child(mContext.getString(R.string.db_name_goals)).push().getKey(); // random string
+        // each new goal has unique id generated, push() writes data to database
+        String goalNewKey = myDBRefFirebase.child(mContext.getString(R.string.db_name_goals)).push().getKey(); // random string, push means write to db
+
         Goal goals = new Goal();
         goals.setGoal_name(name);
         goals.setGoal_weight(weight);
@@ -394,7 +395,7 @@ public class FirebaseMethods {
         return simpleDateFormat.format(new Date());  // returns formatted date in London timezone
     }
 
-    // registers the given email and pasword to firebase db
+    // registers the given email and password to firebase db
     public void newEmailRegister(final String email, String password, final String username) {
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -424,7 +425,7 @@ public class FirebaseMethods {
     }
 
     // sends verification email to user
-    // took this out
+    // took this out to allow for testing user accounts
     public void sendVerEmail() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -453,7 +454,7 @@ public class FirebaseMethods {
         // Removes spaces and adds periods to make usernames
         User user = new User(userID, 1, email, ManipulateStrings.usernameRemoveSpace(username));
 
-        // call dbref look for child node users, look for child node user_id and add data to db
+        // call database ref to look for child node users, look for child node user_id and add data to db
         myDBRefFirebase.child(mContext.getString(R.string.db_name_users))
                 .child(userID)
                 .setValue(user);
