@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="25dp"
             android:layout_marginTop="25dp"
-            android:background="@drawable/button_rounded_white"
+            android:background="@drawable/button_rounded_login"
             android:padding="12dp"
             android:text="Login" />
 
