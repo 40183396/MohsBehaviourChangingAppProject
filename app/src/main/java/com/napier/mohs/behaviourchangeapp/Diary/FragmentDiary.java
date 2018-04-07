@@ -161,7 +161,7 @@ public class FragmentDiary extends Fragment {
                 // Button which opens add diary
                 Log.d(TAG, "onClick: clicked diary button");
                 Log.d(TAG, "onClick: navigating to add diary");
-                Intent intent = new Intent(mContext, ActivityAddDiary.class);
+                Intent intent = new Intent(mContext, ActivityExerciseList.class);
                 intent.putExtra("date", date);
                 startActivity(intent);
 

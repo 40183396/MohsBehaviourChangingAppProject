@@ -1,7 +1,10 @@
 package com.napier.mohs.behaviourchangeapp.Diary;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -10,6 +13,7 @@ import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
 
+import com.napier.mohs.behaviourchangeapp.Goals.ActivityGoals;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterExpandableListView;
 
@@ -17,17 +21,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 public class ActivityExerciseList extends Activity {
+
+    private static final String TAG = "ActivityExerciseList";
 
     AdapterExpandableListView adapter;
     ExpandableListView mExpandableListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    private Context mContext = ActivityExerciseList.this;
+    String dateIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_list);
+
+        ButterKnife.bind(this);
+        Log.d(TAG, "onCreate: started exercise list activity");
+
 
         // get the listview
         mExpandableListView = (ExpandableListView) findViewById(R.id.expandableListViewExerciseList);
@@ -40,41 +54,7 @@ public class ActivityExerciseList extends Activity {
         // setting list adapter
         mExpandableListView.setAdapter(adapter);
 
-        // Listview Group click listener
-        mExpandableListView.setOnGroupClickListener(new OnGroupClickListener() {
-
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                // Toast.makeText(getApplicationContext(),
-                // "Group Clicked " + listDataHeader.get(groupPosition),
-                // Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-
-        // Listview Group expanded listener
-        mExpandableListView.setOnGroupExpandListener(new OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Expanded",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Listview Group collasped listener
-        mExpandableListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
+        //
 
         // Listview on child click listener
         mExpandableListView.setOnChildClickListener(new OnChildClickListener() {
@@ -82,22 +62,41 @@ public class ActivityExerciseList extends Activity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
-                Toast.makeText(
-                        getApplicationContext(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataHeader.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();
+                // Button which opens add diary
+                Log.d(TAG, "onClick: clicked diary button");
+                Log.d(TAG, "onClick: navigating to add diary");
+                // receiving date intent from FragmentDiary
+                try {
+                    Intent intentReceive = getIntent();
+                    if(intentReceive !=null)
+                        dateIntent = intentReceive.getStringExtra("date");
+                } catch (Exception e) {
+                    Log.e(TAG, "onCreate: Exception " + e.getMessage());
+                }
+                    Log.d(TAG, "onCreate: dateIntent " + dateIntent);
+
+                    // The exercise clicked
+                    String exercise = listDataChild.get(
+                        listDataHeader.get(groupPosition)).get(
+                        childPosition);
+
+                    Intent intent = new Intent(mContext, ActivityAddDiary.class);
+                    Bundle mBundle = new Bundle();
+                    mBundle.putString("date", dateIntent);
+                    mBundle.putString("exercise", exercise);
+                    intent.putExtras(mBundle);
+
+                    Log.d(TAG, "onCreate: " + exercise + " " + dateIntent);
+                    startActivity(intent);
+
+
                 return false;
             }
         });
     }
 
     /*
-     * Preparing the list data
+     * the data for the exercise list
      */
     private void prepareListData() {
         listDataHeader = new ArrayList<String>();

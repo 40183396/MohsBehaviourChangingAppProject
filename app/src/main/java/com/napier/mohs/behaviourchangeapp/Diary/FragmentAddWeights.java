@@ -49,7 +49,7 @@ public class FragmentAddWeights extends Fragment{
 
     private Context mContext;
 
-    String dateIntent;
+    String dateIntent, exerciseIntent;
 
     @Nullable
     @Override
@@ -71,7 +71,7 @@ public class FragmentAddWeights extends Fragment{
 
         ///addEntryToDB();
         setupFirebaseAuth();
-        getFromBundleDate();
+        getFromBundle();
 
         //Back pressed Logic for fragment
        view.setFocusableInTouchMode(true);
@@ -97,16 +97,19 @@ public class FragmentAddWeights extends Fragment{
 
     // TODO Replace hard coded strings in bundle
     // gets from the bundle the date from the diary activity
-    private String getFromBundleDate() {
-        Log.d(TAG, "getFromBundleDate: " + getArguments());
+    private String getFromBundle() {
+        Log.d(TAG, "getFromBundle: " + getArguments());
 
         Bundle bundle = this.getArguments();
         // if bundle is not null we actually have received something
         if (bundle != null) {
-            Log.d(TAG, "getFromBundleCallingActivity: recieved from calling activity " + bundle.getString("date"));
+            Log.d(TAG, "getFromBundleCallingActivity: recieved from calling activity " + bundle.getString("date")
+                    + bundle.getString("exercise"));
             Bundle b = getActivity().getIntent().getExtras();
             dateIntent = b.getString("date");
-            Log.d(TAG, "getFromBundleDate: date = " + dateIntent);
+            exerciseIntent = b.getString("exercise");
+            Log.d(TAG, "getFromBundle: date = " + dateIntent);
+            Log.d(TAG, "getFromBundle: exercise = " + exerciseIntent);
             return bundle.getString("dateIntent");
         } else {
             Log.d(TAG, "getActivityNumberFromBundle: No Calling Activity recieved");
@@ -170,7 +173,7 @@ public class FragmentAddWeights extends Fragment{
         String reps = String.valueOf(REAL_FORMATTER.format(numberReps));
         String date = dateIntent;
 
-        String name = "Test Bicep Curl";
+        String name = exerciseIntent;
 
         Log.d(TAG, "addEntryToDB: Attempting add Entry " + weight + ", " + ", " + reps + ", " + date);
         if(TextUtils.isEmpty(weight) || TextUtils.isEmpty(reps)){
