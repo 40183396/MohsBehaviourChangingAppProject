@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +48,8 @@ public class FragmentHome extends Fragment {
 
     // widgets
     @BindView(R.id.listviewHome) ListView mListView;
+    @BindView(R.id.textviewHome)
+    TextView homeText;
 
     // database queries
     @BindString(R.string.db_name_following) String db_following;
@@ -180,6 +183,10 @@ public class FragmentHome extends Fragment {
         try{
             if(mPhotoArrayList != null){
                 Log.d(TAG, "displayPhotos: Photo Array List is not null");
+                if(mPhotoArrayList.size() > 1){
+                    homeText.setText("");
+                }
+
                 // we want to sort the ArrayList
                 Collections.sort(mPhotoArrayList, new Comparator<Photo>() {
                     @Override

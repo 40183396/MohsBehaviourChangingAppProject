@@ -71,7 +71,8 @@ public class ActivityGoals extends AppCompatActivity {
     TextView addgoal;
     @BindView(R.id.imageGoalAdd)
     ImageView imgAddGoal;
-
+    @BindView(R.id.textviewGoalNone)
+    TextView goalText;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,6 +107,7 @@ public class ActivityGoals extends AppCompatActivity {
 
         queryDB();
         setupBottomNavigationView();
+
     }
 
 
@@ -182,12 +184,17 @@ public class ActivityGoals extends AppCompatActivity {
                     goal.setCurrent_weight(singleDataSnapshot.getValue(Goal.class).getCurrent_weight().toString());
                     goalArrayList.add(goal); //adds the data to this array list
                     Log.d(TAG, "onDataChange: looping");
+
+
                 }
                 Log.d(TAG, "onDataChange: number of loops " + goalArrayList.size());
                 final AdapterGoalList adapter = new AdapterGoalList(mContext, R.layout.listitem_goals, goalArrayList);
                 mListView.setAdapter(adapter); // arraylist is adapted to the list view
-                registerForContextMenu(mListView);
 
+                registerForContextMenu(mListView);
+                if(keyList.size()>0){
+                    goalText.setText("");
+                }
                 // if delete is true the item from list is deleted
                 if(delete == true){
                     goalArrayList.remove(position);

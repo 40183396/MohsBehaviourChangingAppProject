@@ -77,14 +77,9 @@ public class ActivityLogin extends AppCompatActivity {
 
         // TODO REMOVE THIS LOGIN STUFF
         // quick log in
-        mEmail.setText("test1@test.com");
-        mPassword.setText("11111111");
+       // mEmail.setText("test1@test.com");
+       // mPassword.setText("11111111");
 
-        //TODO remove this
-        /*YoYo.with(Techniques.Tada)
-                .duration(700)
-                .repeat(5)
-                .playOn(mEmail);*/
 
         // This is invisible till user signs in
         mProgressBar.setVisibility(View.GONE);

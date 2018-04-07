@@ -23,7 +23,15 @@
             <include layout="@layout/top_goalstoolbar"/>
         </RelativeLayout>
 
-        <!---List View for search -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Add Your First Goal!"
+            android:id="@+id/textviewGoalNone"/>
+
+        <!---List View for goals -->
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -60,7 +60,7 @@ public class ActivityShare extends AppCompatActivity{
     private void viewPagerSetup(){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FragmentGallery());
-        adapter.addFragment(new FragmentPhoto());
+        //adapter.addFragment(new FragmentPhoto());
 
         mViewPager.setAdapter(adapter);
 

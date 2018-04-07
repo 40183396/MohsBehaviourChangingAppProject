@@ -59,9 +59,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myDBRefFirebase;
-    private StorageReference mStorageRefFirebase;
+
 
     // widgets
     @BindView(R.id.viewpagerContainer)
