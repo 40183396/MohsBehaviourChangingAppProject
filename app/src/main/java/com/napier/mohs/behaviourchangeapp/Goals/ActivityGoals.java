@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Mohs on 24/03/2018.
@@ -67,6 +69,8 @@ public class ActivityGoals extends AppCompatActivity {
     ListView mListView;
     @BindView(R.id.textviewGoalAdd)
     TextView addgoal;
+    @BindView(R.id.imageGoalAdd)
+    ImageView imgAddGoal;
 
 
     @Override
@@ -91,9 +95,19 @@ public class ActivityGoals extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        imgAddGoal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ActivityGoalExerciseList.class);
+                startActivity(intent);
+            }
+        });
+        
         queryDB();
         setupBottomNavigationView();
     }
+
 
     // check to see if the edit or delete buttons have been clicked, boolean true means it has
     boolean delete, edit;
