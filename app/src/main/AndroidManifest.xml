@@ -19,8 +19,7 @@
         </activity>
         <activity android:name="com.napier.mohs.behaviourchangeapp.Diary.ActivityDiary"></activity>
         <activity android:name="com.napier.mohs.behaviourchangeapp.Profile.ActivityProfile"></activity>
-        <activity android:name="com.napier.mohs.behaviourchangeapp.Search.ActivitySearch"
-            android:windowSoftInputMode="adjustNothing"></activity>
+
         <activity android:name="com.napier.mohs.behaviourchangeapp.Share.ActivityShare"></activity>
         <activity android:name="com.napier.mohs.behaviourchangeapp.Profile.ActivityAccountSettings"></activity>
         <activity android:name="com.napier.mohs.behaviourchangeapp.Login.ActivityLogin">

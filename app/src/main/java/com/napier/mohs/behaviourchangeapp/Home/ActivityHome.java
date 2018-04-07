@@ -44,7 +44,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
         Log.d(TAG, "onItemsLoadMore: more photos being displayed");
         // FragmentHome is set up through view pager there is a different way to assign tag
         FragmentHome homeFragment = (FragmentHome) getSupportFragmentManager()
-                .findFragmentByTag("android:switcher:" + R.id.viewpagerContainer
+                .findFragmentByTag("android:switcher:" + R.id.container
                         + ":" + mViewPager.getCurrentItem()); // references its tag
         if (homeFragment != null) {
             homeFragment.displayMorePhotos(); // fragment will display more photos

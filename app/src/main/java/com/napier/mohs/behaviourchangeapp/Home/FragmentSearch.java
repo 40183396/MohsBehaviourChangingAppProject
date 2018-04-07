@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -133,7 +134,7 @@ public class FragmentSearch extends Fragment {
         Log.d(TAG, "usersListUpdate: the userlist is being updated");
 
         // sets adapter with users list item layout and user list data
-        mUserListAdapter = new AdapterUserList(mContext, R.layout.listitem_users, mUsersList);
+        mUserListAdapter = new AdapterUserList(getActivity(), R.layout.listitem_users, mUsersList);
 
         // sets adapter on list view
         mListView.setAdapter(mUserListAdapter);
@@ -143,7 +144,7 @@ public class FragmentSearch extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: user selected " + mUsersList.get(position).toString());
                 // navigating to the users profile
-                Intent intent = new Intent(mContext, ActivityProfile.class);
+                Intent intent = new Intent(getActivity(), ActivityProfile.class);
                 // need extra to differenitate between viewing own profile and other users profiles
                 intent.putExtra(getString(R.string.calling_activity), getString(R.string.search_activity)); // this is where we put activity name we are coming from, here it is search activity
                 intent.putExtra(getString(R.string.user_extra), mUsersList.get(position)); // make sure User class is parcelable
