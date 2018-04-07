@@ -45,6 +45,7 @@ public class ActivityAddGoals extends AppCompatActivity{
 
     private Context mContext;
 
+    String exerciseIntent;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +61,28 @@ public class ActivityAddGoals extends AppCompatActivity{
         mFirebaseMethods = new FirebaseMethods(mContext);
         setupFirebaseAuth();
 
+        getFromBundle();
+    }
+
+    // TODO Replace hard coded strings in bundle
+    // gets from the bundle the date from the diary activity
+    private String getFromBundle() {
+        Log.d(TAG, "getFromBundle: " + mContext);
+
+        Bundle bundle = getIntent().getExtras();
+        // if bundle is not null we actually have received something
+        if (bundle != null) {
+            Log.d(TAG, "getFromBundleCallingActivity: recieved from calling activity " + bundle.getString("date")
+                    + bundle.getString("exercise"));
+            Bundle b = getIntent().getExtras();
+            exerciseIntent = b.getString("exercise");
+            Log.d(TAG, "getFromBundle: exercise = " + exerciseIntent);
+            return bundle.getString("dateIntent");
+        } else {
+            Log.d(TAG, "getActivityNumberFromBundle: No Calling Activity recieved");
+            Toasty.warning(mContext, "No Exercise Recieved", Toast.LENGTH_SHORT).show();
+            return null;
+        }
 
     }
 
@@ -98,7 +121,7 @@ public class ActivityAddGoals extends AppCompatActivity{
         // set double sto string TODO change this to doubles or longs for firebase
         String weight = String.valueOf(REAL_FORMATTER.format(numberWeight));
 
-        String name = "Test Bicep Curl";
+        String name = exerciseIntent;
         String current = "2";
 
         Log.d(TAG, "addEntryToDB: Attempting add Entry " + weight + "kg");

@@ -39,6 +39,7 @@
         <activity android:name=".Diary.ActivityEditDiary" />
         <activity android:name=".Goals.ActivityEditGoals" />
         <activity android:name=".Diary.ActivityExerciseList" />
+        <activity android:name=".Goals.ActivityGoalExerciseList" />
     </application>
 
 </manifest>

@@ -87,7 +87,7 @@ public class ActivityGoals extends AppCompatActivity {
         addgoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ActivityAddGoals.class);
+                Intent intent = new Intent(mContext, ActivityGoalExerciseList.class);
                 startActivity(intent);
             }
         });

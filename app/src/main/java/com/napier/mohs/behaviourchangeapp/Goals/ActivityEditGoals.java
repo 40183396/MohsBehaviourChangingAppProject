@@ -130,7 +130,7 @@ public class ActivityEditGoals extends AppCompatActivity {
         String weight = String.valueOf(REAL_FORMATTER.format(numberWeight));
 
         // TODO change these
-        String name = "Test Bicep Curl";
+        String name = nameBundle;
         String current = "2";
 
         Log.d(TAG, "addEntryToDB: Attempting add Entry " + weight + "kg");
