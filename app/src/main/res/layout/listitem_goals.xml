@@ -52,12 +52,35 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/relLayout2">
             <TextView
+                android:id="@+id/textviewGoalsCurrentWeightText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current Weight"
+                android:layout_marginLeft="20dp"
+                android:textStyle="bold"
+                android:layout_alignParentLeft="true"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
                 android:id="@+id/textviewGoalsCurrentWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="50 kgs"
                 android:layout_marginLeft="20dp"
                 android:layout_alignParentLeft="true"
+                android:layout_below="@id/textviewGoalsCurrentWeightText"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textviewGoalsGoalWeightText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:text="Goal Weight"
+                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -67,6 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
                 android:layout_alignParentRight="true"
+                android:layout_below="@id/textviewGoalsGoalWeightText"
                 android:text="100kg"
                 android:textColor="@color/black"
                 android:textSize="18sp" />

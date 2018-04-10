@@ -89,7 +89,7 @@ public class FragmentProfile extends Fragment {
     @BindView(R.id.gridviewProfile) GridView gridView;
     @BindView(R.id.toolbarEdit) Toolbar toolbar;
     @BindView(R.id.imageProfileMenu) ImageView profileMenu;
-    @BindView(R.id.bottomNavViewBar) BottomNavigationViewEx bottomNavigationView;
+    @BindView(R.id.bottomNavViewBar) BottomNavigationViewEx bottomBar;
 
     private Context mContext;
 
@@ -114,7 +114,7 @@ public class FragmentProfile extends Fragment {
         Log.d(TAG, "onCreateView: started profile fragment");
 
         setupFirebaseAuth();
-        setupBottomNavigationView();
+        bottomBarSetup();
         setupToolbar();
         setupGridView();
         retrieveFollowersCount();
@@ -179,15 +179,16 @@ public class FragmentProfile extends Fragment {
         });
     }
 
-    // setup of the bottom navigation
-    private void setupBottomNavigationView() {
+    // setup for BottomNavigationView
+    private void bottomBarSetup() {
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationView);
-        BottomNavigationViewHelper.enableNavigation(mContext, getActivity(), bottomNavigationView); //getActivity as we are in fragment
-        Menu menu = bottomNavigationView.getMenu();
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomBar);
+        BottomNavigationViewHelper.enableNavigation(mContext, getActivity(), bottomBar);
+        Menu menu = bottomBar.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
+
 
     // method that sets up grid view with images from db
     private void setupGridView() {

@@ -53,6 +53,7 @@
         </RelativeLayout>
 
         <com.napier.mohs.behaviourchangeapp.Utils.ImagesSquaredView
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/imageMainFeedPostPicture"
@@ -100,10 +101,9 @@
 
             <ImageView
                 android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_height="30dp"
                 android:id="@+id/imageMainFeedSpeechBubble"
                 android:layout_toRightOf="@+id/starLayout"
-                android:layout_marginLeft="10dp"
                 android:src="@drawable/ic_speech_bubble"
                 android:visibility="visible"
                 android:layout_centerVertical="true"/>
@@ -114,13 +114,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/relLayout3"
+            android:paddingLeft="20dp"
             android:layout_below="@+id/relLayout2"
             android:background="@color/white">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Liked by Mohs, Amaan, Steven and 100 others"
+                android:text="Liked by Sophie, Jessica, Sarah and 179 others"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:id="@+id/textviewMainFeedLikes"/>
@@ -133,7 +134,7 @@
                 android:textSize="18sp"
                 android:id="@+id/textviewMainFeedCaption"
                 android:layout_below="@+id/textviewMainFeedLikes"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -143,7 +144,7 @@
                 android:textSize="18sp"
                 android:layout_below="@+id/textviewMainFeedCaption"
                 android:id="@+id/textviewMainFeedComments"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -153,7 +154,7 @@
                 android:textSize="18sp"
                 android:layout_below="@+id/textviewMainFeedComments"
                 android:id="@+id/textviewMainFeedTimeStamp"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="5dp"/>
 
         </RelativeLayout>
 

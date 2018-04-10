@@ -57,7 +57,7 @@
                 android:layout_below="@id/linearLayout"
                 android:padding="20dp"
                 android:id="@+id/linLayout2"
-                android:background="@drawable/border_bottom_white">
+                android:background="@drawable/border_bottom_primary">
 
                 <TextView
                     android:layout_width="match_parent"

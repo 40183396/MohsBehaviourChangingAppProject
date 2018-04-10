@@ -1,17 +1,5 @@
 <resources>
-    <string name="app_name">BehaviourChangeApp</string>
-
-    <!--TODO Change this array-->
-
-        <string-array name="vegetable_array">
-            <item>Cucumber</item>
-            <item>Potato</item>
-            <item>Tomato</item>
-            <item>Onion</item>
-            <item>Squash</item>
-        </string-array>
-
-
+    <string name="app_name">Stronger You</string>
 
     <!-- Fragment Strings-->
     <string name="fragment_edit_profile">Edit Profile</string>
@@ -25,7 +13,7 @@
     <string name="failed_auth">Authentication Failed</string>
     <string name="success_auth">Authentication Successful</string>
 
-    <!--Firebase db -->
+    <!--Firebase database -->
     <string name="db_name_users">users</string>
     <string name="db_name_user_account_settings">user_account_settings</string>
     <string name="db_name_photos">photos</string>

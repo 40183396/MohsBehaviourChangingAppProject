@@ -7,17 +7,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class for storing fragments for tabs
- */
 
+// this class is for tabs and storing fragments as them
 public class SectionsPagerAdapter extends FragmentPagerAdapter{
-    private static final String TAG = "SectionsPagerAdapter";
-
     private final List<Fragment> mFragmentList = new ArrayList<>();
 
-    public SectionsPagerAdapter(FragmentManager fragmentManager){
-        super(fragmentManager);
+    public SectionsPagerAdapter(FragmentManager manager){
+        super(manager);
     }
 
     @Override

@@ -55,7 +55,7 @@ public class ActivityAddDiary extends AppCompatActivity {
     @BindView(R.id.relLayoutParentAddDiary)
     RelativeLayout mRelativeLayout;
 
-    String dateIntent;
+    String dateIntent; // String retrieving date from diary
     FragmentAddWeights fragment = new FragmentAddWeights();
 
     @Override

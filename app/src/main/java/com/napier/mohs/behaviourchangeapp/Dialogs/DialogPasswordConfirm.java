@@ -19,9 +19,9 @@ import com.napier.mohs.behaviourchangeapp.R;
  * This class is only needed for email change
  */
 
-public class PasswordConfirmDialog extends DialogFragment{
+public class DialogPasswordConfirm extends DialogFragment{
 
-    private static final String TAG = "PasswordConfirmDialog";
+    private static final String TAG = "DialogPasswordConfirm";
 
     TextView mPassword;
 

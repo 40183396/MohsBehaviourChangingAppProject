@@ -9,17 +9,14 @@ import android.Manifest;
 
 public class Permissions {
 
+    // This is for gallery and camera, it checks they have these permissions before displaying them
     public static final String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-           // Manifest.permission.CAMERA
+            Manifest.permission.CAMERA
     };
 
     public static final String[] PERMISSION_CAMERA = {
             Manifest.permission.CAMERA
     };
 
-    public static final String[] PERMISSION_WRITE_STORAGE = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
 }

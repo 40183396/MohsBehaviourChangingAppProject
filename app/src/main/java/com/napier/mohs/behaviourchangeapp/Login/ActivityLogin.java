@@ -45,8 +45,8 @@ public class ActivityLogin extends AppCompatActivity {
     EditText mPassword;
     @BindView(R.id.textviewLoginSigningIn)
     TextView mSigningIn;
-    @BindView(R.id.textviewRegisterAlreadyHaveAccount)
-    TextView signUpLink;
+    @BindView(R.id.buttonLoginRegister)
+    Button signUpLink;
     @BindView(R.id.progressbarLogin)
     ProgressBar mProgressBar;
     @BindView(R.id.buttonLogin)

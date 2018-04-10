@@ -57,7 +57,7 @@ public class ActivityAccountSettings extends AppCompatActivity {
         Log.d(TAG, "onCreate: started.");
 
         setupSettingsList();
-        setupBottomNavigationView();
+        bottomBarSetup();
         setupFragments();
         getIntentIncoming();
 
@@ -144,15 +144,13 @@ public class ActivityAccountSettings extends AppCompatActivity {
 
     }
 
-    /**
-     * BottomNavigationView setup
-     */
-    private void setupBottomNavigationView() {
+    // setup for BottomNavigationView
+    private void bottomBarSetup() {
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
-        Menu menu = bottomNavigationViewEx.getMenu();
+        BottomNavigationViewEx bottomBar = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomBar);
+        BottomNavigationViewHelper.enableNavigation(mContext, this, bottomBar);
+        Menu menu = bottomBar.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }

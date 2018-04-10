@@ -27,7 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.napier.mohs.behaviourchangeapp.Dialogs.PasswordConfirmDialog;
+import com.napier.mohs.behaviourchangeapp.Dialogs.DialogPasswordConfirm;
 import com.napier.mohs.behaviourchangeapp.Models.User;
 import com.napier.mohs.behaviourchangeapp.Models.UserAccountSettings;
 import com.napier.mohs.behaviourchangeapp.Models.UserSettings;
@@ -45,7 +45,7 @@ import es.dmoral.toasty.Toasty;
  * Created by User on 6/4/2017.
  */
 
-public class FragmentEditProfile extends Fragment implements PasswordConfirmDialog.OnPasswordConfirmListener{
+public class FragmentEditProfile extends Fragment implements DialogPasswordConfirm.OnPasswordConfirmListener{
 
     private static final String TAG = "FragmentEditProfile";
 
@@ -194,7 +194,7 @@ public class FragmentEditProfile extends Fragment implements PasswordConfirmDial
             // first reauthenticate email (only needed is emails have to be verified
             // check email is registered already
             // then email is changed
-            PasswordConfirmDialog dialog = new PasswordConfirmDialog();
+            DialogPasswordConfirm dialog = new DialogPasswordConfirm();
             dialog.show(getFragmentManager(), getString(R.string.dialog_password_confirm));
             dialog.setTargetFragment(FragmentEditProfile.this, 1); // sets this as target fragment after dialog is opened
 

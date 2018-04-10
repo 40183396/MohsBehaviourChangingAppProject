@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -60,16 +61,16 @@ public class ActivityShare extends AppCompatActivity{
     private void viewPagerSetup(){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FragmentGallery());
-        //adapter.addFragment(new FragmentPhoto());
+        adapter.addFragment(new FragmentPhoto());
 
         mViewPager.setAdapter(adapter);
 
-//        TabLayout tabLayout = (TabLayout) findViewById(R.id.bottomTabs);
-//        tabLayout.setupWithViewPager(mViewPager);
-//
-//        // set text for each of tabs
-//        tabLayout.getTabAt(0).setText(getString(R.string.gallery));
-//        tabLayout.getTabAt(1).setText(getString(R.string.photo));
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.bottomTabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+        // set text for each of tabs
+        tabLayout.getTabAt(0).setText(getString(R.string.gallery));
+        tabLayout.getTabAt(1).setText(getString(R.string.photo));
     }
 
     public int taskGet(){
