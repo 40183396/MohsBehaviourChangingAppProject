@@ -29,7 +29,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Models.Goal;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterGoalList;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewExSettings;
+import com.napier.mohs.behaviourchangeapp.Utils.SettingsBottomNavigationViewEx;
 
 import java.util.ArrayList;
 
@@ -147,8 +147,8 @@ public class ActivityGoals extends AppCompatActivity {
     private void bottomNavbarSetup(){
         Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomNavigationViewEx);
-        BottomNavigationViewExSettings.enableNavigation(mContext, this, bottomNavigationViewEx);
+        SettingsBottomNavigationViewEx.bottomNavigationViewExSetup(bottomNavigationViewEx);
+        SettingsBottomNavigationViewEx.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER );
         menuItem.setChecked(true);

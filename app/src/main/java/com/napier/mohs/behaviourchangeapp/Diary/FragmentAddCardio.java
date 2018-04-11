@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
+import com.napier.mohs.behaviourchangeapp.Utils.MethodsFirebase;
 
 import butterknife.ButterKnife;
 
@@ -31,7 +31,7 @@ public class FragmentAddCardio extends Fragment{
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
+    private MethodsFirebase mMethodsFirebase;
 
 
     private Context mContext;
@@ -48,7 +48,7 @@ public class FragmentAddCardio extends Fragment{
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
-        mFirebaseMethods = new FirebaseMethods(mContext);
+        mMethodsFirebase = new MethodsFirebase(mContext);
 
 
         //Back pressed Logic for fragment

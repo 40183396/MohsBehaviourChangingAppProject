@@ -36,9 +36,9 @@ import com.napier.mohs.behaviourchangeapp.Models.User;
 import com.napier.mohs.behaviourchangeapp.Models.UserAndAccountSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterGridImage;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewExSettings;
-import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
-import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoaderSettings;
+import com.napier.mohs.behaviourchangeapp.Utils.SettingsBottomNavigationViewEx;
+import com.napier.mohs.behaviourchangeapp.Utils.MethodsFirebase;
+import com.napier.mohs.behaviourchangeapp.Utils.SettingsUniversalImageLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +63,7 @@ public class FragmentProfile extends Fragment {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
+    private MethodsFirebase mMethodsFirebase;
 
     // building interface
     public interface OnImageGridSelectedListener {
@@ -107,7 +107,7 @@ public class FragmentProfile extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
-        mFirebaseMethods = new FirebaseMethods(getActivity());
+        mMethodsFirebase = new MethodsFirebase(getActivity());
 
 
         mContext = getActivity();
@@ -155,7 +155,7 @@ public class FragmentProfile extends Fragment {
         User user = userAndAccountSettings.getUser();
         AccountSettings accountSettings = userAndAccountSettings.getAccountsettings();
 
-        UniversalImageLoaderSettings.setImage(accountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
+        SettingsUniversalImageLoader.setImage(accountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
 
         // sets up widgets with db data
         mDisplayName.setText(accountSettings.getDisplay_name());
@@ -182,8 +182,8 @@ public class FragmentProfile extends Fragment {
     // setup for BottomNavigationView
     private void bottomBarSetup() {
         Log.d(TAG, "bottomBarSetup: setting up BottomNavigationView");
-        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomBar);
-        BottomNavigationViewExSettings.enableNavigation(mContext, getActivity(), bottomBar);
+        SettingsBottomNavigationViewEx.bottomNavigationViewExSetup(bottomBar);
+        SettingsBottomNavigationViewEx.enableNavigation(mContext, getActivity(), bottomBar);
         Menu menu = bottomBar.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER);
         menuItem.setChecked(true);
@@ -387,7 +387,7 @@ public class FragmentProfile extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // retrievs the user info from db
-                setupWidgets(mFirebaseMethods.getUserSettings(dataSnapshot)); // retrieves datasnapshot of user settings and sets up widgets
+                setupWidgets(mMethodsFirebase.getUserAndAccountSettings(dataSnapshot)); // retrieves datasnapshot of user settings and sets up widgets
                 // retrievs images for the user
             }
 

@@ -69,10 +69,10 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
     }
 
     // for pagination of posts on main feed when user scrolls through posts
-    public interface OnItemsLoadMoreListener{
-        void onItemsLoadMore();
+    public interface OnPostsLoadMoreListener {
+        void onPostsLoadMore();
     }
-    OnItemsLoadMoreListener mOnItemsLoadMoreListener;
+    OnPostsLoadMoreListener mOnPostsLoadMoreListener;
 
     static class ViewHolder{
 
@@ -95,9 +95,9 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
         // we are saving specific things for each post in this view holder
         AccountSettings mAccountSettings = new AccountSettings();
         User mUser = new User();
-        StringBuilder usersStringBuilder;
-        String mStringLikes;
-        boolean likedCurrentUser;
+        StringBuilder stringBuilderUsers;
+        String stringLikes;
+        boolean likedByCurrentUser;
         Star star;
         GestureDetector mGestureDetector;
         Photo mPhoto;
@@ -115,7 +115,7 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
             viewHolder.star = new Star(viewHolder.yellowStar, viewHolder.hollowStar);
             viewHolder.mPhoto = getItem(position);
             viewHolder.mGestureDetector = new GestureDetector(mContext, new GestureListener(viewHolder));
-            viewHolder.usersStringBuilder = new StringBuilder();
+            viewHolder.stringBuilderUsers = new StringBuilder();
 
             // set tag  on the convert view
             convertView.setTag(viewHolder);
@@ -125,12 +125,12 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
         }
 
         // retrieves  current users username for checking likes string
-        getUsernameCurrent();
-        getStringLikes(viewHolder);
+        retrieveUsernameCurrent();
+        getLikesAsString(viewHolder);
 
         // list for all comments of photo
-        List<Comment> comments = getItem(position).getComments();
-        viewHolder.comments.setText("View all " + comments.size() + " comments"); // sets comment text field with how many comments there are for photo
+        List<Comment> commentsList = getItem(position).getComments();
+        viewHolder.comments.setText("View all " + commentsList.size() + " comments"); // sets comment text field with how many comments there are for photo
 
         // when we press comments text field we start intent to comments
         viewHolder.comments.setOnClickListener(new View.OnClickListener() {
@@ -155,8 +155,8 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
         }
 
         // sets caption of photo
-        String captionString = getItem(position).getCaption();
-        viewHolder.caption.setText(captionString);
+        String stringCaption = getItem(position).getCaption();
+        viewHolder.caption.setText(stringCaption);
 
         // sets profile image
         final ImageLoader imageLoader = ImageLoader.getInstance();
@@ -304,37 +304,37 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
         });
 
         // if we've reached end of list in adapter
-        if(endOfListReached(position)){ // pass position of adapter to see if we've reached end of list
-            dataLoadMore();
+        if(listEndReached(position)){ // pass position of adapter to see if we've reached end of list
+            loadDataMore();
         }
 
         return convertView;
     }
 
     // for detecting when youve reached end of list
-    private boolean endOfListReached(int position){
+    private boolean listEndReached(int position){
         return position == getCount() - 1;
 
     }
 
     // check if position reached was end then load more data
-    private void dataLoadMore(){
+    private void loadDataMore(){
         try{
-            mOnItemsLoadMoreListener = (OnItemsLoadMoreListener) getContext(); // instantiate listener
+            mOnPostsLoadMoreListener = (OnPostsLoadMoreListener) getContext(); // instantiate listener
         } catch(ClassCastException e){
-            Log.e(TAG, "dataLoadMore: ClassCastException: " + e.getMessage() );
+            Log.e(TAG, "loadDataMore: ClassCastException: " + e.getMessage() );
         }
 
         try{
-            mOnItemsLoadMoreListener.onItemsLoadMore();
+            mOnPostsLoadMoreListener.onPostsLoadMore();
         } catch(NullPointerException e){
-            Log.e(TAG, "dataLoadMore: NullPointerException: " + e.getMessage() );
+            Log.e(TAG, "loadDataMore: NullPointerException: " + e.getMessage() );
         }
     }
 
     // gets the username of the current user
-    private void getUsernameCurrent(){
-        Log.d(TAG, "getUsernameCurrent: retrieving the current users account settings");
+    private void retrieveUsernameCurrent(){
+        Log.d(TAG, "retrieveUsernameCurrent: retrieving the current users account settings");
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         // points to user id and retrieves their photos instead of going through db of all  photos
@@ -388,7 +388,7 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
 
                         String keyID = singleDataSnapshot.getKey();
                         //  user liked photo already
-                        if(mViewHolder.likedCurrentUser &&
+                        if(mViewHolder.likedByCurrentUser &&
                                 singleDataSnapshot.getValue(Like.class).getUser_id()
                                         .equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){ // this makes sure we are removing a like for the current user only
 
@@ -408,12 +408,12 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
                                     .removeValue();
 
                             mViewHolder.star.likeToggle();
-                            getStringLikes(mViewHolder);
+                            getLikesAsString(mViewHolder);
                         }
                         // user has not liked photo
-                        else if(!mViewHolder.likedCurrentUser){
+                        else if(!mViewHolder.likedByCurrentUser){
                             // add a like to db
-                            addLikeNew(mViewHolder);
+                            addLikeToPost(mViewHolder);
                             Log.d(TAG, "onDataChange: new like added");
                             break;
                         }
@@ -424,7 +424,7 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
                     if(!dataSnapshot.exists()){
                         // new like is added to db
                         Log.d(TAG, "onDataChange: datasnapshot did not exist, new like added");
-                        addLikeNew(mViewHolder);
+                        addLikeToPost(mViewHolder);
                     }
                 }
 
@@ -447,8 +447,8 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
     }
 
     // need to pass viewholder to reference the objects
-    private void addLikeNew(final ViewHolder viewHolder){
-        Log.d(TAG, "addLikeNew: adding a new like");
+    private void addLikeToPost(final ViewHolder viewHolder){
+        Log.d(TAG, "addLikeToPost: adding a new like");
 
         String newLikeID = mDatabaseReference.push().getKey(); // creates a new key
         Like like = new Like();
@@ -470,16 +470,14 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
                 .setValue(like);
 
         viewHolder.star.likeToggle();
-        getStringLikes(viewHolder);
+        getLikesAsString(viewHolder);
     }
 
-    private void getStringLikes(final ViewHolder viewHolder){
-        Log.d(TAG, "getStringLikes: getting likes");
-
+    // gets likes for post and displays as string
+    private void getLikesAsString(final ViewHolder viewHolder){
+        Log.d(TAG, "getLikesAsString: getting likes");
 
         try{
-
-
 
         // Test to see if star was working
         // mStar.likeToggle();
@@ -494,7 +492,7 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                viewHolder.usersStringBuilder = new StringBuilder();
+                viewHolder.stringBuilderUsers = new StringBuilder();
                 for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
                     // user liked photo already
 
@@ -514,46 +512,46 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
                                 // user liked photo already we loop and add user to string builder
                                 Log.d(TAG, "onDataChange: like has been found " + singleDataSnapshot.getValue(User.class).getUsername());
                                 // user is appended to string builder
-                                viewHolder.usersStringBuilder.append(singleDataSnapshot.getValue(User.class).getUsername());
+                                viewHolder.stringBuilderUsers.append(singleDataSnapshot.getValue(User.class).getUsername());
                                 // append comma to make it easier to handle data
-                                viewHolder.usersStringBuilder.append(",");
+                                viewHolder.stringBuilderUsers.append(",");
 
                             }
                             // when loop done we have to split users where we have comma
-                            String[] usersSplit = viewHolder.usersStringBuilder.toString().split(",");
+                            String[] splitUsersByComma = viewHolder.stringBuilderUsers.toString().split(",");
 
                             //deteermine if current user has liked photo or not
-                            if(viewHolder.usersStringBuilder.toString().contains(currentUsername + ",")){ // needs comma otherwise there is a problem when multiple users like it
+                            if(viewHolder.stringBuilderUsers.toString().contains(currentUsername + ",")){ // needs comma otherwise there is a problem when multiple users like it
                                 // means user has liked photo
-                                viewHolder.likedCurrentUser = true;
+                                viewHolder.likedByCurrentUser = true;
                             } else {
-                                viewHolder.likedCurrentUser = false;
+                                viewHolder.likedByCurrentUser = false;
                             }
 
-                            int length = usersSplit.length;
+                            int length = splitUsersByComma.length;
                             // different cases for number of users who liked photo determines how like comment is displayed
                             if(length == 1){ // only one user likes photo etc.
-                                viewHolder.mStringLikes = "Liked by " + usersSplit[0];
+                                viewHolder.stringLikes = "Liked by " + splitUsersByComma[0];
                             } else if (length == 2){
-                                viewHolder.mStringLikes = "Liked by " + usersSplit[0] +
-                                        " and " + usersSplit[1];
+                                viewHolder.stringLikes = "Liked by " + splitUsersByComma[0] +
+                                        " and " + splitUsersByComma[1];
                             }else if (length == 3){
-                                viewHolder.mStringLikes = "Liked by " + usersSplit[0] +
-                                        ", " + usersSplit[1] +
-                                        " and " + usersSplit[2];
+                                viewHolder.stringLikes = "Liked by " + splitUsersByComma[0] +
+                                        ", " + splitUsersByComma[1] +
+                                        " and " + splitUsersByComma[2];
                             }else if (length == 4){
-                                viewHolder.mStringLikes = "Liked by " + usersSplit[0] +
-                                        ", " + usersSplit[1] +
-                                        ", " + usersSplit[2] +
-                                        " and " + usersSplit[3];
+                                viewHolder.stringLikes = "Liked by " + splitUsersByComma[0] +
+                                        ", " + splitUsersByComma[1] +
+                                        ", " + splitUsersByComma[2] +
+                                        " and " + splitUsersByComma[3];
                             }else if (length > 4){
-                                viewHolder.mStringLikes = "Liked by " + usersSplit[0] +
-                                        ", " + usersSplit[1] +
-                                        ", " + usersSplit[2] +
-                                        " and " +  (usersSplit.length - 3) + " others"; // -3 as we have already 3 users displayed
+                                viewHolder.stringLikes = "Liked by " + splitUsersByComma[0] +
+                                        ", " + splitUsersByComma[1] +
+                                        ", " + splitUsersByComma[2] +
+                                        " and " +  (splitUsersByComma.length - 3) + " others"; // -3 as we have already 3 users displayed
                             }
                             //likes string set up here
-                            likesStringSetup(viewHolder, viewHolder.mStringLikes);
+                            setupStringLikes(viewHolder, viewHolder.stringLikes);
                         }
 
                         @Override
@@ -564,10 +562,10 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
                 }
                 // if no users have liked photo
                 if(!dataSnapshot.exists()){
-                    viewHolder.mStringLikes = "";
-                    viewHolder.likedCurrentUser = false;
+                    viewHolder.stringLikes = "";
+                    viewHolder.likedByCurrentUser = false;
                     //likes string set up here
-                    likesStringSetup(viewHolder, viewHolder.mStringLikes);
+                    setupStringLikes(viewHolder, viewHolder.stringLikes);
                 }
             }
 
@@ -577,20 +575,20 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
             }
         });
         } catch (NullPointerException e){
-            Log.e(TAG, "getStringLikes: NullPointerException e" + e.getMessage() );
-            viewHolder.mStringLikes = "";
-            viewHolder.likedCurrentUser = false;
+            Log.e(TAG, "getLikesAsString: NullPointerException e" + e.getMessage() );
+            viewHolder.stringLikes = "";
+            viewHolder.likedByCurrentUser = false;
             //likes string set up here
         }
     }
 
     // sets up the strings of like of a photo
-    private void likesStringSetup(final ViewHolder viewHolder, String likesString){
-        Log.d(TAG, "likesStringSetup: string of likes: " + viewHolder.mStringLikes);
+    private void setupStringLikes(final ViewHolder viewHolder, String likesString){
+        Log.d(TAG, "setupStringLikes: string of likes: " + viewHolder.stringLikes);
 
         // if photo is like by current user
-        if(viewHolder.likedCurrentUser){
-            Log.d(TAG, "likesStringSetup: current user likes photo");
+        if(viewHolder.likedByCurrentUser){
+            Log.d(TAG, "setupStringLikes: current user likes photo");
             viewHolder.hollowStar.setVisibility(View.GONE);
             viewHolder.yellowStar.setVisibility(View.VISIBLE);
             viewHolder.yellowStar.setOnTouchListener(new View.OnTouchListener() {
@@ -600,7 +598,7 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
                 }
             });
         } else { // if photo is not liked by current user
-            Log.d(TAG, "likesStringSetup: current user does not like hpoto");
+            Log.d(TAG, "setupStringLikes: current user does not like photo");
             viewHolder.hollowStar.setVisibility(View.VISIBLE);
             viewHolder.yellowStar.setVisibility(View.GONE);
             viewHolder.hollowStar.setOnTouchListener(new View.OnTouchListener() {

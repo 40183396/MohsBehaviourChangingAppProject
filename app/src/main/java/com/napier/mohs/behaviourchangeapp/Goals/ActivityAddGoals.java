@@ -23,8 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewExSettings;
-import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
+import com.napier.mohs.behaviourchangeapp.Utils.SettingsBottomNavigationViewEx;
+import com.napier.mohs.behaviourchangeapp.Utils.MethodsFirebase;
 
 import java.text.DecimalFormat;
 
@@ -47,7 +47,7 @@ public class ActivityAddGoals extends AppCompatActivity{
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
+    private MethodsFirebase mMethodsFirebase;
 
 
     private Context mContext;
@@ -65,7 +65,7 @@ public class ActivityAddGoals extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
-        mFirebaseMethods = new FirebaseMethods(mContext);
+        mMethodsFirebase = new MethodsFirebase(mContext);
         setupFirebaseAuth();
         bottomNavbarSetup();
 
@@ -142,7 +142,7 @@ public class ActivityAddGoals extends AppCompatActivity{
 
             Log.d(TAG, "onClick: navigating back to previous activity");
 
-            mFirebaseMethods.goalAddToDatabase(name, weight, current);
+            mMethodsFirebase.addGoalDatabase(name, weight, current);
             goalWeight.getText().clear();
             Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(mContext, ActivityGoals.class);
@@ -165,8 +165,8 @@ public class ActivityAddGoals extends AppCompatActivity{
     private void bottomNavbarSetup(){
         Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomNavigationViewEx);
-        BottomNavigationViewExSettings.enableNavigation(mContext, this, bottomNavigationViewEx);
+        SettingsBottomNavigationViewEx.bottomNavigationViewExSetup(bottomNavigationViewEx);
+        SettingsBottomNavigationViewEx.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER );
         menuItem.setChecked(true);

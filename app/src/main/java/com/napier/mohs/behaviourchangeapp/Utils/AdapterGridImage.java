@@ -48,7 +48,7 @@ public class AdapterGridImage extends ArrayAdapter{
         // makes images in grid squared
 
         @BindView(R.id.progressbarGridImage) ProgressBar mProgressBar;
-        @BindView(R.id.imageGridView) ImagesSquaredView gridImages; // need to remake this otherwise gird images will be stretched and skewed
+        @BindView(R.id.imageGridView) ImagesSquaredView imagesGrid; // need to remake this otherwise gird images will be stretched and skewed
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view); // Butterknife For ViewHolder Pattern
@@ -77,7 +77,7 @@ public class AdapterGridImage extends ArrayAdapter{
 
         ImageLoader imageLoader = ImageLoader.getInstance();
 
-        imageLoader.displayImage(mAppend + imgURL, viewHolder.gridImages, new ImageLoadingListener() {
+        imageLoader.displayImage(mAppend + imgURL, viewHolder.imagesGrid, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageURL, View view) {
                 if(viewHolder.mProgressBar != null){

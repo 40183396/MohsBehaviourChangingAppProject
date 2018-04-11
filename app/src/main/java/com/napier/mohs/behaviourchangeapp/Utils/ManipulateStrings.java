@@ -15,6 +15,7 @@ public class ManipulateStrings {
         return username.replace(" " , ".");
     }
 
+    // not really needed, just for hash tags for future use
     public static String retrieveTags(String string){
         // checks if tags '#' are included in caption
         if(string.indexOf("#") > 0){

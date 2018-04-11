@@ -19,8 +19,8 @@ import android.widget.RelativeLayout;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewExSettings;
-import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
+import com.napier.mohs.behaviourchangeapp.Utils.SettingsBottomNavigationViewEx;
+import com.napier.mohs.behaviourchangeapp.Utils.MethodsFirebase;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterSectionsStatePager;
 
 import java.util.ArrayList;
@@ -83,18 +83,18 @@ public class ActivityAccountSettings extends AppCompatActivity {
 
                 if(intent.hasExtra(getString(R.string.image_selected))){
                     // new profile picture is set
-                    FirebaseMethods firebaseMethods = new FirebaseMethods(ActivityAccountSettings.this);
+                    MethodsFirebase methodsFirebase = new MethodsFirebase(ActivityAccountSettings.this);
                     // as profile photo caption is null
                     // uploads profile photo to firebase storage
-                    firebaseMethods.newPhotoUpload(getString(R.string.profile_photo), null,
+                    methodsFirebase.uploadPhotoNew(getString(R.string.profile_photo), null,
                             0, intent.getStringExtra(getString(R.string.image_selected)), null);
                 }
                 else if(intent.hasExtra(getString(R.string.bitmap_selected))) {
                     // new profile picture is set
-                    FirebaseMethods firebaseMethods = new FirebaseMethods(ActivityAccountSettings.this);
+                    MethodsFirebase methodsFirebase = new MethodsFirebase(ActivityAccountSettings.this);
                     // as profile photo caption is null
                     // uploads profile photo to firebase storage
-                    firebaseMethods.newPhotoUpload(getString(R.string.profile_photo), null,
+                    methodsFirebase.uploadPhotoNew(getString(R.string.profile_photo), null,
                             0, null, (Bitmap) intent.getParcelableExtra(getString(R.string.bitmap_selected)));
                 }
 
@@ -148,8 +148,8 @@ public class ActivityAccountSettings extends AppCompatActivity {
     private void setupBottomBar() {
         Log.d(TAG, "bottomNavigationViewExSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomBar = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomBar);
-        BottomNavigationViewExSettings.enableNavigation(mContext, this, bottomBar);
+        SettingsBottomNavigationViewEx.bottomNavigationViewExSetup(bottomBar);
+        SettingsBottomNavigationViewEx.enableNavigation(mContext, this, bottomBar);
         Menu menu = bottomBar.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER);
         menuItem.setChecked(true);

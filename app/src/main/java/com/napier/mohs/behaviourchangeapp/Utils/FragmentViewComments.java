@@ -106,7 +106,7 @@ public class FragmentViewComments extends Fragment {
     @BindString(R.string.user_extra)
     String user_extra;
 
-    private ArrayList<Comment> mCommentArrayList; // contains list of all comments in thread
+    private ArrayList<Comment> mArrayListComment; // contains list of all comments in thread
 
 
     @Nullable
@@ -115,13 +115,13 @@ public class FragmentViewComments extends Fragment {
         View view = inflater.inflate(R.layout.fragment_viewcomments, container, false);
         ButterKnife.bind(this, view); // butterknife for fragments
 
-        mCommentArrayList = new ArrayList<>();
+        mArrayListComment = new ArrayList<>();
         mContext = getActivity(); // keeps context constant
 
         // bundle could potentially be null so need a try catch
         try {
-            mPhoto = getFromBundlePhoto(); // photo retrieved from bundle
-            getFromBundleCallingActivity();
+            mPhoto = retrievePhotoBundle(); // photo retrieved from bundle
+            retrieveCallingActivityBundle();
 
         } catch (NullPointerException e) {
             Log.e(TAG, "onCreateView: NullPointerException: " + e.getMessage());
@@ -136,7 +136,7 @@ public class FragmentViewComments extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating back to previous activity");
                 try {
-                    if (getFromBundleCallingActivity().equals(getString(R.string.home_activity))) { // means from home activity
+                    if (retrieveCallingActivityBundle().equals(getString(R.string.home_activity))) { // means from home activity
 
                         getActivity().getSupportFragmentManager().popBackStack();
                         ((ActivityHome) getActivity()).layoutHomeShow(); // fix so when you press back after view photo on main feed you return to home activity
@@ -157,7 +157,7 @@ public class FragmentViewComments extends Fragment {
     // sets up widgets
     private void setupWidgets() {
         Log.d(TAG, "setupWidgets: setting up widgets");
-        AdapterCommentsList adapter = new AdapterCommentsList(mContext, R.layout.listitem_comments, mCommentArrayList); // adapter with comments
+        AdapterCommentsList adapter = new AdapterCommentsList(mContext, R.layout.listitem_comments, mArrayListComment); // adapter with comments
         mListView.setAdapter(adapter); //list view receives data from adapter
 
         // button for sending a comment
@@ -171,7 +171,7 @@ public class FragmentViewComments extends Fragment {
                     newCommentAdd(mComment.getText().toString()); // gets text from edit text field and posts a comment on photo
 
                     mComment.setText(""); // clears field after posting comment
-                    keyboardClose();
+                    setupCloseKeyboard();
                 } else {
                     Log.d(TAG, "onClick: Comments field is blank");
                 }
@@ -180,8 +180,8 @@ public class FragmentViewComments extends Fragment {
     }
 
     // closes keyboard method
-    private void keyboardClose() {
-        Log.d(TAG, "keyboardClose: keyboard being closed");
+    private void setupCloseKeyboard() {
+        Log.d(TAG, "setupCloseKeyboard: keyboard being closed");
 
         View view = getActivity().getCurrentFocus();
         if (view != null) {
@@ -191,30 +191,30 @@ public class FragmentViewComments extends Fragment {
     }
 
     // gets from the bundle the photo from the profile activity interface
-    private String getFromBundleCallingActivity() {
-        Log.d(TAG, "getFromBundleCallingActivity: " + getArguments());
+    private String retrieveCallingActivityBundle() {
+        Log.d(TAG, "retrieveCallingActivityBundle: " + getArguments());
 
         Bundle bundle = this.getArguments();
         // if bundle is not null we actually have received something
         if (bundle != null) {
-            Log.d(TAG, "getFromBundleCallingActivity: recieved from calling activity" + bundle.getString(getString(R.string.home_activity)));
+            Log.d(TAG, "retrieveCallingActivityBundle: recieved from calling activity" + bundle.getString(getString(R.string.home_activity)));
             return bundle.getString(getString(R.string.home_activity));
         } else {
-            Log.d(TAG, "getActivityNumberFromBundle: No Calling Activity recieved");
+            Log.d(TAG, "retrieveCallingActivityBundle: No Calling Activity recieved");
             return null;
         }
     }
 
     // gets from the bundle the photo from the profile activity interface
-    private Photo getFromBundlePhoto() {
-        Log.d(TAG, "getFromBundlePhoto: " + getArguments());
+    private Photo retrievePhotoBundle() {
+        Log.d(TAG, "retrievePhotoBundle: " + getArguments());
 
         Bundle bundle = this.getArguments();
         // if bundle is not null we actually have recieved somethin
         if (bundle != null) {
             return bundle.getParcelable(getString(R.string.photo));
         } else {
-            Log.d(TAG, "getActivityNumberFromBundle: No Photo received");
+            Log.d(TAG, "retrievePhotoBundle: No Photo received");
             return null;
         }
     }
@@ -280,13 +280,13 @@ public class FragmentViewComments extends Fragment {
 
         // if no comments on photo this is called to instantiate comments thread
         if (mPhoto.getComments().size() == 0) {
-            mCommentArrayList.clear(); // makes sure we have fresh list every time
+            mArrayListComment.clear(); // makes sure we have fresh list every time
             Comment commentFirst = new Comment();
             commentFirst.setComment(mPhoto.getCaption());
             commentFirst.setUser_id(mPhoto.getUser_id());
             commentFirst.setDate_created(mPhoto.getDate_created());
-            mCommentArrayList.add(commentFirst);
-            mPhoto.setComments(mCommentArrayList);
+            mArrayListComment.add(commentFirst);
+            mPhoto.setComments(mArrayListComment);
             setupWidgets(); // widgets still get set up even with no comments
         }
 
@@ -325,14 +325,14 @@ public class FragmentViewComments extends Fragment {
 
                                     // make sure to call all these things after receiving photo data from bundle otherwise wont't work
                                     // first comment will have the user who posted the picture with their caption
-                                    mCommentArrayList.clear(); // makes sure we have fresh list every time
+                                    mArrayListComment.clear(); // makes sure we have fresh list every time
                                     Comment commentFirst = new Comment();
                                     commentFirst.setComment(mPhoto.getCaption());
                                     commentFirst.setUser_id(mPhoto.getUser_id());
                                     commentFirst.setDate_created(mPhoto.getDate_created());
 
-                                    mCommentArrayList.add(commentFirst); // adds first comment to list for testing
-                                    Log.d(TAG, "onDataChange: first comment added to array: " + mCommentArrayList);
+                                    mArrayListComment.add(commentFirst); // adds first comment to list for testing
+                                    Log.d(TAG, "onDataChange: first comment added to array: " + mArrayListComment);
                                     // loop checks for any more comments
                                     for (DataSnapshot dataSnapshot1 : singleDataSnapshot
                                             .child(mContext.getString(R.string.comments_field)).getChildren()) { // loop[ through all comments
@@ -340,10 +340,10 @@ public class FragmentViewComments extends Fragment {
                                         comment.setUser_id(dataSnapshot1.getValue(Comment.class).getUser_id());
                                         comment.setComment(dataSnapshot1.getValue(Comment.class).getComment());
                                         comment.setDate_created(dataSnapshot1.getValue(Comment.class).getDate_created());
-                                        mCommentArrayList.add(comment);
+                                        mArrayListComment.add(comment);
                                     }
 
-                                    photo.setComments(mCommentArrayList); // adds list of comments to photo
+                                    photo.setComments(mArrayListComment); // adds list of comments to photo
 
                                     mPhoto = photo; // globally updated photo
 

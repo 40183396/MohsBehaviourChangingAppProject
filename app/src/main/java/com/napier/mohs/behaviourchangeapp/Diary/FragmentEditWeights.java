@@ -23,7 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
+import com.napier.mohs.behaviourchangeapp.Utils.MethodsFirebase;
 
 import java.text.DecimalFormat;
 
@@ -44,7 +44,7 @@ public class FragmentEditWeights extends Fragment {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
+    private MethodsFirebase mMethodsFirebase;
 
 
     private Context mContext;
@@ -66,7 +66,7 @@ public class FragmentEditWeights extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
-        mFirebaseMethods = new FirebaseMethods(mContext);
+        mMethodsFirebase = new MethodsFirebase(mContext);
 
 
         setupFirebaseAuth();
@@ -189,7 +189,7 @@ public class FragmentEditWeights extends Fragment {
 
             Log.d(TAG, "onClick: navigating back to previous activity");
 
-            mFirebaseMethods.exerciseUpdateDatabase(exercise_id, date, name, weight, reps);
+            mMethodsFirebase.exerciseUpdateDatabase(exercise_id, date, name, weight, reps);
             diaryEditWeight.getText().clear();
             diaryEditReps.getText().clear();
             Toasty.success(mContext, "Success!", Toast.LENGTH_SHORT).show();

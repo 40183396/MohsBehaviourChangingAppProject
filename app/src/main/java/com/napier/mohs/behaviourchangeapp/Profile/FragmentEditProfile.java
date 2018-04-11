@@ -33,8 +33,8 @@ import com.napier.mohs.behaviourchangeapp.Models.User;
 import com.napier.mohs.behaviourchangeapp.Models.UserAndAccountSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Share.ActivityShare;
-import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
-import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoaderSettings;
+import com.napier.mohs.behaviourchangeapp.Utils.MethodsFirebase;
+import com.napier.mohs.behaviourchangeapp.Utils.SettingsUniversalImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +54,7 @@ public class FragmentEditProfile extends Fragment implements DialogEmailChange.O
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
+    private MethodsFirebase mMethodsFirebase;
 
     @BindView(R.id.edittextEditDisplayName) EditText mDisplayName;
     @BindView(R.id.edittextEditUsername) EditText mUsername;
@@ -113,7 +113,7 @@ public class FragmentEditProfile extends Fragment implements DialogEmailChange.O
                                                              if (task.isSuccessful()) {
                                                                  Log.d(TAG, "User email address is updated.");
                                                                  Toast.makeText(getActivity(), "Email has been updated successfully", Toast.LENGTH_SHORT).show();
-                                                                 mFirebaseMethods.emailUpdate(mEmail.getText().toString());
+                                                                 mMethodsFirebase.updateEmailDatabase(mEmail.getText().toString());
                                                              }
                                                          }});
                                          }
@@ -141,7 +141,7 @@ public class FragmentEditProfile extends Fragment implements DialogEmailChange.O
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
-        mFirebaseMethods = new FirebaseMethods(getActivity());
+        mMethodsFirebase = new MethodsFirebase(getActivity());
 
         setupFirebaseAuth();
 
@@ -202,15 +202,15 @@ public class FragmentEditProfile extends Fragment implements DialogEmailChange.O
 
         // if displayname is changed
         if(!mUserAndAccountSettings.getAccountsettings().getDisplay_name().equals(displayname)){
-            mFirebaseMethods.usersettingsUpdate(displayname, null, null, 0);
+            mMethodsFirebase.updateAccountSettingsDatabase(displayname, null, null, 0);
         }
 
         if(!mUserAndAccountSettings.getAccountsettings().getWebsite().equals(web)){
-            mFirebaseMethods.usersettingsUpdate(null, web, null, 0);
+            mMethodsFirebase.updateAccountSettingsDatabase(null, web, null, 0);
         }
 
         if(!mUserAndAccountSettings.getAccountsettings().getDescription().equals(description)){
-            mFirebaseMethods.usersettingsUpdate(null, null, description, 0);
+            mMethodsFirebase.updateAccountSettingsDatabase(null, null, description, 0);
         }
 
     }
@@ -235,7 +235,7 @@ public class FragmentEditProfile extends Fragment implements DialogEmailChange.O
                 // only returns datasnapshot if match is foound
                 if (!dataSnapshot.exists()) {
                     // username added
-                    mFirebaseMethods.usernameUpdate(username);
+                    mMethodsFirebase.updateUsernameDatabase(username);
                     Toast.makeText(getActivity(), "Username changed.", Toast.LENGTH_SHORT).show();
                 }
                 //loops through results
@@ -265,7 +265,7 @@ public class FragmentEditProfile extends Fragment implements DialogEmailChange.O
         User user = userAndAccountSettings.getUser();
         AccountSettings accountSettings = userAndAccountSettings.getAccountsettings();
 
-        UniversalImageLoaderSettings.setImage(accountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
+        SettingsUniversalImageLoader.setImage(accountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
 
         // sets up widgets with db data
         mDisplayName.setText(accountSettings.getDisplay_name());
@@ -318,7 +318,7 @@ public class FragmentEditProfile extends Fragment implements DialogEmailChange.O
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // retrieves the user info from db
-                setupWidgets(mFirebaseMethods.getUserSettings(dataSnapshot)); // retrieves datasnapshot of user settings and sets up widgets
+                setupWidgets(mMethodsFirebase.getUserAndAccountSettings(dataSnapshot)); // retrieves datasnapshot of user settings and sets up widgets
                 // retrieves images for the user
             }
 

@@ -23,12 +23,12 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
  * Settings Here Are Available App Widfe.
  */
 
-public class UniversalImageLoaderSettings {
+public class SettingsUniversalImageLoader {
 
     private static final int defaultImage = R.drawable.ic_android;
     private Context mContext;
 
-    public UniversalImageLoaderSettings(Context context) {
+    public SettingsUniversalImageLoader(Context context) {
         mContext = context;
     }
 

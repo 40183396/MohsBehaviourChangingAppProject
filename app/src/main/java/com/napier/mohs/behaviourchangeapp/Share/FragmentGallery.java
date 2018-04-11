@@ -62,7 +62,7 @@ public class FragmentGallery extends Fragment{
 
         directories = new ArrayList<>();
 
-        initialiseFolders();
+        setupFolders();
 
         // Button to close gallery
         close.setOnClickListener(new View.OnClickListener() {
@@ -112,12 +112,12 @@ public class FragmentGallery extends Fragment{
 
     }
     // Searches through phone for all images
-    public ArrayList<String> getImageFiles(File dir) {
+    public ArrayList<String> getAllImageFiles(File dir) {
         File fileList[] = dir.listFiles();
         if (fileList != null && fileList.length > 0) {
             for (File file : fileList) {
                 if (file.isDirectory()) {
-                    getImageFiles(file);
+                    getAllImageFiles(file);
                 }
                 else {
                     if (file.getName().endsWith(".png")
@@ -138,11 +138,11 @@ public class FragmentGallery extends Fragment{
         }
         return directories;
     }
-    private void initialiseFolders(){
+    private void setupFolders(){
         // start search in root directory of phone
         File root = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
         // search from root directory all images
-        getImageFiles(root);
+        getAllImageFiles(root);
         // ArrayList of formatted directory names
         ArrayList<String> namesDirectory = new ArrayList<>();
         for(int i = 0; i < directories.size(); i++){
@@ -166,7 +166,7 @@ public class FragmentGallery extends Fragment{
                 Log.d(TAG, "onItemSelected: selected item: " + directories.get(position));
 
                 // grid view is set up with images of selected directory
-                gridViewSetup(directories.get(position));
+                setupGridViewImages(directories.get(position));
             }
 
             @Override
@@ -177,8 +177,8 @@ public class FragmentGallery extends Fragment{
     }
 
     // sets up grid view with image files from directory
-    private void gridViewSetup(String directorySelected){
-        Log.d(TAG, "gridViewSetup: selected directory: " + directorySelected);
+    private void setupGridViewImages(String directorySelected){
+        Log.d(TAG, "setupGridViewImages: selected directory: " + directorySelected);
         final ArrayList<String> imgURLs = FileSearch.retrieveFilePaths(directorySelected);
 
         // integer which represents the grid width
@@ -195,12 +195,12 @@ public class FragmentGallery extends Fragment{
        // sets that is first displayed when fragment is inflated
         // try catch was added to stop app crashing if no images occur in the directory
         try{
-            imageSet(imgURLs.get(0), mGalleryImage, mAppend);
+            setupImage(imgURLs.get(0), mGalleryImage, mAppend);
 
             // sets first image as selected (default) when fragment is loaded
             mImageSelected = imgURLs.get(0);
         } catch (ArrayIndexOutOfBoundsException e){
-            Log.e(TAG, "gridViewSetup: ArrayIndexOutOfBoundsException " + e.getMessage());
+            Log.e(TAG, "setupGridViewImages: ArrayIndexOutOfBoundsException " + e.getMessage());
         }
 
 
@@ -209,7 +209,7 @@ public class FragmentGallery extends Fragment{
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: image selected: " + imgURLs.get(position));
 
-                imageSet(imgURLs.get(position), mGalleryImage, mAppend);
+                setupImage(imgURLs.get(position), mGalleryImage, mAppend);
 
                 // every time image is clicked it becomes selected image
                 mImageSelected = imgURLs.get(position);
@@ -217,8 +217,8 @@ public class FragmentGallery extends Fragment{
         });
     }
 
-    private void imageSet(String imgURL, ImageView img, String append){
-        Log.d(TAG, "imageSet: image is being set");
+    private void setupImage(String imgURL, ImageView img, String append){
+        Log.d(TAG, "setupImage: image is being set");
 
         ImageLoader imageLoader = ImageLoader.getInstance();
 

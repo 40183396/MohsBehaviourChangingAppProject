@@ -25,7 +25,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.behaviourchangeapp.Models.User;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
+import com.napier.mohs.behaviourchangeapp.Utils.MethodsFirebase;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -42,7 +42,7 @@ public class  ActivityRegister extends AppCompatActivity {
     // Firebase Stuff
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseMethods fbMethods;
+    private MethodsFirebase fbMethods;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
 
@@ -69,7 +69,7 @@ public class  ActivityRegister extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = ActivityRegister.this;
 
-        fbMethods = new FirebaseMethods(mContext);
+        fbMethods = new MethodsFirebase(mContext);
         Log.d(TAG, "onCreate: started register");
 
         // Invisible till user attempts to register
@@ -142,7 +142,7 @@ public class  ActivityRegister extends AppCompatActivity {
                     //mProgressBar.setVisibility(View.VISIBLE);
                     //mSigningIn.setVisibility(View.VISIBLE);
                     Toasty.info(mContext, "Attempting To Register", Toast.LENGTH_SHORT).show();
-                    fbMethods.newEmailRegister(email, password, username);
+                    fbMethods.registerEmail(email, password, username);
 
                 }
 
@@ -198,7 +198,7 @@ public class  ActivityRegister extends AppCompatActivity {
                 mUsername = username + append; // if username is appended
 
                 // add new user to db & user_account_settings to db
-                fbMethods.addNewUser(email, mUsername, "", "", "");
+                fbMethods.addUserDatabase(email, mUsername, "", "", "");
                 Log.d(TAG, "onDataChange: email: " + email + ", username = " + mUsername );
 
                 // signs user out after registering

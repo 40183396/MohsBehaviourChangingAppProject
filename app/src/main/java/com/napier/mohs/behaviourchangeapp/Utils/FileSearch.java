@@ -12,14 +12,14 @@ public class FileSearch {
 
 
     public static ArrayList<String> retrieveFilePaths(String directory){
-        ArrayList<String> pathArray = new ArrayList<>();
+        ArrayList<String> arrayListPath = new ArrayList<>();
         File file = new File(directory);
         File[] filelist = file.listFiles(); // gets list of files from whatever directory we chose
         for(int i = 0; i < filelist.length; i++){
             if(filelist[i].isFile()){
-                pathArray.add(filelist[i].getAbsolutePath());
+                arrayListPath.add(filelist[i].getAbsolutePath());
             }
         }
-        return pathArray; // returns list of files inside directory
+        return arrayListPath; // returns list of files inside directory
     }
 }

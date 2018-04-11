@@ -496,7 +496,7 @@ public class FragmentViewProfile extends Fragment {
         User user = userAndAccountSettings.getUser();
         AccountSettings accountSettings = userAndAccountSettings.getAccountsettings();
 
-        UniversalImageLoaderSettings.setImage(accountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
+        SettingsUniversalImageLoader.setImage(accountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
 
         // sets up widgets with db data
         mDisplayName.setText(accountSettings.getDisplay_name());
@@ -514,8 +514,8 @@ public class FragmentViewProfile extends Fragment {
     // setup of the bottom navigation
     private void setupBottomNavigationView() {
         Log.d(TAG, "bottomNavigationViewExSetup: setting up BottomNavigationView");
-        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomNavigationView);
-        BottomNavigationViewExSettings.enableNavigation(mContext, getActivity(), bottomNavigationView); //getActivity as we are in fragment
+        SettingsBottomNavigationViewEx.bottomNavigationViewExSetup(bottomNavigationView);
+        SettingsBottomNavigationViewEx.enableNavigation(mContext, getActivity(), bottomNavigationView); //getActivity as we are in fragment
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);

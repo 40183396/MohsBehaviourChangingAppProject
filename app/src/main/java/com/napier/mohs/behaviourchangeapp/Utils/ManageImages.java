@@ -18,7 +18,7 @@ public class ManageImages {
     private static final String TAG = "ManageImages";
 
 
-    public static Bitmap getBtm(String imgURL){
+    public static Bitmap retrieveBitmap(String imgURL){
         File imgFile = new File(imgURL); // creating file from pointer of image url in memory
         FileInputStream fileInputStream = null; // create file input stream
         Bitmap bitmap = null;
@@ -26,19 +26,19 @@ public class ManageImages {
             fileInputStream = new FileInputStream(imgFile); // importing image file into project
             bitmap = BitmapFactory.decodeStream(fileInputStream); // convert to bitmap using bitmap factory and decode input stream
         } catch (FileNotFoundException e){
-            Log.e(TAG, "getBtm: FileNotFoundException: " + e.getMessage() );
+            Log.e(TAG, "retrieveBitmap: FileNotFoundException: " + e.getMessage() );
         } finally {
             try{
                 fileInputStream.close(); // closing input stream
             }catch (IOException e){
-                Log.e(TAG, "getBtm: IOException: " + e.getMessage() );
+                Log.e(TAG, "retrieveBitmap: IOException: " + e.getMessage() );
             }
         }
         return bitmap; // returns converted bitmap
     }
 
     // method that changes bitmap to array of bytes, quality is > 0 but < 100
-    public static byte[] getBytesOfBitmap(Bitmap bitmap, int quality){
+    public static byte[] retrieveBitmapBytes(Bitmap bitmap, int quality){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         // choose quality and format
         bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream); //quality here for example could be 50 for 50% or 90  for 90% etc.

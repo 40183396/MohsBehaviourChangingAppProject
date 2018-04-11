@@ -26,8 +26,8 @@ import butterknife.ButterKnife;
 public class FragmentPhoto extends Fragment{
 
     private static final String TAG = "FragmentPhoto";
-    private static final int PHOTOFRAGMENT_NUM = 1;
-    private static final int GALLERYFRAGMENT_NUM = 2;
+    private static final int FRAGMENT_PHOTO_NUM = 1;
+    private static final int FRAGMENT_GALLERY_NUM = 2; // not needed just for future
     private static final int REQUEST_CODE_CAMERA = 3; // does not matter what value this is, just added for consistency
 
     // widgets
@@ -47,7 +47,7 @@ public class FragmentPhoto extends Fragment{
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Camera is being launched");
 
-                if(((ActivityShare)getActivity()).getTabCurrentNumber() == PHOTOFRAGMENT_NUM){
+                if(((ActivityShare)getActivity()).getTabCurrentNumber() == FRAGMENT_PHOTO_NUM){
 
                     // Check if camera permission is verified
                     if(((ActivityShare)getActivity()).permissionsCheck(Permissions.PERMISSION_CAMERA[0])){
@@ -69,7 +69,7 @@ public class FragmentPhoto extends Fragment{
     }
 
     // checks if there is a  root task
-    private boolean isTaskRoot() {
+    private boolean rootTaskCheck() {
         // if flag is 0 this means this is root task
         if (((ActivityShare) getActivity()).taskGet() == 0) {
             return true;
@@ -83,8 +83,8 @@ public class FragmentPhoto extends Fragment{
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == REQUEST_CODE_CAMERA){
-            Log.d(TAG, "onActivityResult: photo is done being taken");
-            Log.d(TAG, "onActivityResult: attempt navigation to share screen");
+            Log.d(TAG, "onActivityResult: photo has been taken");
+            Log.d(TAG, "onActivityResult: attempt to go share page");
 
             // goes to share screen to have photo published
             // checks if task was root
@@ -94,7 +94,7 @@ public class FragmentPhoto extends Fragment{
                 bitmap = (Bitmap) data.getExtras().get("data"); // data is a keyword argument
 
 
-            if(isTaskRoot()){
+            if(rootTaskCheck()){
                 try{
                     Log.d(TAG, "onActivityResult: bitmap recieved from camera " + bitmap);
                     Intent intent = new Intent(getActivity(), ActivityNext.class);

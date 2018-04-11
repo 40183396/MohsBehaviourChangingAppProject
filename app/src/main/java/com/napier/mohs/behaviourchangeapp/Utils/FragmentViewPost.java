@@ -84,7 +84,7 @@ public class FragmentViewPost extends Fragment {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
+    private MethodsFirebase mMethodsFirebase;
 
     private GestureDetector mGestureDetector;
 
@@ -146,7 +146,7 @@ public class FragmentViewPost extends Fragment {
         // bundle could potentially be null so need a try catch
         try{
             mPhoto = getFromBundlePhoto(); // photo retrieved from bundle
-            UniversalImageLoaderSettings.setImage(mPhoto.getImage_path(), mImagePost, null, "");
+            SettingsUniversalImageLoader.setImage(mPhoto.getImage_path(), mImagePost, null, "");
             mActivityNumber = getActivityNumberFromBundle(); // activity number retrieved from bundle
             retrieveCurrentUser();
             getPostDetails(); //retrieves user account settings for post
@@ -459,7 +459,7 @@ public class FragmentViewPost extends Fragment {
             }
         });
 
-        UniversalImageLoaderSettings.setImage(mAccountSettings.getProfile_photo(), mImageProfile, null, "");
+        SettingsUniversalImageLoader.setImage(mAccountSettings.getProfile_photo(), mImageProfile, null, "");
         mUsername.setText((mAccountSettings.getUsername()));
         mLikes.setText(mStringLikes);
         mCaption.setText(mPhoto.getCaption());
@@ -543,8 +543,8 @@ public class FragmentViewPost extends Fragment {
     // setup of the bottom navigation
     private void setupBottomNavigationView(){
         Log.d(TAG, "bottomNavigationViewExSetup: setting up BottomNavigationView");
-        BottomNavigationViewExSettings.bottomNavigationViewExSetup(mBottomNavigationView);
-        BottomNavigationViewExSettings.enableNavigation(getActivity(), getActivity(), mBottomNavigationView); //getActivity as we are in fragment
+        SettingsBottomNavigationViewEx.bottomNavigationViewExSetup(mBottomNavigationView);
+        SettingsBottomNavigationViewEx.enableNavigation(getActivity(), getActivity(), mBottomNavigationView); //getActivity as we are in fragment
         Menu menu = mBottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(mActivityNumber);
         menuItem.setChecked(true);

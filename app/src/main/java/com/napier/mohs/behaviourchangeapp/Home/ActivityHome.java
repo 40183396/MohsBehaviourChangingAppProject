@@ -21,10 +21,10 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Login.ActivityLogin;
 import com.napier.mohs.behaviourchangeapp.Models.Photo;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewExSettings;
+import com.napier.mohs.behaviourchangeapp.Utils.SettingsBottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterMainFeedList;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterSectionsPager;
-import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoaderSettings;
+import com.napier.mohs.behaviourchangeapp.Utils.SettingsUniversalImageLoader;
 import com.napier.mohs.behaviourchangeapp.Utils.FragmentViewComments;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -32,13 +32,13 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ActivityHome extends AppCompatActivity implements AdapterMainFeedList.OnItemsLoadMoreListener {
+public class ActivityHome extends AppCompatActivity implements AdapterMainFeedList.OnPostsLoadMoreListener {
 
 
     // interface methods
     @Override
-    public void onItemsLoadMore() {
-        Log.d(TAG, "onItemsLoadMore: more photos being displayed");
+    public void onPostsLoadMore() {
+        Log.d(TAG, "onPostsLoadMore: more photos being displayed");
         // FragmentHome is set up through view pager there is a different way to assign tag
         FragmentHome homeFragment = (FragmentHome) getSupportFragmentManager()
                 .findFragmentByTag("android:switcher:" + R.id.containerHome
@@ -129,8 +129,8 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
 
     // initialises image loader here to be able to use in all other activities
     private void setupUniversalImageLoader() {
-        UniversalImageLoaderSettings universalImageLoaderSettings = new UniversalImageLoaderSettings(mContext);
-        ImageLoader.getInstance().init(universalImageLoaderSettings.getConfig()); // retrieves configuration
+        SettingsUniversalImageLoader settingsUniversalImageLoader = new SettingsUniversalImageLoader(mContext);
+        ImageLoader.getInstance().init(settingsUniversalImageLoader.getConfig()); // retrieves configuration
     }
 
 
@@ -156,8 +156,8 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     private void setupBottomNavbar() {
         Log.d(TAG, "setupBottomNavbar: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomNavigationViewEx);
-        BottomNavigationViewExSettings.enableNavigation(mContext, this, bottomNavigationViewEx);
+        SettingsBottomNavigationViewEx.bottomNavigationViewExSetup(bottomNavigationViewEx);
+        SettingsBottomNavigationViewEx.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER);
         menuItem.setChecked(true);

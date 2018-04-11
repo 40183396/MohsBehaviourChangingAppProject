@@ -22,8 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
-import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoaderSettings;
+import com.napier.mohs.behaviourchangeapp.Utils.MethodsFirebase;
+import com.napier.mohs.behaviourchangeapp.Utils.SettingsUniversalImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +40,7 @@ public class ActivityNext extends AppCompatActivity{
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
-    private FirebaseMethods mFirebaseMethods;
+    private MethodsFirebase mMethodsFirebase;
 
     @BindView(R.id.edittextNextCaption) EditText mCaption;
     @BindView(R.id.textviewNextShare) TextView share;
@@ -62,10 +62,10 @@ public class ActivityNext extends AppCompatActivity{
         setContentView(R.layout.activity_next);
         ButterKnife.bind(this);
 
-        mFirebaseMethods = new FirebaseMethods(mContext);
+        mMethodsFirebase = new MethodsFirebase(mContext);
 
         setupFirebaseAuth();
-        imageSet();
+        setupImageToShare();
 
         Log.d(TAG, "onCreate: recieved selected image: " + getIntent().getStringExtra(getString(R.string.image_selected)));
 
@@ -91,12 +91,12 @@ public class ActivityNext extends AppCompatActivity{
                 // if intent has extra
                 if(mIntent.hasExtra(getString(R.string.image_selected))){ // image means came from gallery
                     imgURL = mIntent.getStringExtra(getString(R.string.image_selected)); // imgURL set to incoming intent
-                    mFirebaseMethods.newPhotoUpload(getString(R.string.new_photo), caption, imgCount, imgURL, null);
+                    mMethodsFirebase.uploadPhotoNew(getString(R.string.new_photo), caption, imgCount, imgURL, null);
 
                 }
                 else if(mIntent.hasExtra(getString(R.string.bitmap_selected))){ // bitmap means came from camera
                     mBitmap = (Bitmap) mIntent.getParcelableExtra(getString(R.string.bitmap_selected));
-                    mFirebaseMethods.newPhotoUpload(getString(R.string.new_photo), caption, imgCount, null, mBitmap);
+                    mMethodsFirebase.uploadPhotoNew(getString(R.string.new_photo), caption, imgCount, null, mBitmap);
                 }
 
 
@@ -108,19 +108,19 @@ public class ActivityNext extends AppCompatActivity{
 
 
     // when activity starts automatically sets image incoming image url of intent
-    private void imageSet(){
+    private void setupImageToShare(){
         mIntent = getIntent();
         // if intent has extra
         if(mIntent.hasExtra(getString(R.string.image_selected))){ // image means came from gallery
             imgURL = mIntent.getStringExtra(getString(R.string.image_selected)); // imgURL set to incoming intent
-            Log.d(TAG, "imageSet: recieved new image " + imgURL);
+            Log.d(TAG, "setupImageToShare: recieved new image " + imgURL);
             // static call to universal image loader
-            UniversalImageLoaderSettings.setImage(imgURL, img, null, mAppend);
+            SettingsUniversalImageLoader.setImage(imgURL, img, null, mAppend);
             // do not need to check for null values as universal image loader can handle this
         }
         else if(mIntent.hasExtra(getString(R.string.bitmap_selected))){ // bitmap means came from camera
             mBitmap = (Bitmap) mIntent.getParcelableExtra(getString(R.string.bitmap_selected));
-            Log.d(TAG, "imageSet: recieved new bitmap");
+            Log.d(TAG, "setupImageToShare: recieved new bitmap");
             img.setImageBitmap(mBitmap);
         }
 
@@ -131,7 +131,7 @@ public class ActivityNext extends AppCompatActivity{
     // Method to check if a user is signed in app
 
     private void setupFirebaseAuth(){
-        Log.d(TAG, "setupFirebaseAuth: firbase auth is being setup");
+        Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myDBRefFirebase = mFirebaseDatabase.getReference();
@@ -156,7 +156,7 @@ public class ActivityNext extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // returns number of images for user
-                imgCount = mFirebaseMethods.getImgCount(dataSnapshot);
+                imgCount = mMethodsFirebase.getImgCount(dataSnapshot);
                 Log.d(TAG, "onDataChange: number of images: " + imgCount);
             }
 

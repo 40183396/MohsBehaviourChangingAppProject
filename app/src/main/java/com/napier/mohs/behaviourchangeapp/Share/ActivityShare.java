@@ -14,7 +14,7 @@ import android.view.MenuItem;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewExSettings;
+import com.napier.mohs.behaviourchangeapp.Utils.SettingsBottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Utils.Permissions;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterSectionsPager;
 
@@ -48,7 +48,7 @@ public class ActivityShare extends AppCompatActivity{
             permissionsVerify(Permissions.PERMISSIONS);
         }
 
-        bottomNavbarSetup();
+        setupBottomNavbar();
     }
 
     // returns the number of the current tab
@@ -116,11 +116,11 @@ public class ActivityShare extends AppCompatActivity{
     }
 
     // setup for bottom navbar
-    private void bottomNavbarSetup(){
-        Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
+    private void setupBottomNavbar(){
+        Log.d(TAG, "setupBottomNavbar: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomNavigationViewEx);
-        BottomNavigationViewExSettings.enableNavigation(mContext, this, bottomNavigationViewEx);
+        SettingsBottomNavigationViewEx.bottomNavigationViewExSetup(bottomNavigationViewEx);
+        SettingsBottomNavigationViewEx.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER );
         menuItem.setChecked(true);

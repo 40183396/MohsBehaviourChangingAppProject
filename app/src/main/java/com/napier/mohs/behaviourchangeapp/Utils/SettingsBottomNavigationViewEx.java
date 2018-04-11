@@ -20,7 +20,7 @@ import com.napier.mohs.behaviourchangeapp.Share.ActivityShare;
  * Created by Mohs on 15/03/2018.
  */
 
-public class BottomNavigationViewExSettings {
+public class SettingsBottomNavigationViewEx {
 
     private static final String TAG = "BottomNavigationViewHel";
 

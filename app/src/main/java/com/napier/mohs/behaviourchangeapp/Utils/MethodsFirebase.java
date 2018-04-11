@@ -46,10 +46,10 @@ import es.dmoral.toasty.Toasty;
  * Created by Mohs on 17/03/2018.
  */
 
-public class FirebaseMethods {
-    private static final String TAG = "FirebaseMethods";
+public class MethodsFirebase {
+    private static final String TAG = "MethodsFirebase";
     private Context mContext;
-    private double mUploadPhotoProgress = 0;
+    private double mPhotoProgressUpload = 0;
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -63,7 +63,7 @@ public class FirebaseMethods {
     private int IMG_QUALITY = 100;// quality of bitmap image converted to bytes
     public String IMAGE_FIREBASE_STORAGE = "photos/users/"; // Directory for where images are stored in firebase storage
 
-    public FirebaseMethods(Context context) {
+    public MethodsFirebase(Context context) {
         Log.d(TAG, "setupFirebaseAuth: firebase auth is being setup");
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -91,15 +91,15 @@ public class FirebaseMethods {
     }
 
     // void because firebase auto does async task in background when it uploads images to storage
-    public void newPhotoUpload(String typeOfPhoto, final String caption,
+    public void uploadPhotoNew(String photoType, final String caption,
                                final int count, final String imgURL, Bitmap bitmap) {
-        Log.d(TAG, "newPhotoUpload: uploading new photo attempt");
+        Log.d(TAG, "uploadPhotoNew: uploading new photo attempt");
 
 
         // either new photo or profile photo
         // if loop for new photo
-        if (typeOfPhoto.equals(mContext.getString(R.string.new_photo))) {
-            Log.d(TAG, "newPhotoUpload: new photo being uploaded");
+        if (photoType.equals(mContext.getString(R.string.new_photo))) {
+            Log.d(TAG, "uploadPhotoNew: new photo being uploaded");
 
             String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid(); // instead of global using this local
 
@@ -109,10 +109,10 @@ public class FirebaseMethods {
 
             // Converts img url to bitmap
             if (bitmap == null) {
-                bitmap = ManageImages.getBtm(imgURL);
+                bitmap = ManageImages.retrieveBitmap(imgURL);
             }
 
-            byte[] bytes = ManageImages.getBytesOfBitmap(bitmap, IMG_QUALITY);
+            byte[] bytes = ManageImages.retrieveBitmapBytes(bitmap, IMG_QUALITY);
 
             UploadTask uploadTask = null;
             uploadTask = storageReference.putBytes(bytes);
@@ -125,11 +125,11 @@ public class FirebaseMethods {
                     // get download photo url in storage location in firebase
                     Uri firebaseURL = taskSnapshot.getDownloadUrl();
 
-                    Toast.makeText(mContext, "Upload was successful", Toast.LENGTH_SHORT).show();
+                    Toasty.success(mContext, "Upload was successful", Toast.LENGTH_SHORT).show();
 
                     // add to pointers in firebase database
                     // add new photo to 'photos' and 'user_photos' nodes
-                    photoAddToDatabase(caption, firebaseURL.toString());
+                    addPhotoDatabase(caption, firebaseURL.toString());
 
                     // nav to main feed of app where user can see their photo
                     Intent intent = new Intent(mContext, ActivityHome.class);
@@ -141,7 +141,7 @@ public class FirebaseMethods {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Log.d(TAG, "onFailure: Upload failed");
-                    Toast.makeText(mContext, "Upload failed", Toast.LENGTH_SHORT).show();
+                    Toasty.error(mContext, "Upload failed", Toast.LENGTH_SHORT).show();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 // constantly updates as we go
@@ -151,18 +151,18 @@ public class FirebaseMethods {
 
                     //if loop to prevent too much data being displayed
                     // toast won't print unless new progress is 15 higher than old
-                    if (progress - 15 > mUploadPhotoProgress) {
+                    if (progress - 15 > mPhotoProgressUpload) {
                         // formatted toast string so only whole number displayed instead of decimals
                         Toast.makeText(mContext, "upload progress: " + String.format("%.0f", progress) + "%", Toast.LENGTH_SHORT).show();
-                        mUploadPhotoProgress = progress;
+                        mPhotoProgressUpload = progress;
                     }
                     Log.d(TAG, "onProgress: progress of upload: " + progress + "%");
                 }
             });
         }
         // else profile pic is being uploaded
-        else if (typeOfPhoto.equals(mContext.getString(R.string.profile_photo))) {
-            Log.d(TAG, "newPhotoUpload: new profile photo being uploaded");
+        else if (photoType.equals(mContext.getString(R.string.profile_photo))) {
+            Log.d(TAG, "uploadPhotoNew: new profile photo being uploaded");
 
 
             String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid(); // instead of global using this local
@@ -172,9 +172,9 @@ public class FirebaseMethods {
 
             // Converts img url to bitmap
             if (bitmap == null) {
-                bitmap = ManageImages.getBtm(imgURL);
+                bitmap = ManageImages.retrieveBitmap(imgURL);
             }
-            byte[] bytes = ManageImages.getBytesOfBitmap(bitmap, IMG_QUALITY);
+            byte[] bytes = ManageImages.retrieveBitmapBytes(bitmap, IMG_QUALITY);
 
             UploadTask uploadTask = null;
             uploadTask = storageReference.putBytes(bytes);
@@ -191,7 +191,7 @@ public class FirebaseMethods {
 
                     // add to pointers in firebase database
                     // add new photo to 'user_account_settings' nodes
-                    profilePhotoSet(firebaseURL.toString());
+                    setupProfilePhoto(firebaseURL.toString());
 
                     // sets viewpager so returns us back to edit profile fragment
                     // opens up edit profile fragment and skips showing account settings activity
@@ -216,10 +216,10 @@ public class FirebaseMethods {
 
                     //if loop to prevent too much data being displayed
                     // toast won't print unless new progress is 15 higher than old
-                    if (progress - 15 > mUploadPhotoProgress) {
+                    if (progress - 15 > mPhotoProgressUpload) {
                         // formatted toast string so only whole number displayed instead of decimals
                         Toast.makeText(mContext, "upload progress: " + String.format("%.0f", progress) + "%", Toast.LENGTH_SHORT).show();
-                        mUploadPhotoProgress = progress;
+                        mPhotoProgressUpload = progress;
                     }
                     Log.d(TAG, "onProgress: progress of upload: " + progress + "%");
                 }
@@ -231,8 +231,8 @@ public class FirebaseMethods {
     }
 
     // setting single parameter  to change profile photo and uploads to db
-    private void profilePhotoSet(String url) {
-        Log.d(TAG, "profilePhotoSet: new profile photo being set " + url);
+    private void setupProfilePhoto(String url) {
+        Log.d(TAG, "setupProfilePhoto: new profile photo being set " + url);
 
         myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -248,53 +248,53 @@ public class FirebaseMethods {
     }
 
     // adds image to firebase db
-    private void photoAddToDatabase(String caption, String url) {
-        Log.d(TAG, "photoAddToDatabase: photo being added to database");
+    private void addPhotoDatabase(String caption, String url) {
+        Log.d(TAG, "addPhotoDatabase: photo being added to database");
         String tags = ManipulateStrings.retrieveTags(caption); // tags set here to null initially;
 
         // each photo has unique id
-        String photoNewKey = myDBRefFirebase.child(mContext.getString(R.string.db_name_photos)).push().getKey(); // random string
+        String photoIdKey = myDBRefFirebase.child(mContext.getString(R.string.db_name_photos)).push().getKey(); // random string
         Photo photo = new Photo();
         photo.setCaption(caption);
         photo.setDate_created(timeStampGet());
         photo.setImage_path(url);
         photo.setTags(tags);
         photo.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        photo.setPhoto_id(photoNewKey);
+        photo.setPhoto_id(photoIdKey);
 
         // database insertion
         myDBRefFirebase.child(mContext.getString(R.string.db_name_user_photos))
                 .child(FirebaseAuth.getInstance()
                         .getCurrentUser().getUid())
-                .child(photoNewKey).setValue(photo);
-        myDBRefFirebase.child(mContext.getString(R.string.db_name_photos)).child(photoNewKey).setValue(photo);
+                .child(photoIdKey).setValue(photo);
+        myDBRefFirebase.child(mContext.getString(R.string.db_name_photos)).child(photoIdKey).setValue(photo);
     }
 
     // adds goal to firebase db
-    public void goalAddToDatabase(String name, String weight, String current) {
+    public void addGoalDatabase(String name, String weight, String current) {
         Log.d(TAG, "exerciseAddToDatabase: goals being added to database");
 
         // each new goal has unique id generated, push() writes data to database
-        String goalNewKey = myDBRefFirebase.child(mContext.getString(R.string.db_name_goals)).push().getKey(); // random string, push means write to db
+        String goalIdKey = myDBRefFirebase.child(mContext.getString(R.string.db_name_goals)).push().getKey(); // random string, push means write to db
 
         Goal goals = new Goal();
         goals.setGoal_name(name);
         goals.setGoal_weight(weight);
         goals.setCurrent_weight(current);
-        goals.setGoal_id(goalNewKey);
+        goals.setGoal_id(goalIdKey);
 
         //database insertion
         myDBRefFirebase.child(mContext.getString(R.string.db_name_goals))
                 .child(FirebaseAuth.getInstance()
                         .getCurrentUser().getUid())
-                .child(goalNewKey)
+                .child(goalIdKey)
                 .setValue(goals);
 
     }
 
     // adds updates goal to firebase db
-    public void goalUpdateDatabase(String goal_id, String name, String weight, String current) {
-        Log.d(TAG, "goalUpdateDatabase: goal is being updated");
+    public void updateGoalDatabase(String goal_id, String name, String weight, String current) {
+        Log.d(TAG, "updateGoalDatabase: goal is being updated");
         Goal goals = new Goal();
         goals.setGoal_name(name);
         goals.setGoal_weight(weight);
@@ -396,7 +396,7 @@ public class FirebaseMethods {
     }
 
     // registers the given email and password to firebase db
-    public void newEmailRegister(final String email, String password, final String username) {
+    public void registerEmail(final String email, String password, final String username) {
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() { //Because not in activty can not apply context here
@@ -406,7 +406,7 @@ public class FirebaseMethods {
                             // Sign in success, update UI with the signed-in user's information
 
                             // send verif email
-                            sendVerEmail();
+                            sendEmailVer();
                             userID = mAuth.getCurrentUser().getUid();
                             Log.d(TAG, "createUserWithEmail:success, userID: " + userID);
                             Toasty.success(mContext, "Successfully Authenticated! \n\t\t\t\tPlease Sign In",
@@ -426,7 +426,7 @@ public class FirebaseMethods {
 
     // sends verification email to user
     // took this out to allow for testing user accounts
-    public void sendVerEmail() {
+    public void sendEmailVer() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
@@ -448,7 +448,7 @@ public class FirebaseMethods {
     // this will add a user to the firebase db
     // it will include things such as website and profile pic
     // and user setting
-    public void addNewUser(String email, String username, String description, String website, String profile_photo) {
+    public void addUserDatabase(String email, String username, String description, String website, String profile_photo) {
 
         // Creates new user and adds to db
         // Removes spaces and adds periods to make usernames
@@ -459,7 +459,7 @@ public class FirebaseMethods {
                 .child(userID)
                 .setValue(user);
 
-        Log.d(TAG, "addNewUser: username: " + user);
+        Log.d(TAG, "addUserDatabase: username: " + user);
 
         // sets up user_account_settings
         AccountSettings userAccSettings = new AccountSettings(
@@ -473,7 +473,7 @@ public class FirebaseMethods {
                 website,
                 userID
         );
-        Log.d(TAG, "addNewUser: userAccSettings: " + userAccSettings);
+        Log.d(TAG, "addUserDatabase: userAccSettings: " + userAccSettings);
         myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
                 .child(userID)
                 .setValue(userAccSettings);
@@ -481,8 +481,8 @@ public class FirebaseMethods {
     }
 
     // Updates the users username in firebase db
-    public void usernameUpdate(String username) {
-        Log.d(TAG, "usernameUpdate: updating the users username to: " + username);
+    public void updateUsernameDatabase(String username) {
+        Log.d(TAG, "updateUsernameDatabase: updating the users username to: " + username);
 
         // updates users node
         myDBRefFirebase.child(mContext.getString(R.string.db_name_users))
@@ -498,8 +498,8 @@ public class FirebaseMethods {
     }
 
     // Updates the users email in users node firebase db
-    public void emailUpdate(String email) {
-        Log.d(TAG, "usernameUpdate: updating the users email to: " + email);
+    public void updateEmailDatabase(String email) {
+        Log.d(TAG, "updateUsernameDatabase: updating the users email to: " + email);
 
         myDBRefFirebase.child(mContext.getString(R.string.db_name_users))
                 .child(userID)
@@ -509,42 +509,42 @@ public class FirebaseMethods {
 
     // updates other settings apart from email and username
     // These do not haave to be unique
-    public void usersettingsUpdate(String displayname, String web, String description, long phone) {
-        Log.d(TAG, "usernameUpdate: updating the users settings, displayname: " + displayname + " web: " + web
-                + " phone: " + phone + " decription: " + description);
+    public void updateAccountSettingsDatabase(String display_name, String web_url, String profile_description, long phone_number) {
+        Log.d(TAG, "updateUsernameDatabase: updating the users settings, displayname: " + display_name + " web: " + web_url
+                + " phone: " + phone_number + " decription: " + profile_description);
 
-        if (displayname != null) {
+        if (display_name != null) {
             myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
                     .child(userID)
                     .child(mContext.getString(R.string.display_name_field))
-                    .setValue(displayname);
+                    .setValue(display_name);
         }
 
-        if (web != null) {
+        if (web_url != null) {
             myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
                     .child(userID)
                     .child(mContext.getString(R.string.website_field))
-                    .setValue(web);
+                    .setValue(web_url);
         }
 
-        if (description != null) {
+        if (profile_description != null) {
             myDBRefFirebase.child(mContext.getString(R.string.db_name_user_account_settings))
                     .child(userID)
                     .child(mContext.getString(R.string.description_field))
-                    .setValue(description);
+                    .setValue(profile_description);
         }
 
-        if (phone != 0) {
+        if (phone_number != 0) {
             myDBRefFirebase.child(mContext.getString(R.string.db_name_users))
                     .child(userID)
                     .child(mContext.getString(R.string.phone_number_field))
-                    .setValue(phone);
+                    .setValue(phone_number);
         }
 
     }
 
     // gets user account settings from firebase db for user logged in
-    public UserAndAccountSettings getUserSettings(DataSnapshot dataSnapshot) {
+    public UserAndAccountSettings getUserAndAccountSettings(DataSnapshot dataSnapshot) {
         Log.d(TAG, "getUserAccountSettings: getting user acc settings from firebase");
 
         AccountSettings accountSettings = new AccountSettings();

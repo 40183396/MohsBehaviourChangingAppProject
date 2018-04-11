@@ -14,37 +14,37 @@ import java.util.List;
 
 public class AdapterSectionsStatePager extends FragmentStatePagerAdapter {
 
-    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<Fragment> mListFragments = new ArrayList<>();
     private final HashMap<Fragment, Integer> mFragments = new HashMap<>();
-    private final HashMap<String, Integer> mFragmentNumbers = new HashMap<>();
-    private final HashMap<Integer, String> mFragmentNames = new HashMap<>();
+    private final HashMap<String, Integer> mNumberFragments = new HashMap<>();
+    private final HashMap<Integer, String> mNameFragments = new HashMap<>();
 
-    public AdapterSectionsStatePager(FragmentManager fm) {
-        super(fm);
+    public AdapterSectionsStatePager(FragmentManager manager) {
+        super(manager);
     }
 
     @Override
     public Fragment getItem(int position) {
-        return mFragmentList.get(position);
+        return mListFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return mFragmentList.size();
+        return mListFragments.size();
     }
 
     public void addFragment(Fragment fragment, String fragmentName){
-        mFragmentList.add(fragment);
-        mFragments.put(fragment, mFragmentList.size()-1);
-        mFragmentNumbers.put(fragmentName, mFragmentList.size()-1);
-        mFragmentNames.put(mFragmentList.size()-1, fragmentName);
+        mListFragments.add(fragment);
+        mFragments.put(fragment, mListFragments.size()-1);
+        mNumberFragments.put(fragmentName, mListFragments.size()-1);
+        mNameFragments.put(mListFragments.size()-1, fragmentName);
     }
 
 
     // for returning fragment with its name
     public Integer getFragmentNumber(String fragmentName){
-        if(mFragmentNumbers.containsKey(fragmentName)){
-            return mFragmentNumbers.get(fragmentName);
+        if(mNumberFragments.containsKey(fragmentName)){
+            return mNumberFragments.get(fragmentName);
         }else{
             return null;
         }
