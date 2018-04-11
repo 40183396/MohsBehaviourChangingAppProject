@@ -36,7 +36,7 @@ import com.napier.mohs.behaviourchangeapp.Models.UserAccountSettings;
 import com.napier.mohs.behaviourchangeapp.Models.UserSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterGridImage;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
+import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewExSettings;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
 import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoaderSettings;
 
@@ -182,8 +182,8 @@ public class FragmentProfile extends Fragment {
     // setup for BottomNavigationView
     private void bottomBarSetup() {
         Log.d(TAG, "bottomBarSetup: setting up BottomNavigationView");
-        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomBar);
-        BottomNavigationViewHelper.enableNavigation(mContext, getActivity(), bottomBar);
+        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomBar);
+        BottomNavigationViewExSettings.enableNavigation(mContext, getActivity(), bottomBar);
         Menu menu = bottomBar.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER);
         menuItem.setChecked(true);

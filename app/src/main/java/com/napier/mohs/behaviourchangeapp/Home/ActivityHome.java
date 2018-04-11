@@ -21,7 +21,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Login.ActivityLogin;
 import com.napier.mohs.behaviourchangeapp.Models.Photo;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
+import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewExSettings;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterMainFeedList;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterSectionsPager;
 import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoaderSettings;
@@ -155,8 +155,8 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     private void bottomNavbarSetup() {
         Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
+        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomNavigationViewEx);
+        BottomNavigationViewExSettings.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER);
         menuItem.setChecked(true);

@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
+import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewExSettings;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
 
 import java.text.DecimalFormat;
@@ -165,8 +165,8 @@ public class ActivityAddGoals extends AppCompatActivity{
     private void bottomNavbarSetup(){
         Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
+        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomNavigationViewEx);
+        BottomNavigationViewExSettings.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER );
         menuItem.setChecked(true);

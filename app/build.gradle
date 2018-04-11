@@ -34,7 +34,6 @@ dependencies {
     //BottomNavigationViewEx lib
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
 
-
     // Circle ImageView
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
@@ -51,25 +50,11 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    //StyleableToast
-    implementation 'com.muddzdev:styleabletoast:2.0.2'
-
     //Toasty
     implementation 'com.github.GrenderG:Toasty:1.2.8'
 
-    // datepicker-timeline
-    implementation 'com.github.badoualy:datepicker-timeline:c6dcd05737'
-
-
     // Number Progress Bar
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
-
-    // FirebaseUI for Firebase Realtime Database
-    implementation 'com.firebaseui:firebase-ui-database:3.2.2'
-
-    // Android Animations
-    implementation 'com.daimajia.easing:library:2.0@aar'
-    implementation 'com.daimajia.androidanimations:library:2.3@aar'
 
     // horizontal calendar
     implementation 'devs.mulham.horizontalcalendar:horizontalcalendar:1.3.4'

@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
+import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewExSettings;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterSectionsStatePager;
 
@@ -148,8 +148,8 @@ public class ActivityAccountSettings extends AppCompatActivity {
     private void bottomBarSetup() {
         Log.d(TAG, "bottomNavigationViewExSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomBar = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomBar);
-        BottomNavigationViewHelper.enableNavigation(mContext, this, bottomBar);
+        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomBar);
+        BottomNavigationViewExSettings.enableNavigation(mContext, this, bottomBar);
         Menu menu = bottomBar.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);

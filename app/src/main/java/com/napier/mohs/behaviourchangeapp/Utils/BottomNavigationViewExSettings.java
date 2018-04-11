@@ -20,16 +20,16 @@ import com.napier.mohs.behaviourchangeapp.Share.ActivityShare;
  * Created by Mohs on 15/03/2018.
  */
 
-public class BottomNavigationViewHelper {
+public class BottomNavigationViewExSettings {
 
     private static final String TAG = "BottomNavigationViewHel";
 
     public static void bottomNavigationViewExSetup(BottomNavigationViewEx bottomNavigationViewEx){
         Log.d(TAG, "bottomNavigationViewExSetup: Setting up BottomNavigationView");
-        //bottomNavigationViewEx.enableAnimation(true);
-       // bottomNavigationViewEx.enableItemShiftingMode(false);
+        bottomNavigationViewEx.enableAnimation(false);
         bottomNavigationViewEx.enableShiftingMode(false);
-        bottomNavigationViewEx.setTextVisibility(false);
+        bottomNavigationViewEx.enableItemShiftingMode(false);
+        //bottomNavigationViewEx.setTextVisibility(false);
     }
 
     public static void enableNavigation(final Context context, final Activity activityCalling, BottomNavigationViewEx view){

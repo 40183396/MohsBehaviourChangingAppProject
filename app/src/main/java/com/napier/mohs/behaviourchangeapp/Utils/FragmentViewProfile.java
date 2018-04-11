@@ -514,8 +514,8 @@ public class FragmentViewProfile extends Fragment {
     // setup of the bottom navigation
     private void setupBottomNavigationView() {
         Log.d(TAG, "bottomNavigationViewExSetup: setting up BottomNavigationView");
-        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomNavigationView);
-        BottomNavigationViewHelper.enableNavigation(mContext, getActivity(), bottomNavigationView); //getActivity as we are in fragment
+        BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomNavigationView);
+        BottomNavigationViewExSettings.enableNavigation(mContext, getActivity(), bottomNavigationView); //getActivity as we are in fragment
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);

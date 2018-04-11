@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/garageweights" />
+        android:src="@drawable/garageweights3"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,8 +23,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="REGISTER A NEW ACCOUNT"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:gravity="center_horizontal"
@@ -101,7 +103,7 @@
             android:gravity="center"
             android:textSize="16dp"
             android:id="@+id/textviewRegisterAlreadyHaveAccount"
-            android:textColor="@color/link_blue"/>
+            android:textColor="@color/white"/>
     </LinearLayout>
 
     <ProgressBar
@@ -115,7 +117,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Registering Please Wait..."
+        android:layout_centerVertical="true"
         android:textColor="@color/white"
+        android:textStyle="bold"
         android:textSize="20sp"
         android:id="@+id/textviewRegisterLoggingIn"
         android:layout_below="@+id/progressbarRegister"
