@@ -50,7 +50,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
 
     private static final String TAG = "ActivityHome";
     private static final int ACTIVITY_NUMBER = 0;
-    private static final int FRAGMENT_HOME = 1; // 1 because it is middle tab
+    private static final int FRAGMENT_HOME = 0; // 1 because it is middle tab
     private Context mContext = ActivityHome.this;
 
     // Firebase Stuff
@@ -136,9 +136,10 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
 
 
     // adds, home,camera, search tabs to homae activity
+    // took out camera fragment
     private void setupViewPager() {
         AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
-        adapter.addFragment(new FragmentCamera()); // index 0
+        //adapter.addFragment(new FragmentCamera()); // index 0
         adapter.addFragment(new FragmentHome()); // index 1
         adapter.addFragment(new FragmentSearch()); // index 2
         mViewPager.setAdapter(adapter);
@@ -146,9 +147,9 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_house);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_search);
+        //tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_house);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_search);
     }
 
     // setup for bottom navbar

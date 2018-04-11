@@ -17,7 +17,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Challenge Yourself"
+                    android:text="Challenge Yourself Add A Goal"
                     android:textStyle="bold"
                     android:layout_alignParentLeft="true"
                     android:layout_marginRight="15dp"
@@ -26,15 +26,16 @@
                     android:layout_centerVertical="true"
                     android:id="@+id/textviewGoal"/>
 
+                <!-- Took Out Add Goal Link Temp -->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add A Goal"
+                    android:text=""
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="15dp"
                     android:textSize="20sp"
-                    android:textColor="@color/link_blue"
+                    android:textColor="@color/colorPrimary"
                     android:layout_centerVertical="true"
                     android:id="@+id/textviewGoalAdd"/>
 

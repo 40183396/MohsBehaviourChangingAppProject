@@ -36,9 +36,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Share"
+                    android:text="Share Photo"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="5dp"
                     android:textSize="20sp"
                     android:textColor="@color/link_blue"
                     android:layout_centerVertical="true"

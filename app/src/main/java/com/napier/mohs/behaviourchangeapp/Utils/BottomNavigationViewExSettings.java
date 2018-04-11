@@ -28,7 +28,7 @@ public class BottomNavigationViewExSettings {
         Log.d(TAG, "bottomNavigationViewExSetup: Setting up BottomNavigationView");
         bottomNavigationViewEx.enableAnimation(false);
         bottomNavigationViewEx.enableShiftingMode(false);
-        bottomNavigationViewEx.enableItemShiftingMode(false);
+        //bottomNavigationViewEx.enableItemShiftingMode(false);
         //bottomNavigationViewEx.setTextVisibility(false);
     }
 

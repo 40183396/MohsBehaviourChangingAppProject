@@ -9,7 +9,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Hi, Theres Nothing Here! Why Not Share Something?"
+        android:text="Hi, Theres Nothing Here! Why Not Share Something? Click The Bottom Middle Tab"
+        android:textAlignment="center"
+        android:textSize="20sp"
         android:id="@+id/textviewHome"/>
 
     <ListView
