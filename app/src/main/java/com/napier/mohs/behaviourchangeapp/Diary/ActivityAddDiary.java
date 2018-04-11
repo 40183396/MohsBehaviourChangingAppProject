@@ -45,7 +45,7 @@ public class ActivityAddDiary extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
 
-    private static final int ACTIVITY_NUM = 3;
+    private static final int ACTIVITY_NUMBER = 3;
 
     // widgets
     @BindView(R.id.viewpagerContainer)
@@ -81,7 +81,7 @@ public class ActivityAddDiary extends AppCompatActivity {
         }
 
 
-        setupBottomNavigationView();
+        bottomNavbarSetup();
         setupViewPager();
     }
 
@@ -106,7 +106,7 @@ public class ActivityAddDiary extends AppCompatActivity {
         passDateintent(dateIntent);
         AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         adapter.addFragment(fragment); // index 0
-        adapter.addFragment(new FragmentAddCardio()); // index 1
+       // adapter.addFragment(new FragmentAddCardio()); // index 1
         mViewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -116,16 +116,14 @@ public class ActivityAddDiary extends AppCompatActivity {
        // tabLayout.getTabAt(1).setIcon(R.drawable.ic_cardio);
     }
 
-    /**
-     * BottomNavigationView setup
-     */
-    private void setupBottomNavigationView(){
-        Log.d(TAG, "bottomNavigationViewExSetup: setting up BottomNavigationView");
+    // setuup bottom navbar
+    private void bottomNavbarSetup(){
+        Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER );
         menuItem.setChecked(true);
     }
 

@@ -134,9 +134,8 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     }
 
 
-    /*
-    * Responsible for adding 3 tabs: Camera, Home, Messages
-    * */
+
+    // adds, home,camera, search tabs to homae activity
     private void setupViewPager() {
         AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         adapter.addFragment(new FragmentCamera()); // index 0

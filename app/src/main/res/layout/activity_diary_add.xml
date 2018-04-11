@@ -37,8 +37,8 @@
             <include layout="@layout/layout_centre_viewpager"/>
         </RelativeLayout>
 
-        <!-- bottom navigation -->
-        <!--includes bottom navigation view-->
+        <!-- bottom navbar-->
+        <!--includes bottom navigation view bar-->
         <include layout="@layout/bottom_navigationview"/>
 
     </RelativeLayout>

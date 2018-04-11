@@ -142,9 +142,8 @@ public class ActivityGoals extends AppCompatActivity {
 
 
 
-    /**
-     * BottomNavigationView setup
-     */
+
+    // setup of bottom navbar
     private void bottomNavbarSetup(){
         Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);

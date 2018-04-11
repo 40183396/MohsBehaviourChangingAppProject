@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,7 +20,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.R;
+import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
 
 import java.text.DecimalFormat;
@@ -34,6 +38,8 @@ import es.dmoral.toasty.Toasty;
 
 public class ActivityEditGoals extends AppCompatActivity {
     private static final String TAG = "ActivityEditGoals";
+
+    private static final int ACTIVITY_NUMBER = 1;
 
     // Firebase Stuff
     private FirebaseAuth mAuth;
@@ -65,6 +71,8 @@ public class ActivityEditGoals extends AppCompatActivity {
         myDBRefFirebase = mFirebaseDatabase.getReference();
         mFirebaseMethods = new FirebaseMethods(mContext);
         setupFirebaseAuth();
+        bottomNavbarSetup();
+        
         getFromBundle();
         // starts with fields blank
         goalWeight.setText(weightBundle);
@@ -156,6 +164,17 @@ public class ActivityEditGoals extends AppCompatActivity {
 
         numberWeight = 0;
 
+    }
+
+    // setup of bottom navbar
+    private void bottomNavbarSetup(){
+        Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER );
+        menuItem.setChecked(true);
     }
 
 
