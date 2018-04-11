@@ -121,11 +121,11 @@ public class FragmentDiary extends Fragment {
         Calendar defaultDate = Calendar.getInstance();
         Log.d(TAG, "onCreateView: " + date);
 
-        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarView)
+        HorizontalCalendar diaryCalendar = new HorizontalCalendar.Builder(view, R.id.calendarView)
                 .range(startDate, endDate)
                 .datesNumberOnScreen(5).defaultSelectedDate(defaultDate)
                 .build();
-        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
+        diaryCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar d, int position) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");

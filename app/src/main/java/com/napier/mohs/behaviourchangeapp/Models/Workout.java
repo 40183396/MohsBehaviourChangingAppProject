@@ -4,6 +4,8 @@ package com.napier.mohs.behaviourchangeapp.Models;
  * Created by Mohs on 23/03/2018.
  */
 
+// original class for exercise this isn't used
+
 public class Workout {
     private String workout_id, user_id, date_created;
     private Exercise exercise;

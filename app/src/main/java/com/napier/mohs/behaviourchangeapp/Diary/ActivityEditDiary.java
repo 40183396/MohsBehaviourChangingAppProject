@@ -42,7 +42,7 @@ public class ActivityEditDiary extends AppCompatActivity {
     private FirebaseMethods mFirebaseMethods;
 
     // widgets
-    @BindView(R.id.viewpagerContainer)
+    @BindView(R.id.containerViewPager)
     ViewPager mViewPager;
     @BindView(R.id.containerEditDiary)
     FrameLayout mFrameLayout;
@@ -68,7 +68,7 @@ public class ActivityEditDiary extends AppCompatActivity {
 
 
 
-        setupViewPager();
+        setupViewPagerTabs();
     }
 
     // method to receive bundle from diary
@@ -84,7 +84,7 @@ public class ActivityEditDiary extends AppCompatActivity {
     /*
     * Responsible for displaying edit weights fragment
     * */
-    private void setupViewPager(){
+    private void setupViewPagerTabs(){
         retrieveBundle();
         AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         adapter.addFragment(fragment); // index 0

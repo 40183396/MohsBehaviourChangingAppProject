@@ -41,7 +41,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
         Log.d(TAG, "onItemsLoadMore: more photos being displayed");
         // FragmentHome is set up through view pager there is a different way to assign tag
         FragmentHome homeFragment = (FragmentHome) getSupportFragmentManager()
-                .findFragmentByTag("android:switcher:" + R.id.container
+                .findFragmentByTag("android:switcher:" + R.id.containerHome
                         + ":" + mViewPager.getCurrentItem()); // references its tag
         if (homeFragment != null) {
             homeFragment.displayMorePhotos(); // fragment will display more photos
@@ -59,9 +59,9 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
 
 
     // widgets
-    @BindView(R.id.viewpagerContainer)
+    @BindView(R.id.containerViewPager)
     ViewPager mViewPager;
-    @BindView(R.id.container)
+    @BindView(R.id.containerHome)
     FrameLayout mFrameLayout;
     @BindView(R.id.relLayoutParent)
     RelativeLayout mRelativeLayout;
@@ -84,19 +84,19 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
 
 
         // make sure initiliases image loader first
-        initImageLoader();
-        bottomNavbarSetup();
-        setupViewPager();
+        setupUniversalImageLoader();
+        setupBottomNavbar();
+        setupViewPagerFragments();
     }
 
-    public void layoutHide() {
-        Log.d(TAG, "layoutHide: hiding relative layout in activity home");
+    public void layoutHomeHide() {
+        Log.d(TAG, "layoutHomeHide: hiding relative layout in activity home");
         mRelativeLayout.setVisibility(View.GONE);
         mFrameLayout.setVisibility(View.VISIBLE); // FrameLayout is where comments fragments is going to be inserted into
     }
 
-    public void layoutShow() {
-        Log.d(TAG, "layoutShow: hiding frame layout");
+    public void layoutHomeShow() {
+        Log.d(TAG, "layoutHomeShow: hiding frame layout");
         mRelativeLayout.setVisibility(View.VISIBLE);
         mFrameLayout.setVisibility(View.GONE); // FrameLayout is where comments fragments is going to be inserted into
     }
@@ -106,7 +106,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     public void onBackPressed() {
         super.onBackPressed();
         if (mFrameLayout.getVisibility() == View.VISIBLE) {
-            layoutShow();
+            layoutHomeShow();
         }
     }
 
@@ -115,20 +115,20 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
         Log.d(TAG, "onSelectedCommentThread: comment thread was selected");
 
         // bundles the user account settings and photo
-        FragmentViewComments viewCommentsFragment = new FragmentViewComments();
+        FragmentViewComments fragmentComments = new FragmentViewComments();
         Bundle bundle = new Bundle();
         bundle.putParcelable(photo_extra, photo);
         bundle.putString(home_activity, home_activity);
-        viewCommentsFragment.setArguments(bundle);
+        fragmentComments.setArguments(bundle);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, viewCommentsFragment); // replace home container with this fragment
+        transaction.replace(R.id.containerHome, fragmentComments); // replace home containerHome with this fragment
         transaction.addToBackStack(viewcomments_fragment);
         transaction.commit();
     }
 
     // initialises image loader here to be able to use in all other activities
-    private void initImageLoader() {
+    private void setupUniversalImageLoader() {
         UniversalImageLoaderSettings universalImageLoaderSettings = new UniversalImageLoaderSettings(mContext);
         ImageLoader.getInstance().init(universalImageLoaderSettings.getConfig()); // retrieves configuration
     }
@@ -137,7 +137,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
 
     // adds, home,camera, search tabs to homae activity
     // took out camera fragment
-    private void setupViewPager() {
+    private void setupViewPagerFragments() {
         AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         //adapter.addFragment(new FragmentCamera()); // index 0
         adapter.addFragment(new FragmentHome()); // index 1
@@ -153,8 +153,8 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     }
 
     // setup for bottom navbar
-    private void bottomNavbarSetup() {
-        Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
+    private void setupBottomNavbar() {
+        Log.d(TAG, "setupBottomNavbar: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomNavigationViewEx);
         BottomNavigationViewExSettings.enableNavigation(mContext, this, bottomNavigationViewEx);

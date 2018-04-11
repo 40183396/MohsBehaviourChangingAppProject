@@ -195,8 +195,8 @@ public class FirebaseMethods {
 
                     // sets viewpager so returns us back to edit profile fragment
                     // opens up edit profile fragment and skips showing account settings activity
-                    ((ActivityAccountSettings) mContext).setViewPager(
-                            ((ActivityAccountSettings) mContext).pagerAdapter
+                    ((ActivityAccountSettings) mContext).setupViewPagerFragment(
+                            ((ActivityAccountSettings) mContext).adapter
                                     .getFragmentNumber(mContext.getString(R.string.fragment_edit_profile))
                     );
 

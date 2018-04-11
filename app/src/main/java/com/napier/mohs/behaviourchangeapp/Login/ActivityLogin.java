@@ -54,7 +54,7 @@ public class ActivityLogin extends AppCompatActivity {
 
     private Context mContext;
 
-    private String email, password, username;
+    private String email, password;
 
     // Strings
     @BindString(R.string.error_invalid_password)
@@ -75,17 +75,11 @@ public class ActivityLogin extends AppCompatActivity {
 
         mContext = ActivityLogin.this;
 
-        // TODO REMOVE THIS LOGIN STUFF
-        // quick log in
-       // mEmail.setText("test1@test.com");
-       // mPassword.setText("11111111");
-
-
         // This is invisible till user signs in
         mProgressBar.setVisibility(View.GONE);
         mSigningIn.setVisibility(View.GONE);
         setupFirebaseAuth();
-        initialiseLoggingIn();
+        setupLoggingIn();
     }
 
 
@@ -104,7 +98,7 @@ public class ActivityLogin extends AppCompatActivity {
 
 
     // Button which initialises logging in
-    private void initialiseLoggingIn() {
+    private void setupLoggingIn() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

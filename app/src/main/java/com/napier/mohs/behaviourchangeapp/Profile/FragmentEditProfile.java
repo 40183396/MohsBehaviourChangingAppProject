@@ -27,7 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.napier.mohs.behaviourchangeapp.Dialogs.DialogPasswordConfirm;
+import com.napier.mohs.behaviourchangeapp.Dialogs.DialogEmailChange;
 import com.napier.mohs.behaviourchangeapp.Models.AccountSettings;
 import com.napier.mohs.behaviourchangeapp.Models.User;
 import com.napier.mohs.behaviourchangeapp.Models.UserAndAccountSettings;
@@ -45,7 +45,7 @@ import es.dmoral.toasty.Toasty;
  * Created by User on 6/4/2017.
  */
 
-public class FragmentEditProfile extends Fragment implements DialogPasswordConfirm.OnPasswordConfirmListener{
+public class FragmentEditProfile extends Fragment implements DialogEmailChange.OnEmailConfirmListener{
 
     private static final String TAG = "FragmentEditProfile";
 
@@ -74,7 +74,7 @@ public class FragmentEditProfile extends Fragment implements DialogPasswordConfi
     // override method for password confirm dialog
     // this appears only if user changes their email
     @Override
-    public void onPasswordConfirm(String password) {
+    public void onEmailConfirm(String password) {
         Log.d(TAG, "onPasswordConfirm: password entered: " + password);
 
         // Get auth credentials from the user for re-authentication. The example below shows
@@ -194,7 +194,7 @@ public class FragmentEditProfile extends Fragment implements DialogPasswordConfi
             // first reauthenticate email (only needed is emails have to be verified
             // check email is registered already
             // then email is changed
-            DialogPasswordConfirm dialog = new DialogPasswordConfirm();
+            DialogEmailChange dialog = new DialogEmailChange();
             dialog.show(getFragmentManager(), getString(R.string.dialog_password_confirm));
             dialog.setTargetFragment(FragmentEditProfile.this, 1); // sets this as target fragment after dialog is opened
 

@@ -27,7 +27,7 @@ public class ActivityDiary extends AppCompatActivity{
 
     private Context mContext = ActivityDiary.this;
 
-    @BindView(R.id.viewpagerContainer)
+    @BindView(R.id.containerViewPager)
     ViewPager mViewPager;
 
 
@@ -38,12 +38,12 @@ public class ActivityDiary extends AppCompatActivity{
         ButterKnife.bind(this);
         Log.d(TAG, "onCreate: started diary activity");
 
-        viewPagerSetup();
+        setupViewPagerFragments();
         bottomNavbarSetup();
     }
 
     // setting up fragment in diary activity
-    private void viewPagerSetup(){
+    private void setupViewPagerFragments(){
         AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         adapter.addFragment(new FragmentDiary());
 

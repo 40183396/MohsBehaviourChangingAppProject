@@ -43,19 +43,13 @@ public class ActivityExerciseList extends Activity {
         ButterKnife.bind(this);
         Log.d(TAG, "onCreate: started exercise list activity");
 
-
-        // get the listview
         mExpandableListView = (ExpandableListView) findViewById(R.id.expandableListViewExerciseList);
 
-        // preparing list data
-        prepareListData();
+        setupExerciseListData();
 
         adapter = new AdapterExpandableListView(this, listDataHeader, listDataChild);
 
-        // setting list adapter
         mExpandableListView.setAdapter(adapter);
-
-        //
 
         // Listview on child click listener
         mExpandableListView.setOnChildClickListener(new OnChildClickListener() {
@@ -104,7 +98,7 @@ public class ActivityExerciseList extends Activity {
     /*
      * the data for the exercise list
      */
-    private void prepareListData() {
+    private void setupExerciseListData() {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
 

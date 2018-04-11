@@ -1,11 +1,9 @@
 package com.napier.mohs.behaviourchangeapp.Home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -49,11 +47,10 @@ public class FragmentSearch extends Fragment {
     @BindView(R.id.listviewSearch)
     ListView mListView;
 
-    private List<User> mUsersList;
-    private Context mContext;
+    private List<User> mUsersArrayList;
 
     // global adapter
-    private AdapterUserList mUserListAdapter;
+    private AdapterUserList mAdapterUserList;
 
     @Nullable
     @Override
@@ -61,17 +58,16 @@ public class FragmentSearch extends Fragment {
         View view = inflater.inflate(R.layout.fragment_homesearch, container, false);
         Log.d(TAG, "onCreate: started");
         ButterKnife.bind(this, view);
-        mContext = getActivity(); // keeps context constant
 
-        initialiseTextListener();
-        hideKeyboard();
+        setupTextListener();
+        setupHideKeyboard();
         return view;
     }
 
-    private void initialiseTextListener(){
-        Log.d(TAG, "initialiseTextListener: ");
+    private void setupTextListener(){
+        Log.d(TAG, "setupTextListener: ");
 
-        mUsersList = new ArrayList<>();
+        mUsersArrayList = new ArrayList<>();
         mSearch.addTextChangedListener(new TextWatcher() { // listener for when user types in keyboard
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -94,7 +90,7 @@ public class FragmentSearch extends Fragment {
 
     public void searchMatch(String search){
         Log.d(TAG, "searchMatch: searching for " + search);
-        mUsersList.clear();
+        mUsersArrayList.clear();
         if(search.length() == 0){
 
         } else {
@@ -108,7 +104,7 @@ public class FragmentSearch extends Fragment {
                     for(DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()){
                         Log.d(TAG, "onDataChange: search has found user " + singleDataSnapShot.getValue(User.class).toString());
 
-                        mUsersList.add(singleDataSnapShot.getValue(User.class));
+                        mUsersArrayList.add(singleDataSnapShot.getValue(User.class));
                         // user list is updated
                         usersListUpdate();
                     }
@@ -122,11 +118,11 @@ public class FragmentSearch extends Fragment {
         }
     }
 
-    private void hideKeyboard(){
+    private void setupHideKeyboard(){
         if(getActivity().getCurrentFocus() != null){
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0); // hides keyboard after user has finished typing
-            Log.d(TAG, "hideKeyboard: keyboard hidden");
+            Log.d(TAG, "setupHideKeyboard: keyboard hidden");
         }
     }
 
@@ -134,20 +130,20 @@ public class FragmentSearch extends Fragment {
         Log.d(TAG, "usersListUpdate: the userlist is being updated");
 
         // sets adapter with users list item layout and user list data
-        mUserListAdapter = new AdapterUserList(getActivity(), R.layout.listitem_users, mUsersList);
+        mAdapterUserList = new AdapterUserList(getActivity(), R.layout.listitem_users, mUsersArrayList);
 
         // sets adapter on list view
-        mListView.setAdapter(mUserListAdapter);
+        mListView.setAdapter(mAdapterUserList);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.d(TAG, "onItemClick: user selected " + mUsersList.get(position).toString());
+                Log.d(TAG, "onItemClick: user selected " + mUsersArrayList.get(position).toString());
                 // navigating to the users profile
                 Intent intent = new Intent(getActivity(), ActivityProfile.class);
                 // need extra to differenitate between viewing own profile and other users profiles
                 intent.putExtra(getString(R.string.calling_activity), getString(R.string.search_activity)); // this is where we put activity name we are coming from, here it is search activity
-                intent.putExtra(getString(R.string.user_extra), mUsersList.get(position)); // make sure User class is parcelable
+                intent.putExtra(getString(R.string.user_extra), mUsersArrayList.get(position)); // make sure User class is parcelable
                 startActivity(intent);
             }
         });

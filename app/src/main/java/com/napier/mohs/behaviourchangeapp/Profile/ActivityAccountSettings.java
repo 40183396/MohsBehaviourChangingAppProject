@@ -36,15 +36,15 @@ import butterknife.ButterKnife;
 public class ActivityAccountSettings extends AppCompatActivity {
 
     private static final String TAG = "ActivityAccountSettings";
-    private static final int ACTIVITY_NUM = 4;
+    private static final int ACTIVITY_NUMBER = 4;
 
     private Context mContext;
 
-    public AdapterSectionsStatePager pagerAdapter;
+    public AdapterSectionsStatePager adapter;
 
     // Widgets
     @BindView(R.id.imageAccountBackArrow) ImageView backArrow;
-    @BindView(R.id.viewpagerContainer)ViewPager mViewPager;
+    @BindView(R.id.containerViewPager)ViewPager mViewPager;
     @BindView(R.id.relLayout1) RelativeLayout mRelativeLayout;
 
     @Override
@@ -56,8 +56,8 @@ public class ActivityAccountSettings extends AppCompatActivity {
         mContext = ActivityAccountSettings.this;
         Log.d(TAG, "onCreate: started.");
 
-        setupSettingsList();
-        bottomBarSetup();
+        setupSettings();
+        setupBottomBar();
         setupFragments();
         getIntentIncoming();
 
@@ -104,26 +104,26 @@ public class ActivityAccountSettings extends AppCompatActivity {
         // Checks if there is an incoming intent that has an extra
         if (intent.hasExtra(getString(R.string.calling_activity))) {
             Log.d(TAG, "getIntentIncoming: recieved intent from " + getString(R.string.profile_activity));
-            setViewPager(pagerAdapter.getFragmentNumber(getString(R.string.fragment_edit_profile))); // setsViewPager to incoming intent
+            setupViewPagerFragment(adapter.getFragmentNumber(getString(R.string.fragment_edit_profile))); // setsViewPager to incoming intent
         }
     }
 
     private void setupFragments() {
-        pagerAdapter = new AdapterSectionsStatePager(getSupportFragmentManager());
-        pagerAdapter.addFragment(new FragmentEditProfile(), getString(R.string.fragment_edit_profile)); //fragment 0
-        pagerAdapter.addFragment(new FragmentSignOut(), getString(R.string.fragment_sign_out)); //fragment 1
+        adapter = new AdapterSectionsStatePager(getSupportFragmentManager());
+        adapter.addFragment(new FragmentEditProfile(), getString(R.string.fragment_edit_profile)); //fragment 0
+        adapter.addFragment(new FragmentSignOut(), getString(R.string.fragment_sign_out)); //fragment 1
     }
 
     // method responsible for actually navigating to fragment
-    public void setViewPager(int fragmentNumber) {
+    public void setupViewPagerFragment(int fragmentNumber) {
         mRelativeLayout.setVisibility(View.GONE); // sets visibility of relative layout to gone (Account settings goes away and only fragment is visible)
-        Log.d(TAG, "setViewPager: nav to fragment number: ");
-        mViewPager.setAdapter(pagerAdapter); // sets up adapter
+        Log.d(TAG, "setupViewPagerFragment: nav to fragment number: ");
+        mViewPager.setAdapter(adapter); // sets up adapter
         mViewPager.setCurrentItem(fragmentNumber); // navigates to fragment that I chose
     }
 
-    private void setupSettingsList() {
-        Log.d(TAG, "setupSettingsList: initializing 'Account Settings' list.");
+    private void setupSettings() {
+        Log.d(TAG, "setupSettings: initializing 'Account Settings' list.");
         ListView listView = (ListView) findViewById(R.id.listviewAccountSettings);
 
         ArrayList<String> options = new ArrayList<>();
@@ -138,20 +138,20 @@ public class ActivityAccountSettings extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: nav to fragment number: " + position);
-                setViewPager(position); // position depends on what order you added fragment so edit profile is pos 1, sign out is pos 2...
+                setupViewPagerFragment(position); // position depends on what order you added fragment so edit profile is pos 1, sign out is pos 2...
             }
         });
 
     }
 
     // setup for BottomNavigationView
-    private void bottomBarSetup() {
+    private void setupBottomBar() {
         Log.d(TAG, "bottomNavigationViewExSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomBar = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewExSettings.bottomNavigationViewExSetup(bottomBar);
         BottomNavigationViewExSettings.enableNavigation(mContext, this, bottomBar);
         Menu menu = bottomBar.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER);
         menuItem.setChecked(true);
     }
 

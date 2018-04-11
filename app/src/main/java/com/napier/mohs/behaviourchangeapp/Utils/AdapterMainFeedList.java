@@ -142,7 +142,7 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
                         mContext.getString(R.string.calling_activity));
 
                 // hide the layout when we go to comments thread so view pager is hidden want to display frame layout of comments
-                ((ActivityHome)mContext).layoutHide();
+                ((ActivityHome)mContext).layoutHomeHide();
             }
         });
 
@@ -251,7 +251,7 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
                                     mContext.getString(R.string.calling_activity));
 
                             // hide the layout when we go to comments thread so view pager is hidden want to display frame layout of comments
-                            ((ActivityHome)mContext).layoutHide();
+                            ((ActivityHome)mContext).layoutHomeHide();
                         }
                     });
 
@@ -262,7 +262,7 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
                                     mContext.getString(R.string.calling_activity));
 
                             // hide the layout when we go to comments thread so view pager is hidden want to display frame layout of comments
-                            ((ActivityHome)mContext).layoutHide();
+                            ((ActivityHome)mContext).layoutHomeHide();
                         }
                     });
 

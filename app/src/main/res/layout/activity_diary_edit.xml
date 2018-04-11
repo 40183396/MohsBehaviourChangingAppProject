@@ -33,7 +33,7 @@
             android:id="@+id/relLayout2"
             android:layout_below="@id/relLayout1">
 
-            <!--includes container-->
+            <!--inclucontainerHomeiner-->
             <include layout="@layout/layout_centre_viewpager"/>
         </RelativeLayout>
 

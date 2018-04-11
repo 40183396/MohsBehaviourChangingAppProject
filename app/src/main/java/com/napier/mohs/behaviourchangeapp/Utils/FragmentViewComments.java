@@ -1,7 +1,5 @@
 package com.napier.mohs.behaviourchangeapp.Utils;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -141,7 +139,7 @@ public class FragmentViewComments extends Fragment {
                     if (getFromBundleCallingActivity().equals(getString(R.string.home_activity))) { // means from home activity
 
                         getActivity().getSupportFragmentManager().popBackStack();
-                        ((ActivityHome) getActivity()).layoutShow(); // fix so when you press back after view photo on main feed you return to home activity
+                        ((ActivityHome) getActivity()).layoutHomeShow(); // fix so when you press back after view photo on main feed you return to home activity
 
                     } else {
                         getActivity().getSupportFragmentManager().popBackStack();

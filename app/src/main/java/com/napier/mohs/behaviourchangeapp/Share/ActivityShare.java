@@ -30,7 +30,7 @@ public class ActivityShare extends AppCompatActivity{
     private static final int PERMISSIONS_VERIFY_REQUEST = 1;
     private static final int ACTIVITY_NUMBER = 2;
 
-    @BindView(R.id.viewpagerContainer) ViewPager mViewPager;
+    @BindView(R.id.containerViewPager) ViewPager mViewPager;
 
     private Context mContext = ActivityShare.this;
 

@@ -2,7 +2,6 @@ package com.napier.mohs.behaviourchangeapp.Login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -78,7 +77,7 @@ public class  ActivityRegister extends AppCompatActivity {
         mSigningIn.setVisibility(View.GONE);
 
         setupFirebaseAuth();
-        initialiseRegisterUser();
+        setupRegisterUser();
 
         haveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +91,7 @@ public class  ActivityRegister extends AppCompatActivity {
 
 
     // Button which initialises registering
-    private void initialiseRegisterUser(){
+    private void setupRegisterUser(){
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

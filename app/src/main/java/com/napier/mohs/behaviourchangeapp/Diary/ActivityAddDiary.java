@@ -48,7 +48,7 @@ public class ActivityAddDiary extends AppCompatActivity {
     private static final int ACTIVITY_NUMBER = 3;
 
     // widgets
-    @BindView(R.id.viewpagerContainer)
+    @BindView(R.id.containerViewPager)
     ViewPager mViewPager;
     @BindView(R.id.containerAddDiary)
     FrameLayout mFrameLayout;
@@ -82,7 +82,7 @@ public class ActivityAddDiary extends AppCompatActivity {
 
 
         bottomNavbarSetup();
-        setupViewPager();
+        setupViewPagerTabs();
     }
 
     // method to pass date to add to diary fragments
@@ -102,10 +102,11 @@ public class ActivityAddDiary extends AppCompatActivity {
     /*
     * Responsible for tabs weights and cardio
     * */
-    private void setupViewPager(){
+    private void setupViewPagerTabs(){
         passDateintent(dateIntent);
         AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         adapter.addFragment(fragment); // index 0
+        // cardio taken out temporarily
        // adapter.addFragment(new FragmentAddCardio()); // index 1
         mViewPager.setAdapter(adapter);
 

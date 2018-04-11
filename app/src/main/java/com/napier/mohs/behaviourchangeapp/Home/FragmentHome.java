@@ -3,7 +3,6 @@ package com.napier.mohs.behaviourchangeapp.Home;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +41,7 @@ public class FragmentHome extends Fragment {
 
     private ArrayList<String> mFollowingArrayList;
     private ArrayList<Photo> mPhotoArrayList; // holds all photos of people you are following
-    private ArrayList<Photo> mPhotosPaginatedArrayList; // Photos that are added incrementally as you scroll through feed
+    private ArrayList<Photo> mPaginatedArrayList; // Photos that are added incrementally as you scroll through feed
 
     private AdapterMainFeedList mAdapter;
     private int mResult;
@@ -180,7 +179,7 @@ public class FragmentHome extends Fragment {
     // method to display the photos
     private void displayPhotos(){
         Log.d(TAG, "displayPhotos: attempting to display pictures ");
-        mPhotosPaginatedArrayList = new ArrayList<>(); // instantiate pagination
+        mPaginatedArrayList = new ArrayList<>(); // instantiate pagination
         try{
             if(mPhotoArrayList != null){
                 Log.d(TAG, "displayPhotos: Photo Array List is not null");
@@ -202,10 +201,10 @@ public class FragmentHome extends Fragment {
                 mResult = 10;
                 for(int i = 0; i < iterations; i++){
                     // only want to add first 10 photos
-                    mPhotosPaginatedArrayList.add(mPhotoArrayList.get(i));
+                    mPaginatedArrayList.add(mPhotoArrayList.get(i));
                 }
                 // set up adapter with layout amd photo array list in paginated way (10 posts)
-                mAdapter = new AdapterMainFeedList(getActivity(), R.layout.listitem_mainfeed, mPhotosPaginatedArrayList);
+                mAdapter = new AdapterMainFeedList(getActivity(), R.layout.listitem_mainfeed, mPaginatedArrayList);
                 mListView.setAdapter(mAdapter); // sets list view with adapter
             }
 
@@ -233,7 +232,7 @@ public class FragmentHome extends Fragment {
 
                 // add new photos to paginated array list
                 for(int i = mResult; i < mResult + iterations;  i++){
-                    mPhotosPaginatedArrayList.add(mPhotoArrayList.get(i)); //adds photos to paginated array list
+                    mPaginatedArrayList.add(mPhotoArrayList.get(i)); //adds photos to paginated array list
                 }
                 // reset results count
                 mResult = mResult + iterations;

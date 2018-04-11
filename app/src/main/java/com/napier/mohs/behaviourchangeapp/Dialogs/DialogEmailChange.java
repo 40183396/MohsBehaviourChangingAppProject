@@ -16,38 +16,38 @@ import com.napier.mohs.behaviourchangeapp.R;
 /**
  * Created by Mohs on 18/03/2018.
  *
- * This class is only needed for email change
+ * This class is only needed for email change user has to enter their password
  */
 
-public class DialogPasswordConfirm extends DialogFragment{
+public class DialogEmailChange extends DialogFragment{
 
-    private static final String TAG = "DialogPasswordConfirm";
+    private static final String TAG = "DialogEmailChange";
 
-    TextView mPassword;
+    TextView passwordConfirm;
 
     // interface made to make dialog reusable
-    public interface OnPasswordConfirmListener{
-        public void onPasswordConfirm(String password);
+    public interface OnEmailConfirmListener{
+        public void onEmailConfirm(String password);
     }
-    OnPasswordConfirmListener mOnPasswordConfirmListener;
+    OnEmailConfirmListener mOnEmailConfirmListener;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_passwordconfirm, container, false); // inflates password confirm dialog
-        mPassword = (TextView) view.findViewById(R.id.edittextPasswordConfirmPassword);
+        View view = inflater.inflate(R.layout.dialog_emailconfirm, container, false); // inflates password confirm dialog
+        passwordConfirm = (TextView) view.findViewById(R.id.edittextEmailConfirmPassword);
         Log.d(TAG, "onCreateView: Password Confirm Dialog Created");
 
-        TextView confirm = (TextView) view.findViewById(R.id.textviewPasswordConfirm);
+        TextView confirm = (TextView) view.findViewById(R.id.textviewEmailConfirm);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Confirm pressed, password changed and updated to db ");
-                String password = mPassword.getText().toString();
+                String password = passwordConfirm.getText().toString();
                 // checks enter password is not null
                 if(!password.equals("")){
-                    mOnPasswordConfirmListener.onPasswordConfirm(password); // activates interface
+                    mOnEmailConfirmListener.onEmailConfirm(password); // activates interface
                     getDialog().dismiss();
                 } else {
                     Toast.makeText(getActivity(), "Please enter a password to confirm", Toast.LENGTH_SHORT).show();
@@ -74,7 +74,7 @@ public class DialogPasswordConfirm extends DialogFragment{
         super.onAttach(context);
 
         try{
-            mOnPasswordConfirmListener = (OnPasswordConfirmListener) getTargetFragment(); // goes straight to edit profile fragment and skips going to main activity part
+            mOnEmailConfirmListener = (OnEmailConfirmListener) getTargetFragment(); // goes straight to edit profile fragment and skips going to main activity part
         } catch (ClassCastException e){
             Log.e(TAG, "onAttach: ClassCastException: " + e.getMessage() );
         }

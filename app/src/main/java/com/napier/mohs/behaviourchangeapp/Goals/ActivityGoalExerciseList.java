@@ -42,7 +42,7 @@ public class ActivityGoalExerciseList extends Activity {
         // get the listview
         mExpandableListView = (ExpandableListView) findViewById(R.id.expandableListViewExerciseList);
         // preparing list data
-        prepareListData();
+        setupExerciseListData();
         adapter = new AdapterExpandableListView(this, listDataHeader, listDataChild);
         // setting list adapter
         mExpandableListView.setAdapter(adapter);
@@ -81,7 +81,7 @@ public class ActivityGoalExerciseList extends Activity {
     /*
      * the data for the exercise list
      */
-    private void prepareListData() {
+    private void setupExerciseListData() {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
 

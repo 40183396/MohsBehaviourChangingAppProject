@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public class Photo implements Parcelable{
-    private String caption, date_created, image_path, photo_id, user_id, tags;
+    private String photo_id, user_id, caption, date_created, image_path,  tags;
     private List<Like> likes;
     private List <Comment> comments;
 
