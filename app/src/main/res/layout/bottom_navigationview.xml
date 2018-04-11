@@ -9,6 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/bottomNavViewBar"
+            android:background="@drawable/border_top_white"
             app:itemIconTint="@color/link_blue"
             app:menu="@menu/bottom_nav_menu">
 

@@ -85,7 +85,7 @@ public class AdapterCommentsList extends ArrayAdapter<Comment>{
 
         // comment set
         viewHolder.comment.setText((getItem(position).getComment()));
-
+        viewHolder.timestamp.setVisibility(View.GONE);
         // timestamp set
         String differenceTimestamp = getDateTimeStampDifference(getItem(position));
         if(!differenceTimestamp.equals("0")){
@@ -128,12 +128,12 @@ public class AdapterCommentsList extends ArrayAdapter<Comment>{
             }
         });
 
-        /*// for first comment in comment thread of photo
+        // for first comment in comment thread of photo
         if(position == 0){
             // we set the visiibility of the imagelike, likes, reply widgets as GONE
 
-            viewHolder.reply.setVisibility(View.GONE);
-        }*/
+            viewHolder.timestamp.setVisibility(View.VISIBLE);
+        }
         return convertView;
     }
 
