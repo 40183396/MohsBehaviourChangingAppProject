@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
-import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoader;
+import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoaderSettings;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -115,7 +115,7 @@ public class ActivityNext extends AppCompatActivity{
             imgURL = mIntent.getStringExtra(getString(R.string.image_selected)); // imgURL set to incoming intent
             Log.d(TAG, "imageSet: recieved new image " + imgURL);
             // static call to universal image loader
-            UniversalImageLoader.setImage(imgURL, img, null, mAppend);
+            UniversalImageLoaderSettings.setImage(imgURL, img, null, mAppend);
             // do not need to check for null values as universal image loader can handle this
         }
         else if(mIntent.hasExtra(getString(R.string.bitmap_selected))){ // bitmap means came from camera

@@ -17,17 +17,14 @@ import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.StorageReference;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Login.ActivityLogin;
 import com.napier.mohs.behaviourchangeapp.Models.Photo;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterMainFeedList;
-import com.napier.mohs.behaviourchangeapp.Utils.SectionsPagerAdapter;
-import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoader;
+import com.napier.mohs.behaviourchangeapp.Utils.AdapterSectionsPager;
+import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoaderSettings;
 import com.napier.mohs.behaviourchangeapp.Utils.FragmentViewComments;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -52,7 +49,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     }
 
     private static final String TAG = "ActivityHome";
-    private static final int ACTIVITY_NUM = 0;
+    private static final int ACTIVITY_NUMBER = 0;
     private static final int FRAGMENT_HOME = 1; // 1 because it is middle tab
     private Context mContext = ActivityHome.this;
 
@@ -76,7 +73,6 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     String photo_extra;
     @BindString(R.string.fragment_viewcomments)
     String viewcomments_fragment;
-    private String a = "activities";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,17 +82,10 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
         Log.d(TAG, "onCreate: starting.");
         setupFirebaseAuth();
 
-        // TODO Remove this
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        //mDatabase.push().setValue(1);
-
-        //mDatabase.child("goals").push().setValue(1);
-        //mDatabase.child("numbers").push().setValue(53);
-        //mDatabase.child("numbers").push().setValue(42);
 
         // make sure initiliases image loader first
         initImageLoader();
-        setupBottomNavigationView();
+        bottomNavbarSetup();
         setupViewPager();
     }
 
@@ -140,8 +129,8 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
 
     // initialises image loader here to be able to use in all other activities
     private void initImageLoader() {
-        UniversalImageLoader universalImageLoader = new UniversalImageLoader(mContext);
-        ImageLoader.getInstance().init(universalImageLoader.getConfig()); // retrieves configuration
+        UniversalImageLoaderSettings universalImageLoaderSettings = new UniversalImageLoaderSettings(mContext);
+        ImageLoader.getInstance().init(universalImageLoaderSettings.getConfig()); // retrieves configuration
     }
 
 
@@ -149,7 +138,7 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
     * Responsible for adding 3 tabs: Camera, Home, Messages
     * */
     private void setupViewPager() {
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         adapter.addFragment(new FragmentCamera()); // index 0
         adapter.addFragment(new FragmentHome()); // index 1
         adapter.addFragment(new FragmentSearch()); // index 2
@@ -163,16 +152,14 @@ public class ActivityHome extends AppCompatActivity implements AdapterMainFeedLi
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_search);
     }
 
-    /**
-     * BottomNavigationView setup
-     */
-    private void setupBottomNavigationView() {
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+    // setup for bottom navbar
+    private void bottomNavbarSetup() {
+        Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER);
         menuItem.setChecked(true);
     }
 

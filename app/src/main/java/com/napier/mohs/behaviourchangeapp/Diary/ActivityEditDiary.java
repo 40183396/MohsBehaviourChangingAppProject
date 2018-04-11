@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
-import com.napier.mohs.behaviourchangeapp.Utils.SectionsPagerAdapter;
+import com.napier.mohs.behaviourchangeapp.Utils.AdapterSectionsPager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,7 +86,7 @@ public class ActivityEditDiary extends AppCompatActivity {
     * */
     private void setupViewPager(){
         retrieveBundle();
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         adapter.addFragment(fragment); // index 0
         mViewPager.setAdapter(adapter);
 

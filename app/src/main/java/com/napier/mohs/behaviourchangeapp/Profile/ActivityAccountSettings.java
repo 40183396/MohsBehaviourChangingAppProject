@@ -21,7 +21,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
-import com.napier.mohs.behaviourchangeapp.Utils.SectionsStatePagerAdapter;
+import com.napier.mohs.behaviourchangeapp.Utils.AdapterSectionsStatePager;
 
 import java.util.ArrayList;
 
@@ -40,7 +40,7 @@ public class ActivityAccountSettings extends AppCompatActivity {
 
     private Context mContext;
 
-    public SectionsStatePagerAdapter pagerAdapter;
+    public AdapterSectionsStatePager pagerAdapter;
 
     // Widgets
     @BindView(R.id.imageAccountBackArrow) ImageView backArrow;
@@ -109,7 +109,7 @@ public class ActivityAccountSettings extends AppCompatActivity {
     }
 
     private void setupFragments() {
-        pagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new AdapterSectionsStatePager(getSupportFragmentManager());
         pagerAdapter.addFragment(new FragmentEditProfile(), getString(R.string.fragment_edit_profile)); //fragment 0
         pagerAdapter.addFragment(new FragmentSignOut(), getString(R.string.fragment_sign_out)); //fragment 1
     }
@@ -146,9 +146,9 @@ public class ActivityAccountSettings extends AppCompatActivity {
 
     // setup for BottomNavigationView
     private void bottomBarSetup() {
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+        Log.d(TAG, "bottomNavigationViewExSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomBar = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomBar);
+        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomBar);
         BottomNavigationViewHelper.enableNavigation(mContext, this, bottomBar);
         Menu menu = bottomBar.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);

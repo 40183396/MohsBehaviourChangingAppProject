@@ -38,7 +38,7 @@ import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterGridImage;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
-import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoader;
+import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoaderSettings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,7 +72,7 @@ public class FragmentProfile extends Fragment {
 
     OnImageGridSelectedListener mOnImageGridSelectedListener;
 
-    private static final int ACTIVITY_NUM = 4;
+    private static final int ACTIVITY_NUMBER = 4;
     private static final int NUM_COLS_GRID = 3;
 
     // Widgets
@@ -155,7 +155,7 @@ public class FragmentProfile extends Fragment {
         User user = userSettings.getUser();
         UserAccountSettings userAccountSettings = userSettings.getUserAccountsettings();
 
-        UniversalImageLoader.setImage(userAccountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
+        UniversalImageLoaderSettings.setImage(userAccountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
 
         // sets up widgets with db data
         mDisplayName.setText(userAccountSettings.getDisplay_name());
@@ -181,11 +181,11 @@ public class FragmentProfile extends Fragment {
 
     // setup for BottomNavigationView
     private void bottomBarSetup() {
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomBar);
+        Log.d(TAG, "bottomBarSetup: setting up BottomNavigationView");
+        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomBar);
         BottomNavigationViewHelper.enableNavigation(mContext, getActivity(), bottomBar);
         Menu menu = bottomBar.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER);
         menuItem.setChecked(true);
     }
 
@@ -269,7 +269,7 @@ public class FragmentProfile extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                         // navigate to new fragment with interface
-                        mOnImageGridSelectedListener.onImageGridSelected(photos.get(position), ACTIVITY_NUM);
+                        mOnImageGridSelectedListener.onImageGridSelected(photos.get(position), ACTIVITY_NUMBER);
                     }
                 });
             }

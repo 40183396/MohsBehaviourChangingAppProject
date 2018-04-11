@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
-import com.napier.mohs.behaviourchangeapp.Utils.SectionsPagerAdapter;
+import com.napier.mohs.behaviourchangeapp.Utils.AdapterSectionsPager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 
 public class ActivityDiary extends AppCompatActivity{
     private static final String TAG = "ActivityDiary";
-    private static final int ACTIVITY_NUM = 3;
+    private static final int ACTIVITY_NUMBER = 3;
 
     private Context mContext = ActivityDiary.this;
 
@@ -39,28 +39,26 @@ public class ActivityDiary extends AppCompatActivity{
         Log.d(TAG, "onCreate: started diary activity");
 
         viewPagerSetup();
-        setupBottomNavigationView();
+        bottomNavbarSetup();
     }
 
     // setting up fragment in diary activity
     private void viewPagerSetup(){
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         adapter.addFragment(new FragmentDiary());
 
         mViewPager.setAdapter(adapter);
     }
 
 
-    /**
-     * BottomNavigationView setup
-     */
-    private void setupBottomNavigationView(){
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+    // setup for bottom navbar
+    private void bottomNavbarSetup(){
+        Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER );
         menuItem.setChecked(true);
     }
 

@@ -16,7 +16,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
 import com.napier.mohs.behaviourchangeapp.Utils.Permissions;
-import com.napier.mohs.behaviourchangeapp.Utils.SectionsPagerAdapter;
+import com.napier.mohs.behaviourchangeapp.Utils.AdapterSectionsPager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 public class ActivityShare extends AppCompatActivity{
     private static final String TAG = "ActivityShare";
     private static final int PERMISSIONS_VERIFY_REQUEST = 1;
-    private static final int ACTIVITY_NUM = 2;
+    private static final int ACTIVITY_NUMBER = 2;
 
     @BindView(R.id.viewpagerContainer) ViewPager mViewPager;
 
@@ -48,7 +48,7 @@ public class ActivityShare extends AppCompatActivity{
             permissionsVerify(Permissions.PERMISSIONS);
         }
 
-        setupBottomNavigationView();
+        bottomNavbarSetup();
     }
 
     // returns the number of the current tab
@@ -59,7 +59,7 @@ public class ActivityShare extends AppCompatActivity{
     }
 
     private void viewPagerSetup(){
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         adapter.addFragment(new FragmentGallery());
         adapter.addFragment(new FragmentPhoto());
 
@@ -115,16 +115,14 @@ public class ActivityShare extends AppCompatActivity{
         ActivityCompat.requestPermissions(ActivityShare.this, permissions, PERMISSIONS_VERIFY_REQUEST);
     }
 
-    /**
-     * BottomNavigationView setup
-     */
-    private void setupBottomNavigationView(){
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+    // setup for bottom navbar
+    private void bottomNavbarSetup(){
+        Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER );
         menuItem.setChecked(true);
     }
 }

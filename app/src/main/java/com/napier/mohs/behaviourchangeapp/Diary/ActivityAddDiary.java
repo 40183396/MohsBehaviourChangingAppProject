@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
-import com.napier.mohs.behaviourchangeapp.Utils.SectionsPagerAdapter;
+import com.napier.mohs.behaviourchangeapp.Utils.AdapterSectionsPager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -104,7 +104,7 @@ public class ActivityAddDiary extends AppCompatActivity {
     * */
     private void setupViewPager(){
         passDateintent(dateIntent);
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         adapter.addFragment(fragment); // index 0
         adapter.addFragment(new FragmentAddCardio()); // index 1
         mViewPager.setAdapter(adapter);
@@ -113,16 +113,16 @@ public class ActivityAddDiary extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_weights);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_cardio);
+       // tabLayout.getTabAt(1).setIcon(R.drawable.ic_cardio);
     }
 
     /**
      * BottomNavigationView setup
      */
     private void setupBottomNavigationView(){
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+        Log.d(TAG, "bottomNavigationViewExSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM );

@@ -34,7 +34,7 @@ import com.napier.mohs.behaviourchangeapp.Models.UserSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Share.ActivityShare;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
-import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoader;
+import com.napier.mohs.behaviourchangeapp.Utils.UniversalImageLoaderSettings;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,20 +99,20 @@ public class FragmentEditProfile extends Fragment implements DialogPasswordConfi
                                          try{
                                          // if size eqauls 1 we have retrieved something
                                          if(task.getResult().getProviders().size() == 1){
-                                             Log.d(TAG, "onComplete: Email already used");
-                                             Toast.makeText(getActivity(), "That email is Already being used", Toast.LENGTH_SHORT).show();
+                                             Log.d(TAG, "onComplete: Email already taken");
+                                             Toast.makeText(getActivity(), "That email is already being used by someone else", Toast.LENGTH_SHORT).show();
                                          }
                                          // if null, email is free to use
                                          else{
-                                             Log.d(TAG, "onComplete: email available ");
+                                             Log.d(TAG, "onComplete: email is available ");
                                              // email is updated
                                              mAuth.getCurrentUser().updateEmail(mEmail.getText().toString())
                                                      .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                          @Override
                                                          public void onComplete(@NonNull Task<Void> task) {
                                                              if (task.isSuccessful()) {
-                                                                 Log.d(TAG, "User email address updated.");
-                                                                 Toast.makeText(getActivity(), "Email has been updated", Toast.LENGTH_SHORT).show();
+                                                                 Log.d(TAG, "User email address is updated.");
+                                                                 Toast.makeText(getActivity(), "Email has been updated successfully", Toast.LENGTH_SHORT).show();
                                                                  mFirebaseMethods.emailUpdate(mEmail.getText().toString());
                                                              }
                                                          }});
@@ -265,7 +265,7 @@ public class FragmentEditProfile extends Fragment implements DialogPasswordConfi
         User user = userSettings.getUser();
         UserAccountSettings userAccountSettings = userSettings.getUserAccountsettings();
 
-        UniversalImageLoader.setImage(userAccountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
+        UniversalImageLoaderSettings.setImage(userAccountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
 
         // sets up widgets with db data
         mDisplayName.setText(userAccountSettings.getDisplay_name());

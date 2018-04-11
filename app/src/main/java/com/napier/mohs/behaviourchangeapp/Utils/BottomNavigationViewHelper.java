@@ -24,8 +24,8 @@ public class BottomNavigationViewHelper {
 
     private static final String TAG = "BottomNavigationViewHel";
 
-    public static void setupBottomNavigationView(BottomNavigationViewEx bottomNavigationViewEx){
-        Log.d(TAG, "setupBottomNavigationView: Setting up BottomNavigationView");
+    public static void bottomNavigationViewExSetup(BottomNavigationViewEx bottomNavigationViewEx){
+        Log.d(TAG, "bottomNavigationViewExSetup: Setting up BottomNavigationView");
         //bottomNavigationViewEx.enableAnimation(true);
        // bottomNavigationViewEx.enableItemShiftingMode(false);
         bottomNavigationViewEx.enableShiftingMode(false);
@@ -39,28 +39,28 @@ public class BottomNavigationViewHelper {
                 switch(item.getItemId()){
                     // uses context as we are in an object not activity
                     case R.id.ic_house:
-                        Intent intent1 = new Intent(context, ActivityHome.class);//ACTIVITY_NUM = 0;
+                        Intent intent1 = new Intent(context, ActivityHome.class);//ACTIVITY_NUMBER = 0;
                         context.startActivity(intent1);
                         //references animations to change page transitions from bottom bar
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case R.id.ic_goals:
-                        Intent intent2 = new Intent(context, ActivityGoals.class); //ACTIVITY_NUM = 1;
+                        Intent intent2 = new Intent(context, ActivityGoals.class); //ACTIVITY_NUMBER = 1;
                         context.startActivity(intent2);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case R.id.ic_circle:
-                        Intent intent3 = new Intent(context, ActivityShare.class); //ACTIVITY_NUM = 2;
+                        Intent intent3 = new Intent(context, ActivityShare.class); //ACTIVITY_NUMBER = 2;
                         context.startActivity(intent3);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case R.id.ic_weights:
-                        Intent intent4 = new Intent(context, ActivityDiary.class); //ACTIVITY_NUM = 3;
+                        Intent intent4 = new Intent(context, ActivityDiary.class); //ACTIVITY_NUMBER = 3;
                         context.startActivity(intent4);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case R.id.ic_android:
-                        Intent intent5 = new Intent(context, ActivityProfile.class); //ACTIVITY_NUM = 4;
+                        Intent intent5 = new Intent(context, ActivityProfile.class); //ACTIVITY_NUMBER = 4;
                         context.startActivity(intent5);
                         activityCalling.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;

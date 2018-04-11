@@ -9,10 +9,10 @@ import java.util.List;
 
 
 // this class is for tabs and storing fragments as them
-public class SectionsPagerAdapter extends FragmentPagerAdapter{
+public class AdapterSectionsPager extends FragmentPagerAdapter{
     private final List<Fragment> mFragmentList = new ArrayList<>();
 
-    public SectionsPagerAdapter(FragmentManager manager){
+    public AdapterSectionsPager(FragmentManager manager){
         super(manager);
     }
 

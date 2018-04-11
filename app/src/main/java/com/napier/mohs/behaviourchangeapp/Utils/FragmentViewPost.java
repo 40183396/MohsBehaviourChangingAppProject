@@ -146,7 +146,7 @@ public class FragmentViewPost extends Fragment {
         // bundle could potentially be null so need a try catch
         try{
             mPhoto = getFromBundlePhoto(); // photo retrieved from bundle
-            UniversalImageLoader.setImage(mPhoto.getImage_path(), mImagePost, null, "");
+            UniversalImageLoaderSettings.setImage(mPhoto.getImage_path(), mImagePost, null, "");
             mActivityNumber = getActivityNumberFromBundle(); // activity number retrieved from bundle
             retrieveCurrentUser();
             getPostDetails(); //retrieves user account settings for post
@@ -459,7 +459,7 @@ public class FragmentViewPost extends Fragment {
             }
         });
 
-        UniversalImageLoader.setImage(mUserAccountSettings.getProfile_photo(), mImageProfile, null, "");
+        UniversalImageLoaderSettings.setImage(mUserAccountSettings.getProfile_photo(), mImageProfile, null, "");
         mUsername.setText((mUserAccountSettings.getUsername()));
         mLikes.setText(mStringLikes);
         mCaption.setText(mPhoto.getCaption());
@@ -542,8 +542,8 @@ public class FragmentViewPost extends Fragment {
 
     // setup of the bottom navigation
     private void setupBottomNavigationView(){
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-        BottomNavigationViewHelper.setupBottomNavigationView(mBottomNavigationView);
+        Log.d(TAG, "bottomNavigationViewExSetup: setting up BottomNavigationView");
+        BottomNavigationViewHelper.bottomNavigationViewExSetup(mBottomNavigationView);
         BottomNavigationViewHelper.enableNavigation(getActivity(), getActivity(), mBottomNavigationView); //getActivity as we are in fragment
         Menu menu = mBottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(mActivityNumber);

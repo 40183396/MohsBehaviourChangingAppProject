@@ -496,7 +496,7 @@ public class FragmentViewProfile extends Fragment {
         User user = userSettings.getUser();
         UserAccountSettings userAccountSettings = userSettings.getUserAccountsettings();
 
-        UniversalImageLoader.setImage(userAccountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
+        UniversalImageLoaderSettings.setImage(userAccountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
 
         // sets up widgets with db data
         mDisplayName.setText(userAccountSettings.getDisplay_name());
@@ -513,8 +513,8 @@ public class FragmentViewProfile extends Fragment {
 
     // setup of the bottom navigation
     private void setupBottomNavigationView() {
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationView);
+        Log.d(TAG, "bottomNavigationViewExSetup: setting up BottomNavigationView");
+        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomNavigationView);
         BottomNavigationViewHelper.enableNavigation(mContext, getActivity(), bottomNavigationView); //getActivity as we are in fragment
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);

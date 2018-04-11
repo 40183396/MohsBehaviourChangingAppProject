@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -27,22 +26,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-import com.napier.mohs.behaviourchangeapp.Diary.ActivityAddDiary;
-import com.napier.mohs.behaviourchangeapp.Diary.ActivityEditDiary;
-import com.napier.mohs.behaviourchangeapp.Models.Exercise;
 import com.napier.mohs.behaviourchangeapp.Models.Goal;
 import com.napier.mohs.behaviourchangeapp.R;
-import com.napier.mohs.behaviourchangeapp.Utils.AdapterExerciseList;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterGoalList;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewHelper;
-import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
 
 import java.util.ArrayList;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Mohs on 24/03/2018.
@@ -58,7 +51,7 @@ public class ActivityGoals extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myDBRefFirebase;
 
-    private static final int ACTIVITY_NUM = 1;
+    private static final int ACTIVITY_NUMBER = 1;
 
     // database queries
     @BindString(R.string.db_name_goals)
@@ -106,7 +99,7 @@ public class ActivityGoals extends AppCompatActivity {
         });
 
         queryDB();
-        setupBottomNavigationView();
+        bottomNavbarSetup();
 
     }
 
@@ -152,13 +145,13 @@ public class ActivityGoals extends AppCompatActivity {
     /**
      * BottomNavigationView setup
      */
-    private void setupBottomNavigationView(){
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+    private void bottomNavbarSetup(){
+        Log.d(TAG, "bottomNavbarSetup: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.bottomNavigationViewExSetup(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM );
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUMBER );
         menuItem.setChecked(true);
     }
 
