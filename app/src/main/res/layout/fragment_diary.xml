@@ -19,6 +19,15 @@
         android:layout_below="@id/relLayout1"
         android:layout_marginBottom="50dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Have You Exercised? Add it to the Diary"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:id="@+id/textviewDiaryNone"/>
 
 
         <ListView

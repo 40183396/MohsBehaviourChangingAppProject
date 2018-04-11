@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -169,6 +170,9 @@ public class FragmentDiary extends Fragment {
     }
 
 
+    @BindView(R.id.textviewDiaryNone)
+    TextView none;
+
     public void queryDB() {
         final ArrayList<Exercise> exerciseArrayList = new ArrayList<Exercise>();
         final ArrayList<String> keyList = new ArrayList<>();
@@ -194,7 +198,9 @@ public class FragmentDiary extends Fragment {
                 final AdapterExerciseList adapter = new AdapterExerciseList(mContext, R.layout.listitem_exercises, exerciseArrayList);
                 mListView.setAdapter(adapter); // arraylist is adapted to the list view
                 registerForContextMenu(mListView);
-
+                if(keyList.size()>0){
+                    none.setText("");
+                }
                 // if delete is true tthe item from list is deleted
                 if(delete == true){
                     exerciseArrayList.remove(position);
