@@ -28,9 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.behaviourchangeapp.Dialogs.DialogPasswordConfirm;
+import com.napier.mohs.behaviourchangeapp.Models.AccountSettings;
 import com.napier.mohs.behaviourchangeapp.Models.User;
-import com.napier.mohs.behaviourchangeapp.Models.UserAccountSettings;
-import com.napier.mohs.behaviourchangeapp.Models.UserSettings;
+import com.napier.mohs.behaviourchangeapp.Models.UserAndAccountSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Share.ActivityShare;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
@@ -67,7 +67,7 @@ public class FragmentEditProfile extends Fragment implements DialogPasswordConfi
     @BindView(R.id.imageEditBackArrow) ImageView backArrow;
     @BindView(R.id.imageEditSaveChange) ImageView save;
 
-    private UserSettings mUserSettings;
+    private UserAndAccountSettings mUserAndAccountSettings;
     private String userID;
 
 
@@ -181,15 +181,15 @@ public class FragmentEditProfile extends Fragment implements DialogPasswordConfi
         final long phone = Long.parseLong(mPhoneNumber.getText().toString());
 
         // using query instead which checks username entered into text field and compare it to what was originally loaded into fragment
-        Log.d(TAG, "onDataChange: current username is: " + mUserSettings.getUser().getUsername());
+        Log.d(TAG, "onDataChange: current username is: " + mUserAndAccountSettings.getUser().getUsername());
 
         // if username has nchanged
-        if (!mUserSettings.getUser().getUsername().equals(username)) {
+        if (!mUserAndAccountSettings.getUser().getUsername().equals(username)) {
             checkUsernameExist(username);
         }
 
         //if email is changed
-        if (!mUserSettings.getUser().getEmail().equals(email)) {
+        if (!mUserAndAccountSettings.getUser().getEmail().equals(email)) {
 
             // first reauthenticate email (only needed is emails have to be verified
             // check email is registered already
@@ -201,15 +201,15 @@ public class FragmentEditProfile extends Fragment implements DialogPasswordConfi
         }
 
         // if displayname is changed
-        if(!mUserSettings.getUserAccountsettings().getDisplay_name().equals(displayname)){
+        if(!mUserAndAccountSettings.getAccountsettings().getDisplay_name().equals(displayname)){
             mFirebaseMethods.usersettingsUpdate(displayname, null, null, 0);
         }
 
-        if(!mUserSettings.getUserAccountsettings().getWebsite().equals(web)){
+        if(!mUserAndAccountSettings.getAccountsettings().getWebsite().equals(web)){
             mFirebaseMethods.usersettingsUpdate(null, web, null, 0);
         }
 
-        if(!mUserSettings.getUserAccountsettings().getDescription().equals(description)){
+        if(!mUserAndAccountSettings.getAccountsettings().getDescription().equals(description)){
             mFirebaseMethods.usersettingsUpdate(null, null, description, 0);
         }
 
@@ -256,22 +256,22 @@ public class FragmentEditProfile extends Fragment implements DialogPasswordConfi
     }
 
     // sets up the edit profile page with data from db
-    private void setupWidgets(UserSettings userSettings) {
+    private void setupWidgets(UserAndAccountSettings userAndAccountSettings) {
         Log.d(TAG, "setupWidgets: settings up edit profile widgets with data from firebase db ");
 
         // when activity starts this user settings object is set
-        mUserSettings = userSettings;
+        mUserAndAccountSettings = userAndAccountSettings;
 
-        User user = userSettings.getUser();
-        UserAccountSettings userAccountSettings = userSettings.getUserAccountsettings();
+        User user = userAndAccountSettings.getUser();
+        AccountSettings accountSettings = userAndAccountSettings.getAccountsettings();
 
-        UniversalImageLoaderSettings.setImage(userAccountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
+        UniversalImageLoaderSettings.setImage(accountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
 
         // sets up widgets with db data
-        mDisplayName.setText(userAccountSettings.getDisplay_name());
-        mUsername.setText(userAccountSettings.getUsername());
-        mWebsite.setText(userAccountSettings.getWebsite());
-        mDescription.setText(userAccountSettings.getDescription());
+        mDisplayName.setText(accountSettings.getDisplay_name());
+        mUsername.setText(accountSettings.getUsername());
+        mWebsite.setText(accountSettings.getWebsite());
+        mDescription.setText(accountSettings.getDescription());
         mEmail.setText(String.valueOf(user.getEmail()));
         mPhoneNumber.setText(String.valueOf(user.getPhone_number()));
 

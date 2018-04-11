@@ -16,8 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.napier.mohs.behaviourchangeapp.Models.AccountSettings;
 import com.napier.mohs.behaviourchangeapp.Models.User;
-import com.napier.mohs.behaviourchangeapp.Models.UserAccountSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -89,11 +89,11 @@ public class AdapterUserList extends ArrayAdapter<User>{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: ");
                 for (DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "onDataChange: user found: " + singleDataSnapShot.getValue(UserAccountSettings.class).toString());
+                    Log.d(TAG, "onDataChange: user found: " + singleDataSnapShot.getValue(AccountSettings.class).toString());
 
                     ImageLoader imageLoader = ImageLoader.getInstance();
 
-                    imageLoader.displayImage(singleDataSnapShot.getValue(UserAccountSettings.class).getProfile_photo(),
+                    imageLoader.displayImage(singleDataSnapShot.getValue(AccountSettings.class).getProfile_photo(),
                             viewHolder.imageProfile);
                 }
             }

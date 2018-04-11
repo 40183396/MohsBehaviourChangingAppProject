@@ -28,12 +28,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.behaviourchangeapp.Models.AccountSettings;
 import com.napier.mohs.behaviourchangeapp.Models.Comment;
 import com.napier.mohs.behaviourchangeapp.Models.Like;
 import com.napier.mohs.behaviourchangeapp.Models.Photo;
 import com.napier.mohs.behaviourchangeapp.Models.User;
-import com.napier.mohs.behaviourchangeapp.Models.UserAccountSettings;
-import com.napier.mohs.behaviourchangeapp.Models.UserSettings;
+import com.napier.mohs.behaviourchangeapp.Models.UserAndAccountSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.AdapterGridImage;
 import com.napier.mohs.behaviourchangeapp.Utils.BottomNavigationViewExSettings;
@@ -148,20 +148,20 @@ public class FragmentProfile extends Fragment {
     }
 
     // sets up the profile page with data from db
-    private void setupWidgets(UserSettings userSettings) {
+    private void setupWidgets(UserAndAccountSettings userAndAccountSettings) {
         Log.d(TAG, "seupWidgets: settings up widget with data from firebase db ");
 
         // User settings not needed here but added here anyway
-        User user = userSettings.getUser();
-        UserAccountSettings userAccountSettings = userSettings.getUserAccountsettings();
+        User user = userAndAccountSettings.getUser();
+        AccountSettings accountSettings = userAndAccountSettings.getAccountsettings();
 
-        UniversalImageLoaderSettings.setImage(userAccountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
+        UniversalImageLoaderSettings.setImage(accountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
 
         // sets up widgets with db data
-        mDisplayName.setText(userAccountSettings.getDisplay_name());
-        mUsername.setText(userAccountSettings.getUsername());
-        mWebsite.setText(userAccountSettings.getWebsite());
-        mDescription.setText(userAccountSettings.getDescription());
+        mDisplayName.setText(accountSettings.getDisplay_name());
+        mUsername.setText(accountSettings.getUsername());
+        mWebsite.setText(accountSettings.getWebsite());
+        mDescription.setText(accountSettings.getDescription());
         mProgressBar.setVisibility(View.GONE);
     }
 

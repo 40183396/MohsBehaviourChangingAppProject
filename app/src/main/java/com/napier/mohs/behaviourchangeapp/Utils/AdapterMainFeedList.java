@@ -24,11 +24,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.napier.mohs.behaviourchangeapp.Home.ActivityHome;
+import com.napier.mohs.behaviourchangeapp.Models.AccountSettings;
 import com.napier.mohs.behaviourchangeapp.Models.Comment;
 import com.napier.mohs.behaviourchangeapp.Models.Like;
 import com.napier.mohs.behaviourchangeapp.Models.Photo;
 import com.napier.mohs.behaviourchangeapp.Models.User;
-import com.napier.mohs.behaviourchangeapp.Models.UserAccountSettings;
 import com.napier.mohs.behaviourchangeapp.Profile.ActivityProfile;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -93,7 +93,7 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
         }
 
         // we are saving specific things for each post in this view holder
-        UserAccountSettings mUserAccountSettings = new UserAccountSettings();
+        AccountSettings mAccountSettings = new AccountSettings();
         User mUser = new User();
         StringBuilder usersStringBuilder;
         String mStringLikes;
@@ -208,10 +208,10 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
-                    Log.d(TAG, "onDataChange: found user: " + singleDataSnapshot.getValue(UserAccountSettings.class).getUsername() );
+                    Log.d(TAG, "onDataChange: found user: " + singleDataSnapshot.getValue(AccountSettings.class).getUsername() );
 
                     // sets username of post owner in text field in view holder
-                    viewHolder.username.setText(singleDataSnapshot.getValue(UserAccountSettings.class).getUsername());
+                    viewHolder.username.setText(singleDataSnapshot.getValue(AccountSettings.class).getUsername());
                     // on click listener so we can navigate to that users profile
                     viewHolder.username.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -228,7 +228,7 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
 
                     //sets profile pic of post owner
                     final ImageLoader imageLoader = ImageLoader.getInstance();
-                    imageLoader.displayImage(singleDataSnapshot.getValue(UserAccountSettings.class).getProfile_photo(), viewHolder.imageProfile);
+                    imageLoader.displayImage(singleDataSnapshot.getValue(AccountSettings.class).getProfile_photo(), viewHolder.imageProfile);
                     // on click listener to navigate to users profile when their picture is clicked
                     viewHolder.imageProfile.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -242,7 +242,7 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
                         }
                     });
 
-                    viewHolder.mUserAccountSettings = singleDataSnapshot.getValue(UserAccountSettings.class); // getting settings
+                    viewHolder.mAccountSettings = singleDataSnapshot.getValue(AccountSettings.class); // getting settings
                     // onclick listener to go to comments thread
                     viewHolder.comments.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -350,8 +350,8 @@ public class AdapterMainFeedList extends ArrayAdapter<Photo> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
-                    currentUsername = singleDataSnapshot.getValue(UserAccountSettings.class).getUsername(); // gets user name for current user
-                    Log.d(TAG, "onDataChange: User: " + singleDataSnapshot.getValue(UserAccountSettings.class).getUsername() );
+                    currentUsername = singleDataSnapshot.getValue(AccountSettings.class).getUsername(); // gets user name for current user
+                    Log.d(TAG, "onDataChange: User: " + singleDataSnapshot.getValue(AccountSettings.class).getUsername() );
 
                 }
                 //setupWidgets();

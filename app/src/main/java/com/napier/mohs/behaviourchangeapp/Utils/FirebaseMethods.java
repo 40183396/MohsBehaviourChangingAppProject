@@ -26,12 +26,12 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.napier.mohs.behaviourchangeapp.Home.ActivityHome;
+import com.napier.mohs.behaviourchangeapp.Models.AccountSettings;
 import com.napier.mohs.behaviourchangeapp.Models.Exercise;
 import com.napier.mohs.behaviourchangeapp.Models.Goal;
 import com.napier.mohs.behaviourchangeapp.Models.User;
 import com.napier.mohs.behaviourchangeapp.Models.Photo;
-import com.napier.mohs.behaviourchangeapp.Models.UserAccountSettings;
-import com.napier.mohs.behaviourchangeapp.Models.UserSettings;
+import com.napier.mohs.behaviourchangeapp.Models.UserAndAccountSettings;
 import com.napier.mohs.behaviourchangeapp.Profile.ActivityAccountSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 
@@ -462,7 +462,7 @@ public class FirebaseMethods {
         Log.d(TAG, "addNewUser: username: " + user);
 
         // sets up user_account_settings
-        UserAccountSettings userAccSettings = new UserAccountSettings(
+        AccountSettings userAccSettings = new AccountSettings(
                 description,
                 username,
                 0,
@@ -544,10 +544,10 @@ public class FirebaseMethods {
     }
 
     // gets user account settings from firebase db for user logged in
-    public UserSettings getUserSettings(DataSnapshot dataSnapshot) {
+    public UserAndAccountSettings getUserSettings(DataSnapshot dataSnapshot) {
         Log.d(TAG, "getUserAccountSettings: getting user acc settings from firebase");
 
-        UserAccountSettings userAccountSettings = new UserAccountSettings();
+        AccountSettings accountSettings = new AccountSettings();
         User user = new User();
 
         // loops through all main parent nodes
@@ -557,47 +557,47 @@ public class FirebaseMethods {
                 Log.d(TAG, "getUserAccountSettings: DataSnapshot: " + ds); // used for ddebugging
 
                 try {
-                    userAccountSettings.setDisplay_name(
+                    accountSettings.setDisplay_name(
                             ds.child(userID)
-                                    .getValue(UserAccountSettings.class)
+                                    .getValue(AccountSettings.class)
                                     .getDisplay_name()
                     );
-                    userAccountSettings.setUsername(
+                    accountSettings.setUsername(
                             ds.child(userID)
-                                    .getValue(UserAccountSettings.class)
+                                    .getValue(AccountSettings.class)
                                     .getUsername()
                     );
-                    userAccountSettings.setWebsite(
+                    accountSettings.setWebsite(
                             ds.child(userID)
-                                    .getValue(UserAccountSettings.class)
+                                    .getValue(AccountSettings.class)
                                     .getWebsite()
                     );
-                    userAccountSettings.setDescription(
+                    accountSettings.setDescription(
                             ds.child(userID)
-                                    .getValue(UserAccountSettings.class)
+                                    .getValue(AccountSettings.class)
                                     .getDescription()
                     );
-                    userAccountSettings.setProfile_photo(
+                    accountSettings.setProfile_photo(
                             ds.child(userID)
-                                    .getValue(UserAccountSettings.class)
+                                    .getValue(AccountSettings.class)
                                     .getProfile_photo()
                     );
-                    userAccountSettings.setPosts(
+                    accountSettings.setPosts(
                             ds.child(userID)
-                                    .getValue(UserAccountSettings.class)
+                                    .getValue(AccountSettings.class)
                                     .getPosts()
                     );
-                    userAccountSettings.setFollowing(
+                    accountSettings.setFollowing(
                             ds.child(userID)
-                                    .getValue(UserAccountSettings.class)
+                                    .getValue(AccountSettings.class)
                                     .getFollowing()
                     );
-                    userAccountSettings.setFollowers(
+                    accountSettings.setFollowers(
                             ds.child(userID)
-                                    .getValue(UserAccountSettings.class)
+                                    .getValue(AccountSettings.class)
                                     .getFollowers()
                     );
-                    Log.d(TAG, "getUserAccountSettings: from user_account_settings: " + userAccountSettings.toString());
+                    Log.d(TAG, "getUserAccountSettings: from user_account_settings: " + accountSettings.toString());
                 } catch (NullPointerException e) {
                     Log.e(TAG, "getUserAccountSettings: NullPointerException: " + e.getMessage());
                 }
@@ -632,6 +632,6 @@ public class FirebaseMethods {
                 Log.d(TAG, "getUserAccountSettings: from users: " + user.toString());
             }
         }
-        return new UserSettings(user, userAccountSettings); // returns custom data model
+        return new UserAndAccountSettings(user, accountSettings); // returns custom data model
     }
 }

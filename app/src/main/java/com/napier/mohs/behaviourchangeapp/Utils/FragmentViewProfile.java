@@ -28,12 +28,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.napier.mohs.behaviourchangeapp.Models.AccountSettings;
 import com.napier.mohs.behaviourchangeapp.Models.Comment;
 import com.napier.mohs.behaviourchangeapp.Models.Like;
 import com.napier.mohs.behaviourchangeapp.Models.Photo;
 import com.napier.mohs.behaviourchangeapp.Models.User;
-import com.napier.mohs.behaviourchangeapp.Models.UserAccountSettings;
-import com.napier.mohs.behaviourchangeapp.Models.UserSettings;
+import com.napier.mohs.behaviourchangeapp.Models.UserAndAccountSettings;
 import com.napier.mohs.behaviourchangeapp.Profile.ActivityAccountSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 
@@ -257,13 +257,13 @@ public class FragmentViewProfile extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleDataSnapShot : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "onDataChange: search has found user " + singleDataSnapShot.getValue(UserAccountSettings.class).toString());
+                    Log.d(TAG, "onDataChange: search has found user " + singleDataSnapShot.getValue(AccountSettings.class).toString());
 
-                    UserSettings userSettings = new UserSettings(); // UserSettings is User Object and UserAccountSettings Object combined into one
-                    userSettings.setUser(mUser); // set user to mUser
-                    userSettings.setUserAccountsettings(singleDataSnapShot.getValue(UserAccountSettings.class)); // sets the user account settings retrieved from db
+                    UserAndAccountSettings userAndAccountSettings = new UserAndAccountSettings(); // UserAndAccountSettings is User Object and AccountSettings Object combined into one
+                    userAndAccountSettings.setUser(mUser); // set user to mUser
+                    userAndAccountSettings.setAccountsettings(singleDataSnapShot.getValue(AccountSettings.class)); // sets the user account settings retrieved from db
                     // the other users widgets are set up
-                    setupWidgets(userSettings);
+                    setupWidgets(userAndAccountSettings);
                 }
             }
 
@@ -489,23 +489,23 @@ public class FragmentViewProfile extends Fragment {
     }
 
     // sets up the profile page with data from db
-    private void setupWidgets(UserSettings userSettings) {
+    private void setupWidgets(UserAndAccountSettings userAndAccountSettings) {
         Log.d(TAG, "setupWidgets: settings up widget with data from firebase db ");
 
         // User settings not needed here but added here anyway
-        User user = userSettings.getUser();
-        UserAccountSettings userAccountSettings = userSettings.getUserAccountsettings();
+        User user = userAndAccountSettings.getUser();
+        AccountSettings accountSettings = userAndAccountSettings.getAccountsettings();
 
-        UniversalImageLoaderSettings.setImage(userAccountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
+        UniversalImageLoaderSettings.setImage(accountSettings.getProfile_photo(), mProfilePhoto, null, ""); // image loader for profile photo
 
         // sets up widgets with db data
-        mDisplayName.setText(userAccountSettings.getDisplay_name());
-        mUsername.setText(userAccountSettings.getUsername());
-        mWebsite.setText(userAccountSettings.getWebsite());
-        mDescription.setText(userAccountSettings.getDescription());
-        mPosts.setText(String.valueOf(userAccountSettings.getPosts()));
-        mFollowers.setText(String.valueOf(userAccountSettings.getFollowers()));
-        mFollowing.setText(String.valueOf(userAccountSettings.getFollowing()));
+        mDisplayName.setText(accountSettings.getDisplay_name());
+        mUsername.setText(accountSettings.getUsername());
+        mWebsite.setText(accountSettings.getWebsite());
+        mDescription.setText(accountSettings.getDescription());
+        mPosts.setText(String.valueOf(accountSettings.getPosts()));
+        mFollowers.setText(String.valueOf(accountSettings.getFollowers()));
+        mFollowing.setText(String.valueOf(accountSettings.getFollowing()));
 
         mProgressBar.setVisibility(View.GONE);
     }

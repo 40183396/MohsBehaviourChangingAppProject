@@ -17,8 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.napier.mohs.behaviourchangeapp.Models.AccountSettings;
 import com.napier.mohs.behaviourchangeapp.Models.Comment;
-import com.napier.mohs.behaviourchangeapp.Models.UserAccountSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -110,13 +110,13 @@ public class AdapterCommentsList extends ArrayAdapter<Comment>{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
                     // sets username of comment
-                    viewHolder.username.setText(singleDataSnapshot.getValue(UserAccountSettings.class).getUsername());
+                    viewHolder.username.setText(singleDataSnapshot.getValue(AccountSettings.class).getUsername());
 
                     // sets profile picture of user of comment
                     ImageLoader imageLoader = ImageLoader.getInstance();
 
                     imageLoader.displayImage(
-                            singleDataSnapshot.getValue(UserAccountSettings.class).getProfile_photo(), viewHolder.imageProfile
+                            singleDataSnapshot.getValue(AccountSettings.class).getProfile_photo(), viewHolder.imageProfile
                     );
                 }
 

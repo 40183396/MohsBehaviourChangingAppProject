@@ -7,14 +7,14 @@ import android.os.Parcelable;
  * Created by Mohs on 17/03/2018.
  */
 
-public class UserAccountSettings implements Parcelable{
+public class AccountSettings implements Parcelable{
 
     private String description, display_name, profile_photo, username, website, user_id;
     private long followers, following, posts;
 
-    public UserAccountSettings(String description, String display_name, long followers,
-                               long following, long posts, String profile_photo, String username,
-                               String website, String user_id) {
+    public AccountSettings(String description, String display_name, long followers,
+                           long following, long posts, String profile_photo, String username,
+                           String website, String user_id) {
         this.description = description;
         this.display_name = display_name;
         this.followers = followers;
@@ -26,11 +26,11 @@ public class UserAccountSettings implements Parcelable{
         this.user_id = user_id;
     }
 
-    public UserAccountSettings() {
+    public AccountSettings() {
 
     }
 
-    protected UserAccountSettings(Parcel in) {
+    protected AccountSettings(Parcel in) {
         description = in.readString();
         display_name = in.readString();
         followers = in.readLong();
@@ -42,15 +42,15 @@ public class UserAccountSettings implements Parcelable{
         user_id = in.readString();
     }
 
-    public static final Creator<UserAccountSettings> CREATOR = new Creator<UserAccountSettings>() {
+    public static final Creator<AccountSettings> CREATOR = new Creator<AccountSettings>() {
         @Override
-        public UserAccountSettings createFromParcel(Parcel in) {
-            return new UserAccountSettings(in);
+        public AccountSettings createFromParcel(Parcel in) {
+            return new AccountSettings(in);
         }
 
         @Override
-        public UserAccountSettings[] newArray(int size) {
-            return new UserAccountSettings[size];
+        public AccountSettings[] newArray(int size) {
+            return new AccountSettings[size];
         }
     };
 
@@ -129,7 +129,7 @@ public class UserAccountSettings implements Parcelable{
 
     @Override
     public String toString() {
-        return "UserAccountSettings{" +
+        return "AccountSettings{" +
                 "description='" + description + '\'' +
                 ", display_name='" + display_name + '\'' +
                 ", followers=" + followers +

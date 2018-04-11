@@ -29,7 +29,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.napier.mohs.behaviourchangeapp.Models.Like;
 import com.napier.mohs.behaviourchangeapp.Models.Photo;
 import com.napier.mohs.behaviourchangeapp.Models.User;
-import com.napier.mohs.behaviourchangeapp.Models.UserAccountSettings;
+import com.napier.mohs.behaviourchangeapp.Models.AccountSettings;
 import com.napier.mohs.behaviourchangeapp.R;
 
 import java.text.ParseException;
@@ -74,7 +74,7 @@ public class FragmentViewPost extends Fragment {
 
     private String mPostUsername = "";
     private String mUrl = "";
-    private UserAccountSettings mUserAccountSettings;
+    private AccountSettings mAccountSettings;
     private StringBuilder mUsersStringBuilder;
 
     private String mStringLikes;
@@ -420,8 +420,8 @@ public class FragmentViewPost extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
-                    mUserAccountSettings = singleDataSnapshot.getValue(UserAccountSettings.class); // gets user acccount settings for that photo
-                    Log.d(TAG, "onDataChange: User: " + mUserAccountSettings.getUsername() );
+                    mAccountSettings = singleDataSnapshot.getValue(AccountSettings.class); // gets user acccount settings for that photo
+                    Log.d(TAG, "onDataChange: User: " + mAccountSettings.getUsername() );
 
                 }
                 //setupWidgets();
@@ -459,8 +459,8 @@ public class FragmentViewPost extends Fragment {
             }
         });
 
-        UniversalImageLoaderSettings.setImage(mUserAccountSettings.getProfile_photo(), mImageProfile, null, "");
-        mUsername.setText((mUserAccountSettings.getUsername()));
+        UniversalImageLoaderSettings.setImage(mAccountSettings.getProfile_photo(), mImageProfile, null, "");
+        mUsername.setText((mAccountSettings.getUsername()));
         mLikes.setText(mStringLikes);
         mCaption.setText(mPhoto.getCaption());
 

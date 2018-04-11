@@ -20,8 +20,8 @@
                     android:layout_centerVertical="true"
                     android:text="Photo"
                     android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="15dp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="5dp"
                     android:layout_toRightOf="@id/imagePostBackArrow"
                     android:id="@+id/textviewPost"/>
 
