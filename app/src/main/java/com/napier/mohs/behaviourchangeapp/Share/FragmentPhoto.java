@@ -47,7 +47,7 @@ public class FragmentPhoto extends Fragment{
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Camera is being launched");
 
-                if(((ActivityShare)getActivity()).getTabCurrentNumber() == FRAGMENT_PHOTO_NUM){
+                if(((ActivityShare)getActivity()).retrieveCurrentNumberTab() == FRAGMENT_PHOTO_NUM){
 
                     // Check if camera permission is verified
                     if(((ActivityShare)getActivity()).permissionsCheck(Permissions.PERMISSION_CAMERA[0])){

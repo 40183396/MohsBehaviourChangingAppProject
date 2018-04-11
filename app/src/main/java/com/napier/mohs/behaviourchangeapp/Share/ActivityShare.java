@@ -43,9 +43,10 @@ public class ActivityShare extends AppCompatActivity{
         Log.d(TAG, "onCreate: started share activity");
 
         if(permissionsCheckArray(Permissions.PERMISSIONS)){
-            viewPagerSetup();
+            setupViewPagerTabs();
         } else {
             permissionsVerify(Permissions.PERMISSIONS);
+
         }
 
         setupBottomNavbar();
@@ -54,14 +55,14 @@ public class ActivityShare extends AppCompatActivity{
     // returns the number of the current tab
     // 0 is gallery fragment
     // 1 is photo fragment
-    public int getTabCurrentNumber(){
+    public int retrieveCurrentNumberTab(){
         return mViewPager.getCurrentItem();
     }
 
-    private void viewPagerSetup(){
+    private void setupViewPagerTabs(){
         AdapterSectionsPager adapter = new AdapterSectionsPager(getSupportFragmentManager());
         adapter.addFragment(new FragmentGallery());
-        adapter.addFragment(new FragmentPhoto());
+        //adapter.addFragment(new FragmentPhoto());
 
         mViewPager.setAdapter(adapter);
 
@@ -70,7 +71,7 @@ public class ActivityShare extends AppCompatActivity{
 
         // set text for each of tabs
         tabLayout.getTabAt(0).setText(getString(R.string.gallery));
-        tabLayout.getTabAt(1).setText(getString(R.string.photo));
+        //tabLayout.getTabAt(1).setText(getString(R.string.photo));
     }
 
     public int taskGet(){
