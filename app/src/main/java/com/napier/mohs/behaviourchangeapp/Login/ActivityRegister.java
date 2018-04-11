@@ -24,7 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.napier.mohs.behaviourchangeapp.Models.User;
 import com.napier.mohs.behaviourchangeapp.R;
 import com.napier.mohs.behaviourchangeapp.Utils.FirebaseMethods;
@@ -143,12 +142,7 @@ public class  ActivityRegister extends AppCompatActivity {
                     //TODO Figure out how to get progress bar to disappear
                     //mProgressBar.setVisibility(View.VISIBLE);
                     //mSigningIn.setVisibility(View.VISIBLE);
-                    new StyleableToast
-                            .Builder(mContext)
-                            .text("Registering...")
-                            .textColor(Color.WHITE)
-                            .backgroundColor(Color.BLUE)
-                            .show();
+                    Toasty.info(mContext, "Attempting To Register", Toast.LENGTH_SHORT).show();
                     fbMethods.newEmailRegister(email, password, username);
 
                 }

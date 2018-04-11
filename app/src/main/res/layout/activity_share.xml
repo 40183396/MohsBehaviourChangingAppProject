@@ -13,8 +13,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/relLayout1"
             android:layout_marginBottom="50dp">
-            <include layout="@layout/bottom_tabs"/>
             <include layout="@layout/layout_centre_viewpager"/>
+            <include layout="@layout/bottom_tabs"/>
         </RelativeLayout>
 
         <RelativeLayout

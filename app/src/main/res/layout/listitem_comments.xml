@@ -60,41 +60,10 @@
             android:layout_marginLeft="15dp"
             android:layout_below="@+id/textviewCommentsComments"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SAMPLE LIKES"
-                android:textStyle="bold"
-                android:textColor="@color/grey"
-                android:textSize="12sp"
-                android:id="@+id/textviewCommentsLikes"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_below="@+id/textviewCommentsComments"
-                android:layout_toRightOf="@id/textviewCommentsTime"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SAMPLE DATE"
-                android:textColor="@color/grey"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:id="@+id/textviewCommentsReply"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_below="@+id/textviewCommentsComments"
-                android:layout_toRightOf="@id/textviewCommentsLikes"/>
         </RelativeLayout>
 
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:id="@+id/imageCommentLike"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/ic_star_hollow"
-            android:layout_centerVertical="true"/>
+
 
     </RelativeLayout>
 

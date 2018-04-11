@@ -58,9 +58,6 @@ public class AdapterCommentsList extends ArrayAdapter<Comment>{
         @BindView(R.id.textviewCommentsComments) TextView comment;
         @BindView(R.id.textviewCommentsUsername) TextView username;
         @BindView(R.id.textviewCommentsTime) TextView timestamp;
-        @BindView(R.id.textviewCommentsReply) TextView reply;
-        @BindView(R.id.textviewCommentsLikes) TextView likes;
-        @BindView(R.id.imageCommentLike) ImageView imageLike;
         @BindView(R.id.imageCommentsProfile) ImageView imageProfile;
 
         public ViewHolder(View view) {
@@ -131,13 +128,12 @@ public class AdapterCommentsList extends ArrayAdapter<Comment>{
             }
         });
 
-        // for first comment in comment thread of photo
+        /*// for first comment in comment thread of photo
         if(position == 0){
             // we set the visiibility of the imagelike, likes, reply widgets as GONE
-            viewHolder.likes.setVisibility(View.GONE);
-            viewHolder.imageLike.setVisibility(View.GONE);
+
             viewHolder.reply.setVisibility(View.GONE);
-        }
+        }*/
         return convertView;
     }
 
